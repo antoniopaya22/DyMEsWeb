@@ -18,9 +18,9 @@ import Layout from '../layouts/Layout.astro';
       </div>
       <div class="flex items-center gap-3">
         <button id="mobile-btn" class="md:hidden p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="Menú">
-          <svg class="w-5 h-5 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+          <svg class="w-5 h-5 text-white/80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
         </button>
-        <a href="/compendio" class="nav-login hidden sm:inline-flex text-[13px] text-white/60 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors">Compendio</a>
+        <a href="/compendio" class="nav-login hidden sm:inline-flex text-[13px] text-white/80 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors">Compendio</a>
         <a href="/login" class="text-[13px] font-semibold bg-[#8f3d38] hover:bg-[#a04540] text-white px-5 py-2 rounded-lg transition-all hover:shadow-lg hover:shadow-[#8f3d38]/25">Empezar</a>
       </div>
     </div>
@@ -470,18 +470,18 @@ import Layout from '../layouts/Layout.astro';
 
     /* Nav items */
     .nav-item {
-      @apply px-3 py-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all;
+      @apply px-3 py-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition-all;
     }
 
     /* Nav solid on scroll */
-    .nav-solid { background: rgba(255,255,255,0.92); backdrop-filter: blur(16px) saturate(180%); border-bottom: 1px solid rgba(212,209,189,0.2); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-    .nav-solid .nav-item { color: rgba(85,81,55,0.7) !important; }
-    .nav-solid .nav-item:hover { color: #272519 !important; background: rgba(0,0,0,0.04) !important; }
-    .nav-solid .nav-login { color: rgba(85,81,55,0.7) !important; background: transparent !important; }
-    .nav-solid .nav-login:hover { color: #272519 !important; background: rgba(0,0,0,0.04) !important; }
-    .nav-solid span { color: #555137 !important; }
-    .nav-solid button svg { color: #978F62 !important; }
-    .nav-solid button:hover { background: rgba(0,0,0,0.04) !important; }
+    .nav-solid { background: rgba(14,13,9,0.92); backdrop-filter: blur(16px) saturate(180%); box-shadow: 0 1px 8px rgba(0,0,0,0.3); }
+    .nav-solid .nav-item { color: rgba(255,255,255,0.8) !important; }
+    .nav-solid .nav-item:hover { color: #ffffff !important; background: rgba(255,255,255,0.1) !important; }
+    .nav-solid .nav-login { color: rgba(255,255,255,0.8) !important; background: transparent !important; }
+    .nav-solid .nav-login:hover { color: #ffffff !important; background: rgba(255,255,255,0.1) !important; }
+    .nav-solid span { color: #ffffff !important; }
+    .nav-solid button svg { color: rgba(255,255,255,0.8) !important; }
+    .nav-solid button:hover { background: rgba(255,255,255,0.08) !important; }
     
 
     /* Feature cards */

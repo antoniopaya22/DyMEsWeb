@@ -115,20 +115,23 @@ export default function Compendium() {
   ];
 
   return (
-    <div className="animate-fade-in">
+    <div className="animate-fade-in relative">
+      {/* Atmospheric glow */}
+      <div className="absolute -top-20 right-10 w-72 h-72 rounded-full opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #f59e0b, transparent 70%)' }} />
+
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-2xl font-display font-bold text-white flex items-center gap-3">
+      <div className="mb-10">
+        <h1 className="text-3xl font-display font-bold text-white flex items-center gap-3 tracking-wide">
           <span className="text-3xl">📚</span>
           Compendio SRD
         </h1>
-        <p className="text-sm text-[#AAA37B] mt-1">Referencia del System Reference Document 5.1 de D&D 5e</p>
+        <p className="text-sm text-[#AAA37B] mt-1.5 font-light">Referencia del System Reference Document 5.1 de D&D 5e</p>
       </div>
 
       {/* Search */}
-      <div className="mb-6">
+      <div className="mb-8">
         <div className="relative max-w-md">
-          <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#807953]" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-[#807953]" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input
@@ -136,12 +139,12 @@ export default function Compendium() {
             placeholder="Buscar en el compendio..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="dymes-input !pl-10"
+            className="dymes-input !pl-11"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#807953] hover:text-white transition-colors"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#807953] hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
@@ -150,41 +153,34 @@ export default function Compendium() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-8 overflow-x-auto pb-1">
+      <div className="flex gap-2.5 mb-8 overflow-x-auto pb-1">
         {TABS.map(tab => (
           <button
             key={tab.id}
             onClick={() => { setActiveTab(tab.id); setExpandedId(null); }}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
-              activeTab === tab.id
-                ? 'text-white shadow-lg'
-                : 'text-[#807953] hover:text-[#AAA37B]'
-            }`}
-            style={activeTab === tab.id ? {
-              background: 'rgba(143,61,56,0.15)',
-              border: '1px solid rgba(143,61,56,0.3)',
-            } : {
-              background: 'rgba(255,255,255,0.03)',
-              border: '1px solid rgba(255,255,255,0.06)',
-            }}
+            className={`dymes-tab whitespace-nowrap flex items-center gap-2 ${activeTab === tab.id ? 'active' : ''}`}
           >
             <span>{tab.icon}</span>
             <span>{tab.label}</span>
-            <span className="text-xs opacity-60">({tab.count})</span>
+            <span className="text-[10px] opacity-50 font-medium">({tab.count})</span>
           </button>
         ))}
       </div>
 
       {/* Count */}
-      <p className="text-xs text-[#807953] mb-4">
+      <p className="text-xs text-[#807953] mb-5 uppercase tracking-widest font-medium">
         {filtered.length} {activeTab === 'razas' ? 'raza' : activeTab === 'clases' ? 'clase' : 'trasfondo'}{filtered.length !== 1 ? 's' : ''}
         {query ? ` para "${searchQuery}"` : ''}
       </p>
 
+      <div className="dymes-divider !mt-0 !mb-6" />
+
       {/* Content */}
       {filtered.length === 0 ? (
-        <div className="text-center py-16">
-          <div className="text-4xl mb-3">🔍</div>
+        <div className="text-center py-20">
+          <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#807953" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </div>
           <p className="text-sm text-[#807953]">No se encontraron resultados para "{searchQuery}"</p>
         </div>
       ) : (
@@ -201,9 +197,10 @@ export default function Compendium() {
       )}
 
       {/* SRD Attribution */}
-      <div className="mt-12 pt-6 border-t border-[#514D35]">
-        <p className="text-xs text-[#807953] text-center">
-          Contenido basado en el System Reference Document 5.1 (SRD 5.1) de Wizards of the Coast, disponible bajo la Open Gaming License (OGL 1.0a).
+      <div className="mt-16">
+        <div className="dymes-divider" />
+        <p className="text-xs text-[#807953] text-center leading-relaxed">
+          Contenido basado en el System Reference Document 5.1 (SRD 5.1) de Wizards of the Coast,<br className="hidden sm:inline" /> disponible bajo la Open Gaming License (OGL 1.0a).
         </p>
       </div>
     </div>
@@ -213,40 +210,67 @@ export default function Compendium() {
 function CompendiumCard({ entry, isExpanded, onToggle }: { entry: SrdEntry; isExpanded: boolean; onToggle: () => void }) {
   return (
     <div
-      className={`rounded-xl border transition-all duration-200 ${
-        isExpanded ? 'border-[rgba(178,172,136,0.3)] shadow-lg' : 'border-[rgba(81,77,53,0.5)] hover:border-[rgba(178,172,136,0.2)]'
+      className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+        isExpanded ? 'shadow-lg' : ''
       }`}
-      style={{ background: isExpanded ? 'rgba(50,48,33,0.9)' : 'rgba(50,48,33,0.6)' }}
+      style={{
+        background: isExpanded
+          ? 'linear-gradient(145deg, rgba(40,38,27,0.98), rgba(28,26,18,0.95))'
+          : 'linear-gradient(145deg, rgba(40,38,27,0.8), rgba(28,26,18,0.7))',
+        borderColor: isExpanded ? 'rgba(143,61,56,0.3)' : 'rgba(81,77,53,0.25)',
+        boxShadow: isExpanded
+          ? '0 8px 32px rgba(0,0,0,0.35), 0 0 20px rgba(143,61,56,0.06), inset 0 1px 0 rgba(255,255,255,0.05)'
+          : '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)',
+      }}
     >
+      {/* Top accent when expanded */}
+      {isExpanded && (
+        <div className="h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(143,61,56,0.4), rgba(178,172,136,0.15), transparent)' }} />
+      )}
+
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-4 p-4 text-left"
+        className="w-full flex items-center gap-4 p-4 sm:p-5 text-left group"
       >
-        <span className="text-2xl flex-shrink-0">{entry.icon}</span>
+        <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-all duration-300" style={{
+          background: isExpanded
+            ? 'linear-gradient(135deg, rgba(143,61,56,0.15), rgba(143,61,56,0.05))'
+            : 'rgba(255,255,255,0.04)',
+          border: `1px solid ${isExpanded ? 'rgba(143,61,56,0.25)' : 'rgba(255,255,255,0.06)'}`,
+        }}>
+          {entry.icon}
+        </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-base font-display font-semibold text-white">{entry.nombre}</h3>
+          <h3 className="text-base font-display font-semibold text-white group-hover:text-[#CDC9B2] transition-colors">{entry.nombre}</h3>
           {!isExpanded && (
             <p className="text-xs text-[#807953] mt-0.5 truncate">{entry.descripcion}</p>
           )}
         </div>
-        <svg
-          className={`w-4 h-4 text-[#807953] flex-shrink-0 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`}
-          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-        >
-          <path d="m6 9 6 6 6-6"/>
-        </svg>
+        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isExpanded ? 'bg-white/5' : ''}`}>
+          <svg
+            className={`w-4 h-4 text-[#807953] transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[#CDC9B2]' : ''}`}
+            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+          >
+            <path d="m6 9 6 6 6-6"/>
+          </svg>
+        </div>
       </button>
 
       {isExpanded && (
-        <div className="px-4 pb-4 pt-0 animate-fade-in">
-          <p className="text-sm text-[#AAA37B] mb-4 leading-relaxed">{entry.descripcion}</p>
-          <div className="grid sm:grid-cols-2 gap-2">
-            {entry.details.map((d, i) => (
-              <div key={i} className="flex gap-2 px-3 py-2 rounded-lg" style={{ background: 'rgba(255,255,255,0.03)' }}>
-                <span className="text-xs text-[#807953] whitespace-nowrap">{d.label}:</span>
-                <span className="text-xs text-white">{d.value}</span>
-              </div>
-            ))}
+        <div className="px-5 pb-5 pt-0 animate-fade-in">
+          <div className="ml-16">
+            <p className="text-sm text-[#AAA37B] mb-5 leading-relaxed">{entry.descripcion}</p>
+            <div className="grid sm:grid-cols-2 gap-2.5">
+              {entry.details.map((d, i) => (
+                <div key={i} className="flex gap-3 px-3.5 py-2.5 rounded-xl" style={{
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))',
+                  border: '1px solid rgba(255,255,255,0.05)',
+                }}>
+                  <span className="text-[10px] text-[#807953] whitespace-nowrap uppercase tracking-wider font-medium pt-0.5">{d.label}</span>
+                  <span className="text-xs text-[#CDC9B2] leading-relaxed">{d.value}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

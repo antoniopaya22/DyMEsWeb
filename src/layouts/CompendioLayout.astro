@@ -1,104 +1,60 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from './Layout.astro';
+import { RACES } from '../data/races';
+import { CLASSES } from '../data/classes';
+import { BACKGROUNDS } from '../data/backgrounds';
+import { CANTRIPS, type Spell } from '../data/cantrips';
+import { ALL_SPELLS, SPELLS_LEVEL_1, SPELLS_LEVEL_2, SPELLS_LEVEL_3, SPELLS_LEVEL_4, SPELLS_LEVEL_5, SPELLS_LEVEL_6, SPELLS_LEVEL_7, SPELLS_LEVEL_8, SPELLS_LEVEL_9 } from '../data/spells';
 
-// ─── SRD Data ───────────────────────────────────────────
-const RACES = [
-  { id: 'humano', nombre: 'Humano', icon: '👤', descripcion: 'Los humanos son los más adaptables y ambiciosos de las razas comunes. Sus características varían enormemente dependiendo de dónde vivan.',
-    details: [{ label: 'Bonificación', value: '+1 a todas las características' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Tamaño', value: 'Mediano' }, { label: 'Idiomas', value: 'Común + 1 adicional' }] },
-  { id: 'elfo', nombre: 'Elfo', icon: '🧝', descripcion: 'Los elfos son un pueblo mágico de gracia sobrenatural que habitan el mundo sin pertenecer del todo a él.',
-    details: [{ label: 'Bonificación', value: 'DES +2' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Sentidos agudos, Ancestros feéricos, Trance' }] },
-  { id: 'enano', nombre: 'Enano', icon: '⛏️', descripcion: 'Los enanos son gente robusta y corpulenta, tan estoicos y firmes como las montañas que adoran.',
-    details: [{ label: 'Bonificación', value: 'CON +2' }, { label: 'Velocidad', value: '25 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Resistencia enana, Entrenamiento de combate, Dominio con herramientas, Afinidad con la piedra' }] },
-  { id: 'mediano', nombre: 'Mediano', icon: '🍀', descripcion: 'Los medianos son gente práctica y menuda que no desean aventuras ni la gloria.',
-    details: [{ label: 'Bonificación', value: 'DES +2' }, { label: 'Velocidad', value: '25 pies' }, { label: 'Tamaño', value: 'Pequeño' }, { label: 'Rasgos', value: 'Afortunado, Valiente, Agilidad mediana' }] },
-  { id: 'draconido', nombre: 'Dracónido', icon: '🐉', descripcion: 'Los dracónidos poseen su propia estirpe orgullosa y creen fervientemente que fueron creados por los propios dioses dragón.',
-    details: [{ label: 'Bonificación', value: 'FUE +2, CAR +1' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Rasgos', value: 'Linaje dracónico, Arma de aliento, Resistencia al daño' }] },
-  { id: 'gnomo', nombre: 'Gnomo', icon: '🔧', descripcion: 'Los gnomos son seres llenos de energía y entusiasmo, siempre curiosos y deseosos de aprender.',
-    details: [{ label: 'Bonificación', value: 'INT +2' }, { label: 'Velocidad', value: '25 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Astucia gnómica' }] },
-  { id: 'semielfo', nombre: 'Semielfo', icon: '🌿', descripcion: 'Los semielfos combinan las mejores cualidades de sus progenitores élficos y humanos.',
-    details: [{ label: 'Bonificación', value: 'CAR +2, dos +1 a elección' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Ancestros feéricos, Versatilidad en habilidades' }] },
-  { id: 'semiorco', nombre: 'Semiorco', icon: '💪', descripcion: 'Los semiorcos combinan la fuerza de sus ancestros orcos con la tenacidad humana.',
-    details: [{ label: 'Bonificación', value: 'FUE +2, CON +1' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Amenazante, Resistencia incesante, Ataques salvajes' }] },
-  { id: 'tiefling', nombre: 'Tiefling', icon: '😈', descripcion: 'Los tieflings descienden de linajes humanos que han sido tocados por la esencia de los Nueve Infiernos.',
-    details: [{ label: 'Bonificación', value: 'CAR +2, INT +1' }, { label: 'Velocidad', value: '30 pies' }, { label: 'Visión', value: 'Visión en la oscuridad (60 pies)' }, { label: 'Rasgos', value: 'Resistencia infernal, Legado infernal' }] },
+interface Props {
+  title: string;
+  section: 'intro' | 'razas' | 'clases' | 'trasfondos' | 'conjuros';
+  breadcrumb?: string;
+}
+
+const { title, section, breadcrumb } = Astro.props;
+
+const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
+
+const SPELL_LEVELS = [
+  { nivel: 0, nombre: 'Trucos', count: CANTRIPS.length },
+  { nivel: 1, nombre: 'Nivel 1', count: SPELLS_LEVEL_1.length },
+  { nivel: 2, nombre: 'Nivel 2', count: SPELLS_LEVEL_2.length },
+  { nivel: 3, nombre: 'Nivel 3', count: SPELLS_LEVEL_3.length },
+  { nivel: 4, nombre: 'Nivel 4', count: SPELLS_LEVEL_4.length },
+  { nivel: 5, nombre: 'Nivel 5', count: SPELLS_LEVEL_5.length },
+  { nivel: 6, nombre: 'Nivel 6', count: SPELLS_LEVEL_6.length },
+  { nivel: 7, nombre: 'Nivel 7', count: SPELLS_LEVEL_7.length },
+  { nivel: 8, nombre: 'Nivel 8', count: SPELLS_LEVEL_8.length },
+  { nivel: 9, nombre: 'Nivel 9', count: SPELLS_LEVEL_9.length },
 ];
 
-const CLASSES = [
-  { id: 'barbaro', nombre: 'Bárbaro', icon: '🪓', descripcion: 'Un fiero guerrero de origen primitivo que puede entrar en frenesí de batalla.',
-    details: [{ label: 'Dado de golpe', value: 'd12' }, { label: 'Salvaciones', value: 'FUE, CON' }, { label: 'Armaduras', value: 'Ligeras, medias, escudos' }, { label: 'Armas', value: 'Armas sencillas, armas marciales' }] },
-  { id: 'bardo', nombre: 'Bardo', icon: '🎵', descripcion: 'Un maestro inspirador de la música, la magia y el combate cuyas palabras infunden poder.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'DES, CAR' }, { label: 'Magia', value: 'Lanzador completo (CAR)' }, { label: 'Rasgos', value: 'Inspiración de bardo, Bribón experto' }] },
-  { id: 'brujo', nombre: 'Brujo', icon: '🌑', descripcion: 'Un portador de magia derivada de un pacto con una entidad extraplanar.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'SAB, CAR' }, { label: 'Magia', value: 'Magia de pacto (CAR)' }, { label: 'Rasgos', value: 'Patrón de ultratumba, Invocaciones sobrenaturales' }] },
-  { id: 'clerigo', nombre: 'Clérigo', icon: '✝️', descripcion: 'Un campeón sacerdotal que empuña la magia divina al servicio de un poder superior.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'SAB, CAR' }, { label: 'Magia', value: 'Lanzador completo (SAB)' }, { label: 'Rasgos', value: 'Dominio divino, Canalizar divinidad' }] },
-  { id: 'druida', nombre: 'Druida', icon: '🌿', descripcion: 'Un sacerdote de la Vieja Fe, con poder sobre la naturaleza y capaz de tomar forma animal.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'INT, SAB' }, { label: 'Magia', value: 'Lanzador completo (SAB)' }, { label: 'Rasgos', value: 'Druídico, Forma salvaje' }] },
-  { id: 'explorador', nombre: 'Explorador', icon: '🏹', descripcion: 'Un guerrero que utiliza la destreza marcial y la magia de la naturaleza para combatir amenazas.',
-    details: [{ label: 'Dado de golpe', value: 'd10' }, { label: 'Salvaciones', value: 'FUE, DES' }, { label: 'Magia', value: 'Medio lanzador (SAB)' }, { label: 'Rasgos', value: 'Enemigo predilecto, Explorador natural' }] },
-  { id: 'guerrero', nombre: 'Guerrero', icon: '⚔️', descripcion: 'Un maestro del combate marcial con una variedad de armas y armaduras.',
-    details: [{ label: 'Dado de golpe', value: 'd10' }, { label: 'Salvaciones', value: 'FUE, CON' }, { label: 'Armaduras', value: 'Todas las armaduras, escudos' }, { label: 'Rasgos', value: 'Estilo de combate, Tomar aliento, Acción de oleada' }] },
-  { id: 'hechicero', nombre: 'Hechicero', icon: '✨', descripcion: 'Un lanzador de conjuros que obtiene su magia inherente de un linaje o don sobrenatural.',
-    details: [{ label: 'Dado de golpe', value: 'd6' }, { label: 'Salvaciones', value: 'CON, CAR' }, { label: 'Magia', value: 'Lanzador completo (CAR)' }, { label: 'Rasgos', value: 'Origen de hechicería, Fuente de magia, Metamagia' }] },
-  { id: 'mago', nombre: 'Mago', icon: '🔮', descripcion: 'Un usuario erudito de la magia arcana capaz de manipular las estructuras de la realidad.',
-    details: [{ label: 'Dado de golpe', value: 'd6' }, { label: 'Salvaciones', value: 'INT, SAB' }, { label: 'Magia', value: 'Lanzador completo (INT)' }, { label: 'Rasgos', value: 'Recuperación arcana, Tradición arcana, Libro de conjuros' }] },
-  { id: 'monje', nombre: 'Monje', icon: '👊', descripcion: 'Un maestro de las artes marciales que aprovecha el poder del cuerpo en busca de la perfección.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'FUE, DES' }, { label: 'Armas', value: 'Armas sencillas, espadas cortas' }, { label: 'Rasgos', value: 'Defensa sin armadura, Artes marciales, Ki' }] },
-  { id: 'paladin', nombre: 'Paladín', icon: '🛡️', descripcion: 'Un santo guerrero vinculado a un juramento sagrado.',
-    details: [{ label: 'Dado de golpe', value: 'd10' }, { label: 'Salvaciones', value: 'SAB, CAR' }, { label: 'Magia', value: 'Medio lanzador (CAR)' }, { label: 'Rasgos', value: 'Sentido divino, Imposición de manos, Castigo divino' }] },
-  { id: 'picaro', nombre: 'Pícaro', icon: '🗡️', descripcion: 'Un bribón que utiliza el sigilo y los engaños para superar los obstáculos y enemigos.',
-    details: [{ label: 'Dado de golpe', value: 'd8' }, { label: 'Salvaciones', value: 'DES, INT' }, { label: 'Rasgos', value: 'Experiencia, Ataque furtivo, Jerga de ladrones, Acción astuta' }] },
-];
-
-const BACKGROUNDS = [
-  { id: 'acolito', nombre: 'Acólito', icon: '⛪', descripcion: 'Has dedicado tu vida al servicio de un templo consagrado a un dios.',
-    details: [{ label: 'Habilidades', value: 'Perspicacia, Religión' }, { label: 'Idiomas', value: '2 a elección' }, { label: 'Rasgo', value: 'Refugio del Fiel' }] },
-  { id: 'charlatan', nombre: 'Charlatán', icon: '🎭', descripcion: 'Siempre has tenido facilidad para relacionarte con la gente… y sacar tajada.',
-    details: [{ label: 'Habilidades', value: 'Engaño, Juego de manos' }, { label: 'Herramientas', value: 'Kit de disfraz, kit de falsificación' }, { label: 'Rasgo', value: 'Identidad Falsa' }] },
-  { id: 'criminal', nombre: 'Criminal', icon: '🔓', descripcion: 'Eres un delincuente experimentado con un historial de infringir la ley.',
-    details: [{ label: 'Habilidades', value: 'Engaño, Sigilo' }, { label: 'Herramientas', value: 'Un tipo de juego, herramientas de ladrón' }, { label: 'Rasgo', value: 'Contacto Criminal' }] },
-  { id: 'artista', nombre: 'Artista', icon: '🎪', descripcion: 'Prosperas frente al público. Sabes cómo cautivar, entretener e incluso inspirar.',
-    details: [{ label: 'Habilidades', value: 'Acrobacias, Interpretación' }, { label: 'Herramientas', value: 'Kit de disfraz, un instrumento musical' }, { label: 'Rasgo', value: 'Favor del Público' }] },
-  { id: 'heroe_popular', nombre: 'Héroe Popular', icon: '🦸', descripcion: 'Provienes de un entorno humilde pero estás destinado a mucho más.',
-    details: [{ label: 'Habilidades', value: 'Trato con animales, Supervivencia' }, { label: 'Herramientas', value: 'Un tipo de herramientas de artesano, vehículos de tierra' }, { label: 'Rasgo', value: 'Hospitalidad Rústica' }] },
-  { id: 'ermitano', nombre: 'Ermitaño', icon: '🏔️', descripcion: 'Has vivido en reclusión durante gran parte de tu vida.',
-    details: [{ label: 'Habilidades', value: 'Medicina, Religión' }, { label: 'Herramientas', value: 'Kit de herboristería' }, { label: 'Rasgo', value: 'Descubrimiento' }] },
-  { id: 'noble', nombre: 'Noble', icon: '👑', descripcion: 'Comprendes la riqueza, el poder y los privilegios.',
-    details: [{ label: 'Habilidades', value: 'Historia, Persuasión' }, { label: 'Herramientas', value: 'Un tipo de juego' }, { label: 'Rasgo', value: 'Posición Privilegiada' }] },
-  { id: 'forajido', nombre: 'Forajido', icon: '🌲', descripcion: 'Creciste en la naturaleza, lejos de la civilización y de las comodidades de la ciudad.',
-    details: [{ label: 'Habilidades', value: 'Atletismo, Supervivencia' }, { label: 'Herramientas', value: 'Un instrumento musical' }, { label: 'Rasgo', value: 'Vagabundo' }] },
-  { id: 'sabio', nombre: 'Sabio', icon: '📚', descripcion: 'Has dedicado años de tu vida al estudio del multiverso.',
-    details: [{ label: 'Habilidades', value: 'Arcanos, Historia' }, { label: 'Idiomas', value: '2 a elección' }, { label: 'Rasgo', value: 'Investigador' }] },
-  { id: 'marinero', nombre: 'Marinero', icon: '⚓', descripcion: 'Has navegado durante años y has resistido tormentas terribles.',
-    details: [{ label: 'Habilidades', value: 'Atletismo, Percepción' }, { label: 'Herramientas', value: 'Herramientas de navegante, vehículos acuáticos' }, { label: 'Rasgo', value: 'Pasaje por Barco' }] },
-  { id: 'soldado', nombre: 'Soldado', icon: '🎖️', descripcion: 'Pasaste años sirviendo en la milicia o en un ejército mercenario.',
-    details: [{ label: 'Habilidades', value: 'Atletismo, Intimidación' }, { label: 'Herramientas', value: 'Un tipo de juego, vehículos de tierra' }, { label: 'Rasgo', value: 'Rango Militar' }] },
-  { id: 'pilluelo', nombre: 'Pilluelo', icon: '🐀', descripcion: 'Creciste en las calles, solo, huérfano y pobre.',
-    details: [{ label: 'Habilidades', value: 'Juego de manos, Sigilo' }, { label: 'Herramientas', value: 'Kit de disfraz, herramientas de ladrón' }, { label: 'Rasgo', value: 'Secretos de la Ciudad' }] },
-  { id: 'guildartisan', nombre: 'Artesano Gremial', icon: '🔨', descripcion: 'Eres miembro de un gremio de artesanos y dominas un conjunto de habilidades especiales.',
-    details: [{ label: 'Habilidades', value: 'Perspicacia, Persuasión' }, { label: 'Herramientas', value: 'Un tipo de herramientas de artesano' }, { label: 'Rasgo', value: 'Membresía del Gremio' }] },
+// Build search data for client-side search
+const searchData = [
+  ...RACES.map(r => ({ nombre: r.nombre, icon: r.icon, category: 'Raza', url: `/compendio/razas#${r.id}` })),
+  ...CLASSES.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Clase', url: `/compendio/clases#${c.id}` })),
+  ...BACKGROUNDS.map(b => ({ nombre: b.nombre, icon: b.icon, category: 'Trasfondo', url: `/compendio/trasfondos#${b.id}` })),
+  ...CANTRIPS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Truco', url: `/compendio/conjuros#spell-${s.id}` })),
+  ...ALL_SPELLS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Conjuro', url: `/compendio/conjuros#spell-${s.id}` })),
 ];
 ---
 
-<Layout title="Compendio SRD 5.1 — DyMEs" description="Consulta el compendio del System Reference Document 5.1 de D&D 5e en español. Razas, clases y trasfondos.">
+<Layout title={title} description="Consulta el compendio del System Reference Document 5.1 de D&D 5e en español.">
 
   <!-- ─── Top Header Bar ─── -->
   <header class="docs-header">
     <div class="docs-header-inner">
-      <!-- Left: Logo -->
       <a href="/" class="docs-logo">
         <img src="/favicon.svg" alt="" class="w-6 h-6" />
         <span class="font-display font-bold text-[14px] text-[#272519]">DyMEs</span>
       </a>
 
-      <!-- Center: Search trigger -->
       <button id="search-trigger" class="docs-search-trigger" type="button">
         <svg class="w-4 h-4 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <span class="text-[13px] text-[#978F62]">Buscar en el compendio...</span>
         <kbd class="docs-kbd">Ctrl K</kbd>
       </button>
 
-      <!-- Right: CTA -->
       <div class="flex items-center gap-3">
         <a href="/" class="text-[13px] text-[#555137] hover:text-[#272519] transition-colors hidden sm:inline">Inicio</a>
         <a href="/login" class="text-[13px] font-semibold bg-[#8f3d38] hover:bg-[#a04540] text-white px-4 py-1.5 rounded-lg transition-all hover:shadow-lg hover:shadow-[#8f3d38]/20">Empezar</a>
@@ -136,14 +92,14 @@ const BACKGROUNDS = [
         <nav class="docs-nav">
 
           <!-- Intro -->
-          <a href="#introduccion" class="docs-nav-link docs-nav-link-active" data-nav="introduccion">
+          <a href="/compendio" class={`docs-nav-link ${section === 'intro' ? 'docs-nav-link-active' : ''}`}>
             <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
             Introducción
           </a>
 
           <!-- Razas -->
           <div class="docs-nav-group">
-            <button class="docs-nav-group-btn" data-section="razas" type="button">
+            <button class="docs-nav-group-btn" data-section="razas" data-active={section === 'razas' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
                 <span class="text-sm">🧝</span>
                 <span>Razas</span>
@@ -155,7 +111,7 @@ const BACKGROUNDS = [
             </button>
             <div class="docs-nav-group-items" data-group="razas">
               {RACES.map(r => (
-                <a href={`#${r.id}`} class="docs-nav-item" data-nav={r.id}>
+                <a href={`/compendio/razas#${r.id}`} class={`docs-nav-item ${section === 'razas' ? '' : ''}`} data-nav={r.id}>
                   <span class="docs-nav-dot"></span>
                   {r.nombre}
                 </a>
@@ -165,7 +121,7 @@ const BACKGROUNDS = [
 
           <!-- Clases -->
           <div class="docs-nav-group">
-            <button class="docs-nav-group-btn" data-section="clases" type="button">
+            <button class="docs-nav-group-btn" data-section="clases" data-active={section === 'clases' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
                 <span class="text-sm">⚔️</span>
                 <span>Clases</span>
@@ -177,7 +133,7 @@ const BACKGROUNDS = [
             </button>
             <div class="docs-nav-group-items" data-group="clases">
               {CLASSES.map(c => (
-                <a href={`#${c.id}`} class="docs-nav-item" data-nav={c.id}>
+                <a href={`/compendio/clases#${c.id}`} class="docs-nav-item" data-nav={c.id}>
                   <span class="docs-nav-dot"></span>
                   {c.nombre}
                 </a>
@@ -187,7 +143,7 @@ const BACKGROUNDS = [
 
           <!-- Trasfondos -->
           <div class="docs-nav-group">
-            <button class="docs-nav-group-btn" data-section="trasfondos" type="button">
+            <button class="docs-nav-group-btn" data-section="trasfondos" data-active={section === 'trasfondos' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
                 <span class="text-sm">📖</span>
                 <span>Trasfondos</span>
@@ -199,9 +155,31 @@ const BACKGROUNDS = [
             </button>
             <div class="docs-nav-group-items" data-group="trasfondos">
               {BACKGROUNDS.map(b => (
-                <a href={`#${b.id}`} class="docs-nav-item" data-nav={b.id}>
+                <a href={`/compendio/trasfondos#${b.id}`} class="docs-nav-item" data-nav={b.id}>
                   <span class="docs-nav-dot"></span>
                   {b.nombre}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Conjuros -->
+          <div class="docs-nav-group">
+            <button class="docs-nav-group-btn" data-section="conjuros" data-active={section === 'conjuros' ? 'true' : 'false'} type="button">
+              <span class="flex items-center gap-2">
+                <span class="text-sm">✨</span>
+                <span>Conjuros</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                <span class="docs-nav-badge">{TOTAL_SPELLS}</span>
+                <svg class="docs-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+            <div class="docs-nav-group-items" data-group="conjuros">
+              {SPELL_LEVELS.map(sl => (
+                <a href={`/compendio/conjuros#conjuros-nivel-${sl.nivel}`} class="docs-nav-item" data-nav={`conjuros-nivel-${sl.nivel}`}>
+                  <span class="docs-nav-dot"></span>
+                  {sl.nombre} ({sl.count})
                 </a>
               ))}
             </div>
@@ -224,143 +202,18 @@ const BACKGROUNDS = [
         <div class="docs-breadcrumbs">
           <a href="/">DyMEs</a>
           <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-          <span class="text-[#272519]">Compendio</span>
+          {breadcrumb ? (
+            <>
+              <a href="/compendio">Compendio</a>
+              <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              <span class="text-[#272519]">{breadcrumb}</span>
+            </>
+          ) : (
+            <span class="text-[#272519]">Compendio</span>
+          )}
         </div>
 
-        <!-- ─── Introduction ─── -->
-        <section id="introduccion" class="docs-section scroll-mt-20" data-section-id="introduccion">
-          <h1 class="docs-h1">Compendio SRD 5.1</h1>
-          <p class="docs-lead">Referencia completa del System Reference Document 5.1 de Dungeons & Dragons 5ª edición, traducido al español.</p>
-
-          <div class="docs-callout">
-            <div class="docs-callout-icon">📜</div>
-            <div>
-              <p class="text-[13px] font-semibold text-[#272519] mb-1">Sobre este compendio</p>
-              <p class="text-[13px] text-[#555137] leading-relaxed">Este compendio contiene la información básica del SRD 5.1 — las reglas y opciones disponibles bajo la Open Gaming License. Incluye <strong>{RACES.length} razas</strong>, <strong>{CLASSES.length} clases</strong> y <strong>{BACKGROUNDS.length} trasfondos</strong> para crear tu personaje.</p>
-            </div>
-          </div>
-
-          <!-- Quick summary cards -->
-          <div class="grid sm:grid-cols-3 gap-3 mt-8">
-            <a href="#humano" class="docs-summary-card group">
-              <span class="text-2xl mb-2">🧝</span>
-              <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Razas</span>
-              <span class="text-[12px] text-[#978F62]">{RACES.length} opciones</span>
-            </a>
-            <a href="#barbaro" class="docs-summary-card group">
-              <span class="text-2xl mb-2">⚔️</span>
-              <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Clases</span>
-              <span class="text-[12px] text-[#978F62]">{CLASSES.length} opciones</span>
-            </a>
-            <a href="#acolito" class="docs-summary-card group">
-              <span class="text-2xl mb-2">📖</span>
-              <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Trasfondos</span>
-              <span class="text-[12px] text-[#978F62]">{BACKGROUNDS.length} opciones</span>
-            </a>
-          </div>
-        </section>
-
-        <div class="docs-divider"></div>
-
-        <!-- ─── RAZAS ─── -->
-        <section id="razas-section" class="docs-section scroll-mt-20" data-section-id="razas">
-          <div class="docs-section-header">
-            <span class="docs-section-badge">🧝 Razas</span>
-            <h2 class="docs-h2">Razas jugables</h2>
-            <p class="docs-p text-[#555137]">Las razas disponibles en el SRD 5.1 para la creación de personajes. Cada raza otorga bonificaciones, rasgos y habilidades únicas.</p>
-          </div>
-
-          {RACES.map((entry, i) => (
-            <article id={entry.id} class="docs-entry scroll-mt-20" data-section-id={entry.id} data-search-name={entry.nombre.toLowerCase()} data-search-category="razas">
-              <div class="docs-entry-header">
-                <span class="docs-entry-icon">{entry.icon}</span>
-                <div>
-                  <h3 class="docs-h3">{entry.nombre}</h3>
-                  <span class="docs-tag">Raza</span>
-                </div>
-                <a href={`#${entry.id}`} class="docs-anchor" title="Enlace directo">#</a>
-              </div>
-              <p class="docs-p">{entry.descripcion}</p>
-              <div class="docs-stats-grid">
-                {entry.details.map(d => (
-                  <div class="docs-stat">
-                    <dt class="docs-stat-label">{d.label}</dt>
-                    <dd class="docs-stat-value">{d.value}</dd>
-                  </div>
-                ))}
-              </div>
-              {i < RACES.length - 1 && <div class="docs-entry-divider"></div>}
-            </article>
-          ))}
-        </section>
-
-        <div class="docs-divider"></div>
-
-        <!-- ─── CLASES ─── -->
-        <section id="clases-section" class="docs-section scroll-mt-20" data-section-id="clases">
-          <div class="docs-section-header">
-            <span class="docs-section-badge">⚔️ Clases</span>
-            <h2 class="docs-h2">Clases de personaje</h2>
-            <p class="docs-p text-[#555137]">Las clases definen las habilidades principales de tu personaje — su estilo de combate, magia y rol en el grupo.</p>
-          </div>
-
-          {CLASSES.map((entry, i) => (
-            <article id={entry.id} class="docs-entry scroll-mt-20" data-section-id={entry.id} data-search-name={entry.nombre.toLowerCase()} data-search-category="clases">
-              <div class="docs-entry-header">
-                <span class="docs-entry-icon">{entry.icon}</span>
-                <div>
-                  <h3 class="docs-h3">{entry.nombre}</h3>
-                  <span class="docs-tag">Clase</span>
-                </div>
-                <a href={`#${entry.id}`} class="docs-anchor" title="Enlace directo">#</a>
-              </div>
-              <p class="docs-p">{entry.descripcion}</p>
-              <div class="docs-stats-grid">
-                {entry.details.map(d => (
-                  <div class="docs-stat">
-                    <dt class="docs-stat-label">{d.label}</dt>
-                    <dd class="docs-stat-value">{d.value}</dd>
-                  </div>
-                ))}
-              </div>
-              {i < CLASSES.length - 1 && <div class="docs-entry-divider"></div>}
-            </article>
-          ))}
-        </section>
-
-        <div class="docs-divider"></div>
-
-        <!-- ─── TRASFONDOS ─── -->
-        <section id="trasfondos-section" class="docs-section scroll-mt-20" data-section-id="trasfondos">
-          <div class="docs-section-header">
-            <span class="docs-section-badge">📖 Trasfondos</span>
-            <h2 class="docs-h2">Trasfondos</h2>
-            <p class="docs-p text-[#555137]">Los trasfondos describen el origen de tu personaje antes de la aventura, otorgando habilidades, equipo y rasgos narrativos.</p>
-          </div>
-
-          {BACKGROUNDS.map((entry, i) => (
-            <article id={entry.id} class="docs-entry scroll-mt-20" data-section-id={entry.id} data-search-name={entry.nombre.toLowerCase()} data-search-category="trasfondos">
-              <div class="docs-entry-header">
-                <span class="docs-entry-icon">{entry.icon}</span>
-                <div>
-                  <h3 class="docs-h3">{entry.nombre}</h3>
-                  <span class="docs-tag">Trasfondo</span>
-                </div>
-                <a href={`#${entry.id}`} class="docs-anchor" title="Enlace directo">#</a>
-              </div>
-              <p class="docs-p">{entry.descripcion}</p>
-              <div class="docs-stats-grid">
-                {entry.details.map(d => (
-                  <div class="docs-stat">
-                    <dt class="docs-stat-label">{d.label}</dt>
-                    <dd class="docs-stat-value">{d.value}</dd>
-                  </div>
-                ))}
-              </div>
-              {i < BACKGROUNDS.length - 1 && <div class="docs-entry-divider"></div>}
-            </article>
-          ))}
-        </section>
+        <slot />
 
         <!-- Footer attribution -->
         <footer class="docs-footer">
@@ -372,13 +225,13 @@ const BACKGROUNDS = [
     </main>
   </div>
 
-  <!-- ═══ SEARCH MODAL (Cmd+K) ═══ -->
+  <!-- ═══ SEARCH MODAL (Ctrl+K) ═══ -->
   <div id="search-modal" class="docs-search-modal hidden">
     <div class="docs-search-backdrop"></div>
     <div class="docs-search-dialog">
       <div class="docs-search-input-wrap">
         <svg class="w-5 h-5 text-[#978F62] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input id="search-input" type="text" placeholder="Buscar razas, clases, trasfondos..." class="docs-search-input" autocomplete="off" />
+        <input id="search-input" type="text" placeholder="Buscar razas, clases, trasfondos, conjuros..." class="docs-search-input" autocomplete="off" />
         <kbd class="docs-kbd text-[10px]">Esc</kbd>
       </div>
       <div id="search-results" class="docs-search-results">
@@ -389,6 +242,9 @@ const BACKGROUNDS = [
       </div>
     </div>
   </div>
+
+  <!-- Search data injected from server -->
+  <script id="search-data" type="application/json" set:html={JSON.stringify(searchData)} />
 
   <!-- ═══ STYLES ═══ -->
   <style>
@@ -490,6 +346,7 @@ const BACKGROUNDS = [
       transition: all 0.15s; text-align: left;
     }
     .docs-nav-group-btn:hover { background: rgba(39,37,25,0.04); }
+    .docs-nav-group-btn[data-active="true"] { color: #8f3d38; background: rgba(143,61,56,0.06); }
     .docs-nav-badge {
       font-size: 10px; font-weight: 600; color: #978F62;
       background: rgba(212,209,189,0.3); border-radius: 6px;
@@ -506,7 +363,7 @@ const BACKGROUNDS = [
       transition: max-height 0.25s ease;
       padding-left: 0.5rem;
     }
-    .docs-nav-group-items.open { max-height: 600px; }
+    .docs-nav-group-items.open { max-height: 800px; }
     .docs-nav-item {
       display: flex; align-items: center; gap: 0.5rem;
       padding: 0.35rem 0.65rem; border-radius: 6px;
@@ -552,6 +409,10 @@ const BACKGROUNDS = [
     .docs-h3 {
       font-family: 'Cinzel', serif; font-weight: 700;
       font-size: 1.125rem; color: #272519;
+    }
+    .docs-h4 {
+      font-family: 'Cinzel', serif; font-weight: 700;
+      font-size: 0.9rem; color: #8f3d38; margin-bottom: 0.5rem;
     }
     .docs-p { font-size: 14px; color: #555137; line-height: 1.75; margin-top: 0.5rem; }
 
@@ -625,6 +486,86 @@ const BACKGROUNDS = [
     .docs-stat-value { font-size: 13px; color: #272519; }
 
     .docs-entry-divider { height: 1px; background: rgba(212,209,189,0.2); margin: 2rem 0; }
+
+    /* ─── Traits ─── */
+    .docs-traits {
+      margin-top: 1.25rem; padding: 1rem 1.15rem;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      border-radius: 10px; border-left: 3px solid rgba(143,61,56,0.25);
+    }
+    .docs-trait {
+      font-size: 13px; color: #555137; line-height: 1.7;
+      margin-bottom: 0.4rem;
+    }
+    .docs-trait:last-child { margin-bottom: 0; }
+    .docs-trait-name { font-weight: 700; color: #272519; }
+
+    /* ─── Subrace / Subclass ─── */
+    .docs-subrace {
+      margin-top: 0.85rem; padding: 0.85rem 1.15rem;
+      background: rgba(143,61,56,0.03); border: 1px solid rgba(143,61,56,0.12);
+      border-radius: 10px;
+    }
+    .docs-subrace .docs-h4 { color: #8f3d38; margin-bottom: 0.35rem; }
+
+    /* ─── Spell level ─── */
+    .docs-spell-level { margin-bottom: 1.5rem; }
+    .docs-spell-level-title {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 1rem; padding-bottom: 0.5rem;
+      border-bottom: 1px solid rgba(212,209,189,0.3);
+    }
+    .docs-spell-level-icon { font-size: 1.25rem; }
+    .ml-2 { margin-left: 0.5rem; }
+
+    /* ─── Spell cards ─── */
+    .docs-spell-grid {
+      display: grid; grid-template-columns: 1fr;
+      gap: 0.4rem;
+    }
+    .docs-spell-card {
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      border-radius: 8px; overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .docs-spell-card[open] { border-color: rgba(143,61,56,0.25); }
+    .docs-spell-card[open] .docs-spell-summary { border-bottom: 1px solid rgba(212,209,189,0.25); }
+
+    .docs-spell-summary {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.55rem 0.85rem; cursor: pointer;
+      list-style: none; user-select: none;
+      transition: background 0.12s;
+    }
+    .docs-spell-summary::-webkit-details-marker { display: none; }
+    .docs-spell-summary::marker { display: none; content: ''; }
+    .docs-spell-summary:hover { background: rgba(143,61,56,0.03); }
+    .docs-spell-name { font-size: 13px; font-weight: 600; color: #272519; }
+    .docs-spell-school {
+      font-size: 11px; color: #978F62; text-transform: uppercase;
+      letter-spacing: 0.04em; font-weight: 500;
+    }
+
+    .docs-spell-body { padding: 0.75rem 0.85rem; }
+    .docs-spell-meta-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 0.35rem; margin-bottom: 0.6rem;
+    }
+    .docs-spell-meta { display: flex; flex-direction: column; }
+    .docs-spell-meta-label {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; color: #978F62;
+    }
+    .docs-spell-meta-value { font-size: 12.5px; color: #272519; }
+    .docs-spell-desc {
+      font-size: 13px; color: #555137; line-height: 1.7;
+      margin-top: 0.35rem; padding-top: 0.5rem;
+      border-top: 1px solid rgba(212,209,189,0.2);
+    }
+
+    @media (min-width: 640px) {
+      .docs-spell-meta-grid { grid-template-columns: repeat(4, 1fr); }
+    }
 
     /* ─── Footer ─── */
     .docs-footer {
@@ -707,15 +648,9 @@ const BACKGROUNDS = [
 
   <!-- ═══ SCRIPTS ═══ -->
   <script>
-    // Build search data from DOM
-    const entries = Array.from(document.querySelectorAll('[data-search-name]')).map(el => ({
-      id: el.id,
-      nombre: el.querySelector('.docs-h3')?.textContent || '',
-      icon: el.querySelector('.docs-entry-icon')?.textContent || '',
-      category: (el as HTMLElement).dataset.searchCategory || '',
-      categoryLabel: (el as HTMLElement).dataset.searchCategory === 'razas' ? 'Raza' :
-                     (el as HTMLElement).dataset.searchCategory === 'clases' ? 'Clase' : 'Trasfondo',
-    }));
+    // Load search data from embedded JSON
+    const searchDataEl = document.getElementById('search-data');
+    const entries: Array<{nombre: string; icon: string; category: string; url: string}> = searchDataEl ? JSON.parse(searchDataEl.textContent || '[]') : [];
 
     // ─── Sidebar toggle (mobile) ───
     const sidebar = document.getElementById('sidebar')!;
@@ -742,10 +677,16 @@ const BACKGROUNDS = [
     document.querySelectorAll('.docs-nav-group-btn').forEach(btn => {
       const group = btn.closest('.docs-nav-group')!;
       const items = group.querySelector('.docs-nav-group-items') as HTMLElement;
+      const isActive = (btn as HTMLElement).dataset.active === 'true';
 
-      // Start all expanded
-      items.classList.add('open');
-      btn.setAttribute('aria-expanded', 'true');
+      // Start active section expanded, others collapsed
+      if (isActive) {
+        items.classList.add('open');
+        btn.setAttribute('aria-expanded', 'true');
+      } else {
+        items.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+      }
 
       btn.addEventListener('click', () => {
         const expanded = btn.getAttribute('aria-expanded') === 'true';
@@ -758,20 +699,21 @@ const BACKGROUNDS = [
     const navItems = document.querySelectorAll('[data-nav]');
     const sectionTargets = document.querySelectorAll('[data-section-id]');
 
-    const observer = new IntersectionObserver((obs) => {
-      obs.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = (entry.target as HTMLElement).dataset.sectionId!;
-          navItems.forEach(n => {
-            const navId = (n as HTMLElement).dataset.nav!;
-            n.classList.toggle('active', navId === id);
-            n.classList.toggle('docs-nav-link-active', navId === id && n.classList.contains('docs-nav-link'));
-          });
-        }
-      });
-    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+    if (sectionTargets.length > 0) {
+      const observer = new IntersectionObserver((obs) => {
+        obs.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = (entry.target as HTMLElement).dataset.sectionId!;
+            navItems.forEach(n => {
+              const navId = (n as HTMLElement).dataset.nav!;
+              n.classList.toggle('active', navId === id);
+            });
+          }
+        });
+      }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
 
-    sectionTargets.forEach(s => observer.observe(s));
+      sectionTargets.forEach(s => observer.observe(s));
+    }
 
     // ─── Search modal (Ctrl+K) ───
     const modal = document.getElementById('search-modal')!;
@@ -807,30 +749,21 @@ const BACKGROUNDS = [
         return;
       }
       const lower = q.toLowerCase();
-      const matches = entries.filter(e => e.nombre.toLowerCase().includes(lower));
+      const matches = entries.filter(e => e.nombre.toLowerCase().includes(lower)).slice(0, 30);
       if (!matches.length) {
         searchResults.innerHTML = '<div class="docs-search-no-results">Sin resultados para "' + q + '"</div>';
         return;
       }
       searchResults.innerHTML = matches.map((m, i) =>
-        '<a href="#' + m.id + '" class="docs-search-result' + (i === 0 ? ' focused' : '') + '" data-idx="' + i + '">' +
+        '<a href="' + m.url + '" class="docs-search-result' + (i === 0 ? ' focused' : '') + '" data-idx="' + i + '">' +
           '<span class="docs-search-result-icon">' + m.icon + '</span>' +
           '<div>' +
             '<div class="docs-search-result-name">' + m.nombre + '</div>' +
-            '<div class="docs-search-result-cat">' + m.categoryLabel + '</div>' +
+            '<div class="docs-search-result-cat">' + m.category + '</div>' +
           '</div>' +
         '</a>'
       ).join('');
       focusedIdx = 0;
-
-      searchResults.querySelectorAll('.docs-search-result').forEach(r => {
-        r.addEventListener('click', (e) => {
-          e.preventDefault();
-          closeSearch();
-          const href = (r as HTMLAnchorElement).getAttribute('href')!;
-          document.querySelector(href)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      });
     }
 
     searchInput.addEventListener('input', () => renderResults(searchInput.value));
@@ -841,10 +774,22 @@ const BACKGROUNDS = [
       if (e.key === 'ArrowUp') { e.preventDefault(); focusedIdx = Math.max(focusedIdx - 1, 0); }
       if (e.key === 'Enter' && focusedIdx >= 0) {
         e.preventDefault();
-        (items[focusedIdx] as HTMLAnchorElement).click();
+        const link = items[focusedIdx] as HTMLAnchorElement;
+        closeSearch();
+        window.location.href = link.href;
       }
       items.forEach((it, i) => it.classList.toggle('focused', i === focusedIdx));
       items[focusedIdx]?.scrollIntoView({ block: 'nearest' });
+    });
+
+    // Handle search result clicks
+    searchResults.addEventListener('click', (e) => {
+      const result = (e.target as HTMLElement).closest('.docs-search-result') as HTMLAnchorElement | null;
+      if (result) {
+        e.preventDefault();
+        closeSearch();
+        window.location.href = result.href;
+      }
     });
   </script>
 

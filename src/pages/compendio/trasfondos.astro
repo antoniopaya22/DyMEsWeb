@@ -1,0 +1,48 @@
+---
+import CompendioLayout from '../../layouts/CompendioLayout.astro';
+import { BACKGROUNDS } from '../../data/backgrounds';
+---
+
+<CompendioLayout title="Trasfondos — Compendio SRD 5.1" section="trasfondos" breadcrumb="Trasfondos">
+
+  <section class="docs-section scroll-mt-20">
+    <div class="docs-section-header">
+      <span class="docs-section-badge">📖 Trasfondos</span>
+      <h2 class="docs-h2">Trasfondos</h2>
+      <p class="docs-p text-[#555137]">Los trasfondos describen el origen de tu personaje antes de la aventura, otorgando habilidades, equipo y rasgos narrativos.</p>
+    </div>
+
+    {BACKGROUNDS.map((entry, i) => (
+      <article id={entry.id} class="docs-entry scroll-mt-20" data-section-id={entry.id}>
+        <div class="docs-entry-header">
+          <span class="docs-entry-icon">{entry.icon}</span>
+          <div>
+            <h3 class="docs-h3">{entry.nombre}</h3>
+            <span class="docs-tag">Trasfondo</span>
+          </div>
+          <a href={`#${entry.id}`} class="docs-anchor" title="Enlace directo">#</a>
+        </div>
+        <p class="docs-p">{entry.descripcion}</p>
+        <div class="docs-stats-grid">
+          {entry.details.map(d => (
+            <div class="docs-stat">
+              <dt class="docs-stat-label">{d.label}</dt>
+              <dd class="docs-stat-value">{d.value}</dd>
+            </div>
+          ))}
+        </div>
+
+        {/* Rasgo de trasfondo */}
+        {entry.rasgoDesc && (
+          <div class="docs-traits">
+            <h4 class="docs-h4">Rasgo: {entry.details.find(d => d.label === 'Rasgo')?.value}</h4>
+            <p class="docs-p">{entry.rasgoDesc}</p>
+          </div>
+        )}
+
+        {i < BACKGROUNDS.length - 1 && <div class="docs-entry-divider"></div>}
+      </article>
+    ))}
+  </section>
+
+</CompendioLayout>

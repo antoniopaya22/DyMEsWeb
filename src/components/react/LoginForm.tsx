@@ -67,26 +67,26 @@ export default function LoginForm() {
   return (
     <div className="animate-fade-in">
       {/* Tab selector */}
-      <div className="flex rounded-xl p-1 mb-8" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="flex rounded-xl p-1 mb-8" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
         <button
           onClick={() => { setTab('login'); setMessage(null); }}
-          className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+          className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
             tab === 'login'
               ? 'text-white shadow-lg'
-              : 'text-[#AAA37B] hover:text-white'
+              : 'text-[#807953] hover:text-[#CDC9B2]'
           }`}
-          style={tab === 'login' ? { background: 'rgba(143,61,56,0.15)', border: '1px solid rgba(143,61,56,0.3)' } : {}}
+          style={tab === 'login' ? { background: 'rgba(143,61,56,0.25)', border: '1px solid rgba(143,61,56,0.4)', boxShadow: '0 0 20px rgba(143,61,56,0.15)' } : {}}
         >
           Iniciar sesión
         </button>
         <button
           onClick={() => { setTab('register'); setMessage(null); }}
-          className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
+          className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
             tab === 'register'
               ? 'text-white shadow-lg'
-              : 'text-[#AAA37B] hover:text-white'
+              : 'text-[#807953] hover:text-[#CDC9B2]'
           }`}
-          style={tab === 'register' ? { background: 'rgba(143,61,56,0.15)', border: '1px solid rgba(143,61,56,0.3)' } : {}}
+          style={tab === 'register' ? { background: 'rgba(143,61,56,0.25)', border: '1px solid rgba(143,61,56,0.4)', boxShadow: '0 0 20px rgba(143,61,56,0.15)' } : {}}
         >
           Registrarse
         </button>
@@ -94,7 +94,7 @@ export default function LoginForm() {
 
       {/* Message */}
       {message && (
-        <div className={`mb-6 p-4 rounded-xl border text-sm ${
+        <div className={`mb-6 p-4 rounded-xl border text-sm backdrop-blur-sm ${
           message.type === 'error'
             ? 'bg-red-500/10 border-red-500/20 text-red-400'
             : 'bg-green-500/10 border-green-500/20 text-green-400'
@@ -104,40 +104,40 @@ export default function LoginForm() {
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         {tab === 'register' && (
           <div>
-            <label className="block text-sm text-[#AAA37B] mb-2">Nombre</label>
+            <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Nombre</label>
             <input
               type="text"
               value={nombre}
               onChange={e => setNombre(e.target.value)}
               placeholder="Tu nombre de aventurero"
-              className="dymes-input"
+              className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)]"
             />
           </div>
         )}
 
         <div>
-          <label className="block text-sm text-[#AAA37B] mb-2">Email</label>
+          <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Email</label>
           <input
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="aventurero@dungeon.com"
-            className="dymes-input"
+            className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)]"
           />
         </div>
 
         <div>
-          <label className="block text-sm text-[#AAA37B] mb-2">Contraseña</label>
+          <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Contraseña</label>
           <div className="relative">
             <input
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="••••••"
-              className="dymes-input pr-12"
+              className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)] pr-12"
             />
             <button
               type="button"
@@ -156,7 +156,8 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full btn-gold py-3.5 rounded-xl text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="w-full py-3.5 rounded-xl text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg, #8f3d38, #a04540)', boxShadow: '0 4px 20px rgba(143,61,56,0.35)' }}
         >
           {submitting ? (
             <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
@@ -166,26 +167,26 @@ export default function LoginForm() {
       </form>
 
       {/* Divider */}
-      <div className="flex items-center gap-3 my-6">
-        <div className="flex-1 h-px bg-white/6"></div>
-        <span className="text-xs text-[#807953]">o continúa con</span>
-        <div className="flex-1 h-px bg-white/6"></div>
+      <div className="flex items-center gap-3 my-7">
+        <div className="flex-1 h-px bg-white/[.08]"></div>
+        <span className="text-[11px] text-[#807953] uppercase tracking-wider">o continúa con</span>
+        <div className="flex-1 h-px bg-white/[.08]"></div>
       </div>
 
       {/* Google */}
       <button
         onClick={handleGoogle}
         disabled={submitting}
-        className="w-full btn-ghost py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-3 disabled:opacity-50"
+        className="w-full py-3.5 rounded-xl text-sm font-semibold flex items-center justify-center gap-3 disabled:opacity-50 border border-white/[.08] bg-white/[.04] text-[#CDC9B2] hover:bg-white/[.08] hover:border-white/[.12] transition-all duration-300"
       >
         <svg width="18" height="18" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
         Google
       </button>
 
-      {/* Skip — removed: login is required */}
+      {/* Back to home */}
       <div className="mt-8 text-center">
-        <a href="/" className="text-xs text-[#807953] hover:text-[#AAA37B] transition-colors inline-flex items-center gap-1">
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+        <a href="/" className="text-xs text-[#807953] hover:text-[#CDC9B2] transition-all duration-300 inline-flex items-center gap-1.5 group">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform group-hover:-translate-x-0.5"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
           Volver al inicio
         </a>
       </div>

@@ -1,0 +1,52 @@
+---
+import CompendioLayout from '../../layouts/CompendioLayout.astro';
+import { RACES } from '../../data/races';
+import { CLASSES } from '../../data/classes';
+import { BACKGROUNDS } from '../../data/backgrounds';
+import { CANTRIPS } from '../../data/cantrips';
+import { ALL_SPELLS } from '../../data/spells';
+
+const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
+---
+
+<CompendioLayout title="Compendio SRD 5.1 — DyMEs" section="intro">
+
+  <!-- ─── Introduction ─── -->
+  <section id="introduccion" class="docs-section scroll-mt-20">
+    <h1 class="docs-h1">Compendio SRD 5.1</h1>
+    <p class="docs-lead">Referencia completa del System Reference Document 5.1 de Dungeons & Dragons 5ª edición, traducido al español.</p>
+
+    <div class="docs-callout">
+      <div class="docs-callout-icon">📜</div>
+      <div>
+        <p class="text-[13px] font-semibold text-[#272519] mb-1">Sobre este compendio</p>
+        <p class="text-[13px] text-[#555137] leading-relaxed">Este compendio contiene la información completa del SRD 5.1 — las reglas y opciones disponibles bajo la Open Gaming License. Incluye <strong>{RACES.length} razas</strong>, <strong>{CLASSES.length} clases</strong>, <strong>{BACKGROUNDS.length} trasfondos</strong> y <strong>{TOTAL_SPELLS} conjuros</strong> (trucos y niveles 1-9) para crear y gestionar tu personaje.</p>
+      </div>
+    </div>
+
+    <!-- Quick summary cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-8">
+      <a href="/compendio/razas" class="docs-summary-card group">
+        <span class="text-2xl mb-2">🧝</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Razas</span>
+        <span class="text-[12px] text-[#978F62]">{RACES.length} opciones</span>
+      </a>
+      <a href="/compendio/clases" class="docs-summary-card group">
+        <span class="text-2xl mb-2">⚔️</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Clases</span>
+        <span class="text-[12px] text-[#978F62]">{CLASSES.length} opciones</span>
+      </a>
+      <a href="/compendio/trasfondos" class="docs-summary-card group">
+        <span class="text-2xl mb-2">📖</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Trasfondos</span>
+        <span class="text-[12px] text-[#978F62]">{BACKGROUNDS.length} opciones</span>
+      </a>
+      <a href="/compendio/conjuros" class="docs-summary-card group">
+        <span class="text-2xl mb-2">✨</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Conjuros</span>
+        <span class="text-[12px] text-[#978F62]">{TOTAL_SPELLS} conjuros</span>
+      </a>
+    </div>
+  </section>
+
+</CompendioLayout>

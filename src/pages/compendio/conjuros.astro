@@ -1,0 +1,96 @@
+---
+import CompendioLayout from '../../layouts/CompendioLayout.astro';
+import { CANTRIPS, type Spell } from '../../data/cantrips';
+import { ALL_SPELLS, SPELLS_LEVEL_1, SPELLS_LEVEL_2, SPELLS_LEVEL_3, SPELLS_LEVEL_4, SPELLS_LEVEL_5, SPELLS_LEVEL_6, SPELLS_LEVEL_7, SPELLS_LEVEL_8, SPELLS_LEVEL_9 } from '../../data/spells';
+
+const SPELL_LEVELS = [
+  { nivel: 0, nombre: 'Trucos', datos: CANTRIPS, icon: '✋' },
+  { nivel: 1, nombre: 'Nivel 1', datos: SPELLS_LEVEL_1, icon: '1️⃣' },
+  { nivel: 2, nombre: 'Nivel 2', datos: SPELLS_LEVEL_2, icon: '2️⃣' },
+  { nivel: 3, nombre: 'Nivel 3', datos: SPELLS_LEVEL_3, icon: '3️⃣' },
+  { nivel: 4, nombre: 'Nivel 4', datos: SPELLS_LEVEL_4, icon: '4️⃣' },
+  { nivel: 5, nombre: 'Nivel 5', datos: SPELLS_LEVEL_5, icon: '5️⃣' },
+  { nivel: 6, nombre: 'Nivel 6', datos: SPELLS_LEVEL_6, icon: '6️⃣' },
+  { nivel: 7, nombre: 'Nivel 7', datos: SPELLS_LEVEL_7, icon: '7️⃣' },
+  { nivel: 8, nombre: 'Nivel 8', datos: SPELLS_LEVEL_8, icon: '8️⃣' },
+  { nivel: 9, nombre: 'Nivel 9', datos: SPELLS_LEVEL_9, icon: '9️⃣' },
+];
+
+const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
+---
+
+<CompendioLayout title="Conjuros — Compendio SRD 5.1" section="conjuros" breadcrumb="Conjuros">
+
+  <section class="docs-section scroll-mt-20">
+    <div class="docs-section-header">
+      <span class="docs-section-badge">✨ Conjuros</span>
+      <h2 class="docs-h2">Conjuros</h2>
+      <p class="docs-p text-[#555137]">Todos los conjuros disponibles en el SRD 5.1, organizados por nivel. {TOTAL_SPELLS} conjuros en total, incluyendo {CANTRIPS.length} trucos y conjuros de nivel 1 a 9.</p>
+    </div>
+
+    {SPELL_LEVELS.map((level) => (
+      <div id={`conjuros-nivel-${level.nivel}`} class="docs-spell-level scroll-mt-20" data-section-id={`conjuros-nivel-${level.nivel}`}>
+        <h3 class="docs-h3 docs-spell-level-title">
+          <span class="docs-spell-level-icon">{level.icon}</span>
+          {level.nivel === 0 ? 'Trucos (nivel 0)' : `Conjuros de Nivel ${level.nivel}`}
+          <span class="docs-nav-badge ml-2">{level.datos.length}</span>
+        </h3>
+
+        <div class="docs-spell-grid">
+          {level.datos.map((spell: Spell) => (
+            <details id={`spell-${spell.id}`} class="docs-spell-card">
+              <summary class="docs-spell-summary">
+                <div class="docs-spell-name">{spell.nombre}</div>
+                <div class="docs-spell-school">{spell.escuela}</div>
+              </summary>
+              <div class="docs-spell-body">
+                <div class="docs-spell-meta-grid">
+                  <div class="docs-spell-meta">
+                    <span class="docs-spell-meta-label">Tiempo</span>
+                    <span class="docs-spell-meta-value">{spell.tiempo}</span>
+                  </div>
+                  <div class="docs-spell-meta">
+                    <span class="docs-spell-meta-label">Alcance</span>
+                    <span class="docs-spell-meta-value">{spell.alcance}</span>
+                  </div>
+                  <div class="docs-spell-meta">
+                    <span class="docs-spell-meta-label">Componentes</span>
+                    <span class="docs-spell-meta-value">{spell.componentes}</span>
+                  </div>
+                  <div class="docs-spell-meta">
+                    <span class="docs-spell-meta-label">Duración</span>
+                    <span class="docs-spell-meta-value">{spell.duracion}</span>
+                  </div>
+                </div>
+                {spell.descripcion && (
+                  <p class="docs-spell-desc">{spell.descripcion}</p>
+                )}
+              </div>
+            </details>
+          ))}
+        </div>
+
+        <div class="docs-entry-divider"></div>
+      </div>
+    ))}
+  </section>
+
+  <!-- Auto-open spell from hash -->
+  <script>
+    function openSpellFromHash() {
+      const hash = window.location.hash;
+      if (hash && hash.startsWith('#spell-')) {
+        const el = document.querySelector(hash) as HTMLDetailsElement | null;
+        if (el) {
+          el.open = true;
+          requestAnimationFrame(() => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          });
+        }
+      }
+    }
+    openSpellFromHash();
+    window.addEventListener('hashchange', openSpellFromHash);
+  </script>
+
+</CompendioLayout>

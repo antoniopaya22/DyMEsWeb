@@ -1,0 +1,61 @@
+---
+import CompendioLayout from '../../layouts/CompendioLayout.astro';
+import { CLASSES } from '../../data/classes';
+---
+
+<CompendioLayout title="Clases — Compendio SRD 5.1" section="clases" breadcrumb="Clases">
+
+  <section class="docs-section scroll-mt-20">
+    <div class="docs-section-header">
+      <span class="docs-section-badge">⚔️ Clases</span>
+      <h2 class="docs-h2">Clases de personaje</h2>
+      <p class="docs-p text-[#555137]">Las clases definen las habilidades principales de tu personaje — su estilo de combate, magia y rol en el grupo.</p>
+    </div>
+
+    {CLASSES.map((entry, i) => (
+      <article id={entry.id} class="docs-entry scroll-mt-20" data-section-id={entry.id}>
+        <div class="docs-entry-header">
+          <span class="docs-entry-icon">{entry.icon}</span>
+          <div>
+            <h3 class="docs-h3">{entry.nombre}</h3>
+            <span class="docs-tag">Clase</span>
+          </div>
+          <a href={`#${entry.id}`} class="docs-anchor" title="Enlace directo">#</a>
+        </div>
+        <p class="docs-p">{entry.descripcion}</p>
+        <div class="docs-stats-grid">
+          {entry.details.map(d => (
+            <div class="docs-stat">
+              <dt class="docs-stat-label">{d.label}</dt>
+              <dd class="docs-stat-value">{d.value}</dd>
+            </div>
+          ))}
+        </div>
+
+        {/* Rasgos de clase */}
+        {entry.rasgos && entry.rasgos.length > 0 && (
+          <div class="docs-traits">
+            <h4 class="docs-h4">Rasgos de clase</h4>
+            {entry.rasgos.map(r => (
+              <div class="docs-trait">
+                <span class="docs-trait-name">{r.nombre}.</span>
+                <span class="docs-trait-desc">{r.desc}</span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Subclase */}
+        {entry.subclase && (
+          <div class="docs-subrace">
+            <h4 class="docs-h4">Subclase</h4>
+            <p class="docs-p">{entry.subclase}</p>
+          </div>
+        )}
+
+        {i < CLASSES.length - 1 && <div class="docs-entry-divider"></div>}
+      </article>
+    ))}
+  </section>
+
+</CompendioLayout>

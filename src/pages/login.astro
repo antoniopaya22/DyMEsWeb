@@ -4,48 +4,115 @@ import LoginForm from '../components/react/LoginForm';
 ---
 
 <Layout title="Iniciar sesión — DyMEs" forceDark>
-  <div class="min-h-screen bg-dymes-gradient flex">
-    <!-- Left panel - decorative -->
-    <div class="hidden lg:flex lg:w-1/2 relative items-center justify-center overflow-hidden">
-      <div class="absolute inset-0 bg-gradient-to-br from-dymes-accent-red/10 to-transparent"></div>
-      <div class="absolute top-1/4 left-1/3 w-96 h-96 rounded-full bg-dymes-accent-red/5 blur-3xl animate-float"></div>
-      <div class="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-dymes-accent-gold/5 blur-3xl animate-float" style="animation-delay: -3s;"></div>
+  <!-- Full-screen immersive split layout -->
+  <div class="relative min-h-screen flex overflow-hidden bg-[#0a0908]">
+    <!-- Background layers (full screen) -->
+    <div class="absolute inset-0">
+      <img src="/landscape.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
+      <div class="absolute inset-0 bg-black/50"></div>
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 60% at 35% 50%,rgba(143,61,56,.1),transparent 70%)"></div>
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.65) 100%)"></div>
+    </div>
 
-      <div class="relative z-10 text-center px-12">
-        <img src="/logo.svg" alt="DyMEs" class="w-40 h-40 mx-auto mb-8 drop-shadow-2xl" />
-        <h1 class="text-4xl font-display font-bold text-gradient-gold mb-4">DyMEs</h1>
-        <p class="text-xl text-dymes-text-secondary font-body">
-          Tu compañero para<br>Dungeons & Dragons 5ª Edición
+    <!-- Left panel — branding (visible on lg+) -->
+    <div class="hidden lg:flex lg:w-1/2 relative items-center justify-center z-10 login-left">
+      <div class="text-center px-12 max-w-lg">
+        <a href="/" class="inline-block mb-8 group">
+          <img src="/favicon.svg" alt="DyMEs" class="w-20 h-20 mx-auto drop-shadow-2xl transition-transform group-hover:scale-110" />
+        </a>
+        <h1 class="font-display font-bold text-white text-4xl leading-tight mb-4 tracking-tight">
+          Tu compañero para<br><span class="text-gradient-hero">Mazmorras y Dragones</span>
+        </h1>
+        <p class="text-base text-[#CDC9B2]/80 leading-relaxed max-w-sm mx-auto mb-10">
+          Crea personajes, explora el compendio SRD 5.1 y dirige campañas como Master. Todo en español.
         </p>
-
-        <div class="mt-12 grid grid-cols-3 gap-4 max-w-sm mx-auto">
-          <div class="text-center">
-            <div class="text-2xl mb-1">⚔️</div>
-            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Personajes</p>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl mb-1">📖</div>
-            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Compendio</p>
-          </div>
-          <div class="text-center">
-            <div class="text-2xl mb-1">🎲</div>
-            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Dados</p>
-          </div>
+        <div class="flex items-center justify-center gap-8 text-[11px] text-[#AAA37B]/70">
+          <span class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Gratis
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Web + Android
+          </span>
+          <span class="flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            SRD 5.1
+          </span>
         </div>
       </div>
     </div>
 
-    <!-- Right panel - form -->
-    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
-      <div class="w-full max-w-md">
-        <div class="lg:hidden text-center mb-8">
-          <a href="/" class="inline-flex items-center gap-2.5 mb-4">
-            <img src="/favicon.svg" alt="DyMEs" class="w-10 h-10 rounded-lg" />
-            <span class="text-xl font-display font-bold text-dymes-accent-gold">DyMEs</span>
-          </a>
+    <!-- Right panel — form (full-bleed card) -->
+    <div class="flex-1 flex relative z-10 login-right">
+      <!-- Dark overlay behind form on right side (desktop) -->
+      <div class="hidden lg:block absolute inset-0" style="background:linear-gradient(90deg,transparent,rgba(10,9,8,.55) 20%,rgba(10,9,8,.75) 100%)"></div>
+
+      <!-- Glass card fills entire panel -->
+      <div class="relative z-10 w-full flex flex-col items-center justify-center border-l border-white/[.06] login-card"
+           style="background:rgba(14,13,9,.7);backdrop-filter:blur(24px) saturate(150%)">
+        <div class="w-full max-w-md px-6 sm:px-10 py-8 sm:py-12">
+          <!-- Mobile logo -->
+          <div class="lg:hidden text-center mb-8 login-mobile-logo">
+            <a href="/" class="inline-flex items-center gap-3 group">
+              <img src="/favicon.svg" alt="DyMEs" class="w-10 h-10 transition-transform group-hover:scale-110" />
+              <span class="text-xl font-display font-bold text-white tracking-wide">DyMEs</span>
+            </a>
+            <p class="text-sm text-[#AAA37B] mt-2">Tu compañero para D&D 5e en Español</p>
+          </div>
+
+          <LoginForm client:load />
+
+          <!-- Features row below form (mobile only) -->
+          <div class="lg:hidden flex items-center justify-center gap-6 mt-8 text-[11px] text-[#AAA37B]/70">
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Gratis
+            </span>
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              Web + Android
+            </span>
+            <span class="flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#22c55e]/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              SRD 5.1
+            </span>
+          </div>
         </div>
-        <LoginForm client:load />
       </div>
     </div>
   </div>
+
+  <style>
+    /* ── Entrance animations ── */
+    .login-left {
+      animation: loginSlideFromLeft 0.8s cubic-bezier(0.16,1,0.3,1) both;
+    }
+    .login-right {
+      animation: loginSlideFromRight 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+    }
+    .login-card {
+      animation: loginCardReveal 0.7s cubic-bezier(0.16,1,0.3,1) 0.3s both;
+    }
+    .login-mobile-logo {
+      animation: loginFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) 0.15s both;
+    }
+
+    @keyframes loginSlideFromLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes loginSlideFromRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes loginCardReveal {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes loginFadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </Layout>
