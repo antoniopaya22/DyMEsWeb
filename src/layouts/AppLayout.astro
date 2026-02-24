@@ -1,0 +1,259 @@
+---
+import Layout from './Layout.astro';
+
+export interface Props {
+  title?: string;
+}
+
+const { title = 'DyMEs' } = Astro.props;
+---
+
+<Layout title={title} forceDark>
+  <!-- Auth loading screen (shown until auth check completes) -->
+  <div id="auth-loading" class="fixed inset-0 z-[100] bg-dymes-bg-primary flex items-center justify-center">
+    <div class="text-center">
+      <img src="/favicon.svg" alt="DyMEs" class="w-16 h-16 mx-auto mb-4 animate-pulse" />
+      <p class="text-sm text-dymes-text-muted">Verificando sesión...</p>
+    </div>
+  </div>
+
+  <div id="app-shell" class="flex h-screen overflow-hidden" style="display:none;">
+    <!-- Desktop Sidebar -->
+    <aside id="sidebar" class="hidden lg:flex lg:w-64 flex-col border-r border-dymes-border bg-dymes-bg-secondary flex-shrink-0">
+      <!-- Logo -->
+      <div class="px-5 py-4 border-b border-dymes-border">
+        <a href="/app" class="flex items-center gap-3 group">
+          <img src="/favicon.svg" alt="DyMEs" class="w-10 h-10 rounded-lg group-hover:scale-105 transition-transform" />
+          <div>
+            <span class="text-lg font-display font-bold text-dymes-accent-gold tracking-wide">DyMEs</span>
+            <span class="block text-[10px] text-dymes-text-muted tracking-widest uppercase">5ª Edición</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+        <a href="/app" class="sidebar-link" data-path="/app">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          <span>Personajes</span>
+        </a>
+        <a href="/app/campaigns" class="sidebar-link" data-path="/app/campaigns">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+          <span>Campañas</span>
+        </a>
+        <a href="/app/compendium" class="sidebar-link" data-path="/app/compendium">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          <span>Compendio</span>
+        </a>
+
+        <div class="pt-4 mt-4 border-t border-dymes-border-subtle">
+          <span class="px-3 text-[10px] font-semibold text-dymes-text-muted uppercase tracking-widest">Cuenta</span>
+        </div>
+        <a href="/app/settings" class="sidebar-link" data-path="/app/settings">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>Ajustes</span>
+        </a>
+        <a href="/app/account" class="sidebar-link" data-path="/app/account">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+          <span>Cuenta</span>
+        </a>
+      </nav>
+
+      <!-- User section at bottom -->
+      <div class="px-4 py-3 border-t border-dymes-border" id="sidebar-user">
+        <div id="sidebar-user-info" class="flex items-center gap-3 px-3 py-2 rounded-lg">
+          <div class="w-8 h-8 rounded-full bg-dymes-accent-red/20 border border-dymes-accent-red/30 flex items-center justify-center text-sm font-bold text-dymes-accent-gold" id="sidebar-user-avatar">
+            ?
+          </div>
+          <div class="flex-1 min-w-0">
+            <span class="text-sm text-white truncate block" id="sidebar-user-name">Cargando...</span>
+            <span class="text-[10px] text-dymes-text-muted truncate block" id="sidebar-user-email"></span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main area -->
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0">
+      <!-- Mobile header -->
+      <header class="lg:hidden flex items-center justify-between px-4 py-3 border-b border-dymes-border bg-dymes-bg-secondary flex-shrink-0">
+        <button id="mobile-menu-btn" class="p-2 -ml-1 rounded-lg hover:bg-white/5 transition-colors" aria-label="Menu">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+        <a href="/app" class="flex items-center gap-2">
+          <img src="/favicon.svg" alt="" class="w-7 h-7" />
+          <span class="font-display font-bold text-dymes-accent-gold tracking-wide">DyMEs</span>
+        </a>
+        <a href="/app/account" class="p-2 -mr-1 rounded-lg hover:bg-white/5 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        </a>
+      </header>
+
+      <!-- Main content -->
+      <main class="flex-1 overflow-y-auto bg-dymes-gradient">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <slot />
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Mobile sidebar overlay -->
+  <div id="mobile-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden lg:hidden" aria-hidden="true"></div>
+  <div id="mobile-sidebar" class="fixed left-0 top-0 bottom-0 w-72 max-w-[85vw] bg-dymes-bg-secondary border-r border-dymes-border z-50 transform -translate-x-full transition-transform duration-300 ease-out lg:hidden">
+    <!-- Mobile sidebar header -->
+    <div class="px-5 py-4 border-b border-dymes-border flex items-center justify-between">
+      <a href="/app" class="flex items-center gap-3">
+        <img src="/favicon.svg" alt="DyMEs" class="w-10 h-10 rounded-lg" />
+        <div>
+          <span class="text-lg font-display font-bold text-dymes-accent-gold">DyMEs</span>
+          <span class="block text-[10px] text-dymes-text-muted tracking-widest uppercase">5ª Edición</span>
+        </div>
+      </a>
+      <button id="mobile-close-btn" class="p-2 rounded-lg hover:bg-white/5 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+    <nav class="px-3 py-4 space-y-1 overflow-y-auto flex-1">
+      <a href="/app" class="sidebar-link" data-path="/app">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Personajes</span>
+      </a>
+      <a href="/app/campaigns" class="sidebar-link" data-path="/app/campaigns">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+        <span>Campañas</span>
+      </a>
+      <a href="/app/compendium" class="sidebar-link" data-path="/app/compendium">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+        <span>Compendio</span>
+      </a>
+      <div class="pt-4 mt-4 border-t border-dymes-border-subtle">
+        <span class="px-3 text-[10px] font-semibold text-dymes-text-muted uppercase tracking-widest">Cuenta</span>
+      </div>
+      <a href="/app/settings" class="sidebar-link" data-path="/app/settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span>Ajustes</span>
+      </a>
+      <a href="/app/account" class="sidebar-link" data-path="/app/account">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        <span>Cuenta</span>
+      </a>
+    </nav>
+    <!-- Mobile user section -->
+    <div class="px-4 py-3 border-t border-dymes-border" id="mobile-sidebar-user">
+      <div class="flex items-center gap-3 px-3 py-2">
+        <div class="w-8 h-8 rounded-full bg-dymes-accent-red/20 border border-dymes-accent-red/30 flex items-center justify-center text-sm font-bold text-dymes-accent-gold" id="mobile-user-avatar">?</div>
+        <div class="flex-1 min-w-0">
+          <span class="text-sm text-white truncate block" id="mobile-user-name">Cargando...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .sidebar-link {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200;
+    color: #AAA37B;
+  }
+  .sidebar-link:hover {
+    background: rgba(255,255,255,0.05);
+    color: #ffffff;
+  }
+  .sidebar-link.active {
+    background: rgba(143,61,56,0.12);
+    border: 1px solid rgba(143,61,56,0.25);
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || 'https://dvodghbjmtydijbrgsmj.supabase.co';
+  const SUPABASE_KEY = import.meta.env.PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2b2RnaGJqbXR5ZGlqYnJnc21qIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEyMzU0MjAsImV4cCI6MjA4NjgxMTQyMH0.8S4E_HtT8mzQM4IhcPawQwQcTzWe0aG-LUH75sDjhg8';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true },
+  });
+
+  // Auth guard: redirect to /login if not authenticated
+  async function checkAuth() {
+    const authLoading = document.getElementById('auth-loading');
+    const appShell = document.getElementById('app-shell');
+
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+
+      if (!session) {
+        window.location.href = '/login';
+        return;
+      }
+
+      // Update user info in sidebar
+      const userName = session.user.user_metadata?.nombre || session.user.email?.split('@')[0] || 'Aventurero';
+      const userEmail = session.user.email || '';
+      const initial = userName[0]?.toUpperCase() || '?';
+
+      // Desktop sidebar
+      const avatarEl = document.getElementById('sidebar-user-avatar');
+      const nameEl = document.getElementById('sidebar-user-name');
+      const emailEl = document.getElementById('sidebar-user-email');
+      if (avatarEl) avatarEl.textContent = initial;
+      if (nameEl) nameEl.textContent = userName;
+      if (emailEl) emailEl.textContent = userEmail;
+
+      // Mobile sidebar
+      const mobileAvatarEl = document.getElementById('mobile-user-avatar');
+      const mobileNameEl = document.getElementById('mobile-user-name');
+      if (mobileAvatarEl) mobileAvatarEl.textContent = initial;
+      if (mobileNameEl) mobileNameEl.textContent = userName;
+
+      // Show app, hide loading
+      if (authLoading) authLoading.style.display = 'none';
+      if (appShell) appShell.style.display = 'flex';
+    } catch (err) {
+      console.error('[Auth Guard] Error:', err);
+      window.location.href = '/login';
+    }
+  }
+
+  checkAuth();
+
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const closeBtn = document.getElementById('mobile-close-btn');
+  const overlay = document.getElementById('mobile-overlay');
+  const mobileSidebar = document.getElementById('mobile-sidebar');
+
+  function openMenu() {
+    mobileSidebar?.classList.remove('-translate-x-full');
+    overlay?.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    mobileSidebar?.classList.add('-translate-x-full');
+    overlay?.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  menuBtn?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  overlay?.addEventListener('click', closeMenu);
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // Active link highlighting
+  const currentPath = window.location.pathname;
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    const linkPath = link.getAttribute('data-path');
+    if (linkPath && (currentPath === linkPath || (linkPath !== '/app' && currentPath.startsWith(linkPath)))) {
+      link.classList.add('active');
+    } else if (linkPath === '/app' && currentPath === '/app') {
+      link.classList.add('active');
+    }
+  });
+</script>

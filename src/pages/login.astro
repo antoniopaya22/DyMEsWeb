@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LoginForm from '../components/react/LoginForm';
+---
+
+<Layout title="Iniciar sesión — DyMEs" forceDark>
+  <div class="min-h-screen bg-dymes-gradient flex">
+    <!-- Left panel - decorative -->
+    <div class="hidden lg:flex lg:w-1/2 relative items-center justify-center overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-dymes-accent-red/10 to-transparent"></div>
+      <div class="absolute top-1/4 left-1/3 w-96 h-96 rounded-full bg-dymes-accent-red/5 blur-3xl animate-float"></div>
+      <div class="absolute bottom-1/4 right-1/3 w-80 h-80 rounded-full bg-dymes-accent-gold/5 blur-3xl animate-float" style="animation-delay: -3s;"></div>
+
+      <div class="relative z-10 text-center px-12">
+        <img src="/logo.svg" alt="DyMEs" class="w-40 h-40 mx-auto mb-8 drop-shadow-2xl" />
+        <h1 class="text-4xl font-display font-bold text-gradient-gold mb-4">DyMEs</h1>
+        <p class="text-xl text-dymes-text-secondary font-body">
+          Tu compañero para<br>Dungeons & Dragons 5ª Edición
+        </p>
+
+        <div class="mt-12 grid grid-cols-3 gap-4 max-w-sm mx-auto">
+          <div class="text-center">
+            <div class="text-2xl mb-1">⚔️</div>
+            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Personajes</p>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl mb-1">📖</div>
+            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Compendio</p>
+          </div>
+          <div class="text-center">
+            <div class="text-2xl mb-1">🎲</div>
+            <p class="text-[10px] text-dymes-text-muted uppercase tracking-wider">Dados</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel - form -->
+    <div class="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
+      <div class="w-full max-w-md">
+        <div class="lg:hidden text-center mb-8">
+          <a href="/" class="inline-flex items-center gap-2.5 mb-4">
+            <img src="/favicon.svg" alt="DyMEs" class="w-10 h-10 rounded-lg" />
+            <span class="text-xl font-display font-bold text-dymes-accent-gold">DyMEs</span>
+          </a>
+        </div>
+        <LoginForm client:load />
+      </div>
+    </div>
+  </div>
+</Layout>

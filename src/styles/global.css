@@ -1,0 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased;
+  }
+
+  /* Scrollbar — light */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #F0EFE8;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #D4D1BD;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #B2AE96;
+  }
+  /* Scrollbar — dark */
+  .dark ::-webkit-scrollbar-track {
+    background: #1F1D14;
+  }
+  .dark ::-webkit-scrollbar-thumb {
+    background: #514D35;
+  }
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background: #6C6746;
+  }
+}
+
+@layer components {
+  /* ── Nav Link ────────────────────────── */
+  .nav-link {
+    @apply px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200;
+    color: #555137;
+  }
+  .nav-link:hover {
+    color: #272519;
+    background: rgba(0,0,0,0.04);
+  }
+  .dark .nav-link {
+    color: #AAA37B;
+  }
+  .dark .nav-link:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,0.05);
+  }
+
+  /* ── Card ───────────────────────────── */
+  .dymes-card {
+    @apply rounded-xl border transition-all duration-200;
+    background: #FAFAF7;
+    border-color: #D4D1BD;
+  }
+  .dymes-card:hover {
+    border-color: rgba(151,143,98,0.5);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+  }
+  .dark .dymes-card {
+    background: #323021;
+    border-color: #514D35;
+  }
+  .dark .dymes-card:hover {
+    border-color: rgba(178,172,136,0.4);
+    box-shadow: 0 0 20px rgba(143,61,56,0.1);
+  }
+
+  /* ── Gold Button ────────────────────── */
+  .btn-gold {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200;
+    background: linear-gradient(135deg, #8f3d38, #a04540);
+    color: #ffffff;
+  }
+  .btn-gold:hover {
+    background: linear-gradient(135deg, #a04540, #b25550);
+    box-shadow: 0 4px 20px rgba(143,61,56,0.4);
+    transform: translateY(-1px);
+  }
+
+  /* ── Ghost Button ───────────────────── */
+  .btn-ghost {
+    @apply px-6 py-3 rounded-lg font-semibold transition-all duration-200 border;
+    background: rgba(0,0,0,0.02);
+    border-color: rgba(0,0,0,0.1);
+    color: #555137;
+  }
+  .btn-ghost:hover {
+    background: rgba(0,0,0,0.05);
+    border-color: rgba(0,0,0,0.18);
+  }
+  .dark .btn-ghost {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.08);
+    color: #CDC9B2;
+  }
+  .dark .btn-ghost:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(178,172,136,0.3);
+  }
+
+  /* ── Input ──────────────────────────── */
+  .dymes-input {
+    @apply w-full px-4 py-3 rounded-lg border transition-all duration-200 outline-none;
+    background: rgba(0,0,0,0.03);
+    border-color: rgba(0,0,0,0.1);
+    color: #272519;
+  }
+  .dymes-input::placeholder {
+    color: #978F62;
+  }
+  .dymes-input:focus {
+    border-color: rgba(143,61,56,0.4);
+    box-shadow: 0 0 0 3px rgba(143,61,56,0.06);
+  }
+  .dark .dymes-input {
+    background: rgba(255,255,255,0.05);
+    border-color: rgba(255,255,255,0.08);
+    color: #ffffff;
+  }
+  .dark .dymes-input::placeholder {
+    color: #807953;
+  }
+  .dark .dymes-input:focus {
+    border-color: rgba(178,172,136,0.35);
+    box-shadow: 0 0 0 3px rgba(178,172,136,0.1);
+  }
+
+  /* ── Glass Panel ────────────────────── */
+  .glass-panel {
+    @apply rounded-2xl border backdrop-blur-xl;
+    background: rgba(250,250,247,0.85);
+    border-color: rgba(212,209,189,0.4);
+  }
+  .dark .glass-panel {
+    background: rgba(50,48,33,0.8);
+    border-color: rgba(81,77,53,0.5);
+  }
+
+  /* ── Section Title ──────────────────── */
+  .section-title {
+    @apply text-lg font-display font-semibold tracking-wide;
+    color: #555137;
+  }
+  .dark .section-title {
+    color: #CDC9B2;
+  }
+
+  /* ── Badge ──────────────────────────── */
+  .dymes-badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  /* ── Glow Border ────────────────────── */
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, rgba(143,61,56,0.3), rgba(178,172,136,0.2));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .glow-border:hover::before {
+    opacity: 1;
+  }
+
+  /* ── Tab ─────────────────────────────── */
+  .dymes-tab {
+    @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer;
+    color: #555137;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .dymes-tab:hover {
+    color: #272519;
+    background: rgba(0,0,0,0.06);
+  }
+  .dymes-tab.active {
+    color: #272519;
+    background: rgba(143,61,56,0.08);
+    border-color: rgba(143,61,56,0.2);
+  }
+  .dark .dymes-tab {
+    color: #AAA37B;
+    background: rgba(255,255,255,0.04);
+    border-color: rgba(255,255,255,0.06);
+  }
+  .dark .dymes-tab:hover {
+    color: #ffffff;
+    background: rgba(255,255,255,0.08);
+  }
+  .dark .dymes-tab.active {
+    color: #ffffff;
+    background: rgba(143,61,56,0.12);
+    border-color: rgba(143,61,56,0.3);
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #6B6343, #8A7F55);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .dark .text-gradient-gold {
+    background: linear-gradient(135deg, #CDC9B2, #AAA37B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-red {
+    background: linear-gradient(135deg, #8f3d38, #b25550);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

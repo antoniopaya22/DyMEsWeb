@@ -1,0 +1,601 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="DyMEs — D&D 5e en Español" description="Gestiona personajes, campañas y accede al compendio SRD 5.1 en español. Disponible en web y Android.">
+
+  <!-- ══════ NAV ══════ -->
+  <nav id="nav" class="fixed inset-x-0 top-0 z-50 transition-all duration-500">
+    <div class="mx-auto max-w-6xl px-6 flex items-center justify-between h-16">
+      <a href="/" class="flex items-center gap-2.5 group">
+        <img src="/favicon.svg" alt="DyMEs" class="w-8 h-8 transition-transform group-hover:scale-110" />
+        <span class="font-display font-bold text-[15px] text-white tracking-wide">DyMEs</span>
+      </a>
+      <div class="hidden md:flex items-center gap-1 text-[13px]">
+        <a href="#features" class="nav-item">Funciones</a>
+        <a href="#pricing" class="nav-item">Premium</a>
+        <a href="#faq" class="nav-item">FAQ</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="mobile-btn" class="md:hidden p-2 rounded-full hover:bg-white/10 transition-colors" aria-label="Menú">
+          <svg class="w-5 h-5 text-white/60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+        </button>
+        <a href="/compendio" class="nav-login hidden sm:inline-flex text-[13px] text-white/60 hover:text-white px-3 py-1.5 rounded-lg hover:bg-white/10 transition-colors">Compendio</a>
+        <a href="/login" class="text-[13px] font-semibold bg-[#8f3d38] hover:bg-[#a04540] text-white px-5 py-2 rounded-lg transition-all hover:shadow-lg hover:shadow-[#8f3d38]/25">Empezar</a>
+      </div>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="md:hidden hidden border-t border-white/10" style="background:rgba(14,13,9,.97);backdrop-filter:blur(20px)">
+      <div class="px-6 py-4 space-y-1 text-[14px]">
+        <a href="#features" class="block py-2.5 text-white/60 hover:text-white transition-colors">Funciones</a>
+        <a href="#pricing" class="block py-2.5 text-white/60 hover:text-white transition-colors">Premium</a>
+        <a href="#faq" class="block py-2.5 text-white/60 hover:text-white transition-colors">FAQ</a>
+        <a href="/compendio" class="block py-2.5 text-white/60 hover:text-white transition-colors">Compendio</a>
+        <div class="pt-2 border-t border-white/10">
+          <a href="/login" class="block py-2.5 text-[#CDC9B2] font-medium">Iniciar sesión →</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══════ HERO — full viewport ══════ -->
+  <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0a0908]">
+    <!-- Immersive background layers -->
+    <div class="absolute inset-0">
+      <!-- D&D landscape background -->
+      <img src="/landscape.png" alt="" class="absolute inset-0 w-full h-full object-cover" />
+      <!-- Dark overlay for text readability -->
+      <div class="absolute inset-0 bg-black/45"></div>
+      <!-- Central atmospheric glow -->
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse 80% 60% at 50% 55%,rgba(143,61,56,.12),transparent 70%)"></div>
+      <!-- Vignette -->
+      <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,transparent 30%,rgba(0,0,0,.65) 100%)"></div>
+      <!-- Bottom fade (subtle) -->
+      <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-[#1a1814] to-transparent"></div>
+    </div>
+
+    <div class="relative mx-auto max-w-5xl px-6 pt-24 pb-32 grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+      <!-- Left: Text -->
+      <div class="text-center lg:text-left reveal" data-delay="0">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#514D35]/40 bg-[#1F1D14]/60 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#22c55e] animate-pulse"></span>
+          <span class="text-[11px] font-medium text-[#CDC9B2]/80 tracking-wider uppercase">D&D 5e · SRD 5.1 en Español</span>
+        </div>
+        <h1 class="font-display font-bold text-white text-[2.5rem] sm:text-5xl lg:text-[3.25rem] leading-[1.1] mb-5 tracking-tight">
+          Tu compañero<br>para <span class="text-gradient-hero">Mazmorras<br class="hidden sm:block"> y Dragones</span>
+        </h1>
+        <p class="text-base sm:text-lg text-[#CDC9B2] max-w-md mx-auto lg:mx-0 mb-8 leading-relaxed">
+          Crea personajes, explora el compendio SRD 5.1 y dirige campañas como Master. Todo en español.
+        </p>
+        <div class="flex flex-col sm:flex-row items-center lg:items-start gap-3 mb-6">
+          <a href="/login" class="w-full sm:w-auto text-sm font-semibold bg-[#8f3d38] hover:bg-[#a04540] text-white px-7 py-3 rounded-xl transition-all hover:shadow-xl hover:shadow-[#8f3d38]/30 hover:-translate-y-0.5 text-center">Crear cuenta gratis</a>
+          <a href="https://play.google.com/store/apps/details?id=com.dymes" target="_blank" rel="noopener" class="w-full sm:w-auto text-sm font-medium border border-white/15 text-[#CDC9B2] hover:bg-white/5 px-7 py-3 rounded-xl transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 13l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
+            Google Play
+          </a>
+        </div>
+        <div class="flex items-center justify-center lg:justify-start gap-6 text-[12px] text-[#AAA37B]">
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-[#22c55e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Gratis</span>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-[#22c55e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Web + Android</span>
+          <span class="flex items-center gap-1.5"><svg class="w-3.5 h-3.5 text-[#22c55e]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>SRD 5.1</span>
+        </div>
+      </div>
+
+      <!-- Right: Phone mockup -->
+      <div class="flex justify-center reveal" data-delay="200">
+        <div class="relative">
+          <!-- Phone glow -->
+          <div class="absolute -inset-8 rounded-full opacity-40" style="background:radial-gradient(circle,rgba(143,61,56,.3),transparent 70%)"></div>
+          <!-- Phone frame -->
+          <div class="relative w-[260px] h-[520px] rounded-[2.5rem] border-[5px] border-[#2A2820] bg-[#0e0d09] shadow-2xl shadow-black/50 overflow-hidden">
+            <div class="absolute inset-[1px] rounded-[2.25rem] overflow-hidden bg-gradient-to-b from-[#1A1914] to-[#201E16]">
+              <!-- Dynamic island -->
+              <div class="h-10 flex items-center justify-center"><div class="w-20 h-5 rounded-full bg-black"></div></div>
+              <!-- App content -->
+              <div class="px-4 pt-1">
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-2">
+                    <img src="/favicon.svg" alt="" class="w-6 h-6 rounded" />
+                    <span class="text-[11px] font-display font-bold text-[#CDC9B2]">DyMEs</span>
+                  </div>
+                  <div class="w-6 h-6 rounded-full bg-[#323021] flex items-center justify-center">
+                    <svg class="w-3 h-3 text-[#807953]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  </div>
+                </div>
+                <div class="text-[10px] text-[#807953] uppercase tracking-wider mb-3">Mis personajes</div>
+                <!-- Character cards -->
+                <div class="space-y-2.5">
+                  <div class="char-card">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#8f3d38]/30 to-[#8f3d38]/10 flex items-center justify-center text-sm">⚔️</div>
+                      <div class="flex-1 min-w-0">
+                        <div class="text-[11px] font-semibold text-white truncate">Thorin Escudoroble</div>
+                        <div class="text-[9px] text-[#807953]">Enano · Guerrero · Nv.5</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-[10px] font-bold text-[#22c55e]">52 HP</div>
+                        <div class="text-[9px] text-[#807953]">CA 18</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="char-card">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#a855f7]/30 to-[#a855f7]/10 flex items-center justify-center text-sm">✨</div>
+                      <div class="flex-1 min-w-0">
+                        <div class="text-[11px] font-semibold text-white truncate">Elara Vientoluz</div>
+                        <div class="text-[9px] text-[#807953]">Elfa · Maga · Nv.7</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-[10px] font-bold text-[#3b82f6]">30 HP</div>
+                        <div class="text-[9px] text-[#807953]">CA 12</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="char-card">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#22c55e]/30 to-[#22c55e]/10 flex items-center justify-center text-sm">🏹</div>
+                      <div class="flex-1 min-w-0">
+                        <div class="text-[11px] font-semibold text-white truncate">Ren Sombrasilva</div>
+                        <div class="text-[9px] text-[#807953]">Mediano · Pícaro · Nv.3</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-[10px] font-bold text-[#f59e0b]">24 HP</div>
+                        <div class="text-[9px] text-[#807953]">CA 15</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="char-card">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#f59e0b]/30 to-[#f59e0b]/10 flex items-center justify-center text-sm">🛡️</div>
+                      <div class="flex-1 min-w-0">
+                        <div class="text-[11px] font-semibold text-white truncate">Aldric Martillo</div>
+                        <div class="text-[9px] text-[#807953]">Humano · Paladín · Nv.4</div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-[10px] font-bold text-[#22c55e]">38 HP</div>
+                        <div class="text-[9px] text-[#807953]">CA 20</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- FAB -->
+                <div class="flex justify-end mt-3">
+                  <div class="w-10 h-10 rounded-full bg-[#8f3d38] flex items-center justify-center shadow-lg shadow-[#8f3d38]/30">
+                    <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </div>
+                </div>
+              </div>
+              <!-- Bottom nav -->
+              <div class="absolute bottom-0 inset-x-0 h-14 border-t border-[#514D35]/20 bg-[#0e0d09]/95 flex items-center justify-around px-4">
+                <div class="flex flex-col items-center gap-0.5">
+                  <svg class="w-4 h-4 text-[#8f3d38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <span class="text-[7px] text-[#8f3d38] font-medium">PJs</span>
+                </div>
+                <div class="flex flex-col items-center gap-0.5">
+                  <svg class="w-4 h-4 text-[#807953]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                  <span class="text-[7px] text-[#807953]">SRD</span>
+                </div>
+                <div class="flex flex-col items-center gap-0.5">
+                  <svg class="w-4 h-4 text-[#807953]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+                  <span class="text-[7px] text-[#807953]">Hechizos</span>
+                </div>
+                <div class="flex flex-col items-center gap-0.5">
+                  <svg class="w-4 h-4 text-[#807953]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                  <span class="text-[7px] text-[#807953]">Ajustes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 reveal" data-delay="600">
+      <span class="text-[10px] text-white uppercase tracking-[0.2em] drop-shadow-[0_1px_4px_rgba(0,0,0,.8)]">Scroll</span>
+      <div class="w-5 h-8 rounded-full border-2 border-white/60 flex items-start justify-center pt-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,.8)]">
+        <div class="w-1 h-2 rounded-full bg-white animate-bounce"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Transition bridge: dark → light -->
+  <div class="h-32 sm:h-40" style="background:linear-gradient(to bottom,#1a1814 0%,#2c2820 15%,#4a4535 35%,#7d7660 55%,#b5ad90 72%,#d8d4c2 85%,#F0EFE8 100%)"></div>
+
+  <!-- ══════ FEATURES ══════ -->
+  <section id="features" class="pb-20 sm:pb-28 px-6 pt-12 sm:pt-16 scroll-mt-16">
+    <div class="mx-auto max-w-5xl">
+      <!-- Section header -->
+      <div class="text-center mb-14 reveal">
+        <div class="inline-flex items-center gap-3 mb-4">
+          <span class="h-px w-8 bg-[#8f3d38]/40"></span>
+          <span class="text-[11px] font-semibold text-[#8f3d38] tracking-[0.2em] uppercase">Funcionalidades</span>
+          <span class="h-px w-8 bg-[#8f3d38]/40"></span>
+        </div>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl lg:text-4xl text-[#272519] mt-2">Todo para tus partidas</h2>
+        <p class="text-[15px] text-[#555137] mt-3 max-w-lg mx-auto leading-relaxed">Las herramientas que todo jugador y Master necesita, traducidas al español.</p>
+      </div>
+
+      <!-- Bento grid -->
+      <div class="grid grid-cols-1 md:grid-cols-6 gap-4">
+
+        <!-- Card 1: Creación de personaje — spans 3 cols -->
+        <div class="feat-card group md:col-span-3 reveal" data-delay="0">
+          <div class="feat-card-icon bg-[#8f3d38]/10">
+            <svg class="w-6 h-6 text-[#8f3d38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+              <circle cx="9" cy="7" r="4"/>
+              <line x1="19" y1="8" x2="19" y2="14"/>
+              <line x1="22" y1="11" x2="16" y2="11"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-display font-bold text-[#272519] mt-4 mb-2">Creación de personaje guiada</h3>
+          <p class="text-[14px] text-[#555137] leading-relaxed">Elige raza, clase y trasfondo paso a paso. Calcula stats, competencias y equipo automáticamente con el SRD 5.1.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="feat-tag">9 Razas</span>
+            <span class="feat-tag">12 Clases</span>
+            <span class="feat-tag">13 Trasfondos</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Hoja interactiva — spans 3 cols -->
+        <div class="feat-card group md:col-span-3 reveal" data-delay="100">
+          <div class="feat-card-icon bg-[#3b6fd4]/10">
+            <svg class="w-6 h-6 text-[#3b6fd4]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="8" y1="13" x2="16" y2="13"/>
+              <line x1="8" y1="17" x2="12" y2="17"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-display font-bold text-[#272519] mt-4 mb-2">Hoja de personaje interactiva</h3>
+          <p class="text-[14px] text-[#555137] leading-relaxed">Cinco pestañas organizadas: stats, combate, hechizos, equipo y notas. Guardado automático en la nube.</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            <span class="feat-tag">5 Pestañas</span>
+            <span class="feat-tag">Auto-guardado</span>
+            <span class="feat-tag">Cloud sync</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Hechizos — spans 2 cols -->
+        <div class="feat-card group md:col-span-2 reveal" data-delay="200">
+          <div class="feat-card-icon bg-[#7c3aed]/10">
+            <svg class="w-6 h-6 text-[#7c3aed]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+            </svg>
+          </div>
+          <h3 class="text-base font-display font-bold text-[#272519] mt-4 mb-1.5">+300 Hechizos</h3>
+          <p class="text-[13px] text-[#555137] leading-relaxed">Todos los conjuros del SRD con buscador y filtros por nivel, escuela y clase.</p>
+        </div>
+
+        <!-- Card 4: Compendio SRD — spans 2 cols -->
+        <div class="feat-card group md:col-span-2 reveal" data-delay="300">
+          <div class="feat-card-icon bg-[#059669]/10">
+            <svg class="w-6 h-6 text-[#059669]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>
+              <path d="M8 7h6"/>
+              <path d="M8 11h4"/>
+            </svg>
+          </div>
+          <h3 class="text-base font-display font-bold text-[#272519] mt-4 mb-1.5">Compendio SRD</h3>
+          <p class="text-[13px] text-[#555137] leading-relaxed">Razas, clases, trasfondos, equipo y reglas, todo traducido al español.</p>
+        </div>
+
+        <!-- Card 5: Combate y vida — spans 2 cols -->
+        <div class="feat-card group md:col-span-2 reveal" data-delay="400">
+          <div class="feat-card-icon bg-[#dc2626]/10">
+            <svg class="w-6 h-6 text-[#dc2626]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+            </svg>
+          </div>
+          <h3 class="text-base font-display font-bold text-[#272519] mt-4 mb-1.5">Combate y vida</h3>
+          <p class="text-[13px] text-[#555137] leading-relaxed">HP, dados de golpe, tiradas de muerte, condiciones y seguimiento de combate.</p>
+        </div>
+
+        <!-- Card 6: Modo Master — full width banner -->
+        <div class="feat-card-master group md:col-span-6 reveal" data-delay="500">
+          <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
+            <div class="feat-card-icon bg-[#f59e0b]/15 !w-14 !h-14">
+              <svg class="w-7 h-7 text-[#f59e0b]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/>
+                <path d="M5 16h14v2a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-2z"/>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2.5 mb-1.5">
+                <h3 class="text-lg font-display font-bold text-[#272519]">Modo Master</h3>
+                <span class="text-[10px] font-bold text-white bg-[#8f3d38] px-2 py-0.5 rounded-full tracking-wide">PRO</span>
+              </div>
+              <p class="text-[14px] text-[#555137] leading-relaxed">Crea y gestiona campañas, invita a tus jugadores, lleva el control de sesiones y accede a herramientas exclusivas de narración.</p>
+            </div>
+            <div class="hidden sm:flex items-center gap-3 text-[13px] text-[#555137] shrink-0">
+              <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-[#f59e0b]" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Campañas</span>
+              <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-[#f59e0b]" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Invitaciones</span>
+              <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-[#f59e0b]" viewBox="0 0 24 24" fill="currentColor"><path d="M9 12l2 2 4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" stroke="currentColor" stroke-width="1.5" fill="none"/></svg>Sesiones</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ PRICING ══════ -->
+  <section id="pricing" class="py-24 sm:py-32 px-6 scroll-mt-16">
+    <div class="mx-auto max-w-4xl">
+      <div class="text-center mb-14 reveal">
+        <span class="text-[11px] font-semibold text-[#a855f7] tracking-[0.2em] uppercase">Planes</span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-[#272519] mt-3 mb-3">Gratis para jugar. Premium para dirigir.</h2>
+        <p class="text-[15px] text-[#555137] max-w-lg mx-auto">El plan gratuito incluye todo lo necesario como jugador. El Premium desbloquea el modo Master por solo 5€ al año.</p>
+      </div>
+
+      <div class="grid sm:grid-cols-2 gap-5 max-w-2xl mx-auto reveal">
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="mb-6">
+            <h3 class="font-display font-bold text-lg text-[#272519]">Aventurero</h3>
+            <p class="text-[12px] text-[#978F62] mt-0.5">Modo jugador</p>
+          </div>
+          <div class="mb-6"><span class="text-4xl font-display font-bold text-[#272519]">Gratis</span></div>
+          <ul class="space-y-2.5 text-[14px] text-[#555137] mb-8">
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Personajes ilimitados</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Compendio SRD completo</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Hojas interactivas</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Guardado en la nube</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>App Android</li>
+          </ul>
+          <a href="/login" class="block text-center text-[14px] font-semibold py-3 rounded-xl border border-[#D4D1BD]/40 text-[#555137] hover:bg-black/[.02]:bg-white/[.03] transition-all">Empezar gratis</a>
+        </div>
+
+        <!-- Premium -->
+        <div class="pricing-card pricing-card-pro">
+          <div class="absolute -top-3 right-5"><span class="text-[10px] font-bold bg-[#8f3d38] text-white px-3 py-1 rounded-full tracking-wide shadow-lg shadow-[#8f3d38]/25">RECOMENDADO</span></div>
+          <div class="mb-6">
+            <h3 class="font-display font-bold text-lg text-[#272519]">Héroe</h3>
+            <p class="text-[12px] text-[#978F62] mt-0.5">Modo jugador + Master</p>
+          </div>
+          <div class="mb-6">
+            <span class="text-4xl font-display font-bold text-[#272519]">5€</span>
+            <span class="text-[14px] text-[#978F62] ml-1">/ año</span>
+          </div>
+          <ul class="space-y-2.5 text-[14px] text-[#555137] mb-8">
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#22c55e] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Todo lo de Aventurero</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#8f3d38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg><strong>Modo Master</strong> — campañas</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#8f3d38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Tirador de dados avanzado</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#8f3d38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Exportar personaje a PDF</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#8f3d38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Temas y personalización</li>
+            <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#8f3d38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Soporte prioritario</li>
+          </ul>
+          <a href="/login" class="block text-center text-[14px] font-semibold py-3 rounded-xl bg-[#8f3d38] hover:bg-[#a04540] text-white transition-all hover:shadow-lg hover:shadow-[#8f3d38]/25">Suscribirse — 5€/año</a>
+          <p class="text-[11px] text-[#978F62] text-center mt-3">Menos de 0,42€ al mes</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ FAQ ══════ -->
+  <section id="faq" class="py-20 sm:py-28 px-6 scroll-mt-16">
+    <div class="mx-auto max-w-2xl">
+      <div class="text-center mb-14 reveal">
+        <span class="text-[11px] font-semibold text-[#3b82f6] tracking-[0.2em] uppercase">FAQ</span>
+        <h2 class="font-display font-bold text-2xl sm:text-3xl text-[#272519] mt-3">Preguntas frecuentes</h2>
+      </div>
+      <div class="space-y-3 reveal">
+        <details class="faq-item group" open>
+          <summary class="flex justify-between items-center p-5 cursor-pointer select-none">
+            <span class="text-[14px] font-semibold text-[#272519] pr-4">¿Qué es DyMEs?</span>
+            <svg class="w-4 h-4 text-[#978F62] shrink-0 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="px-5 pb-5 text-[14px] text-[#555137] leading-relaxed">Una app web y Android para gestionar personajes y campañas de D&D 5e en español. Incluye el compendio SRD 5.1 traducido, hojas de personaje interactivas y modo Master para dirigir campañas.</p>
+        </details>
+        <details class="faq-item group">
+          <summary class="flex justify-between items-center p-5 cursor-pointer select-none">
+            <span class="text-[14px] font-semibold text-[#272519] pr-4">¿Qué puedo hacer gratis?</span>
+            <svg class="w-4 h-4 text-[#978F62] shrink-0 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="px-5 pb-5 text-[14px] text-[#555137] leading-relaxed">El plan gratuito incluye crear personajes ilimitados, hojas interactivas, compendio SRD completo, guardado en la nube y app Android. Es decir, todo lo que necesitas como jugador.</p>
+        </details>
+        <details class="faq-item group">
+          <summary class="flex justify-between items-center p-5 cursor-pointer select-none">
+            <span class="text-[14px] font-semibold text-[#272519] pr-4">¿Qué incluye el plan Premium?</span>
+            <svg class="w-4 h-4 text-[#978F62] shrink-0 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="px-5 pb-5 text-[14px] text-[#555137] leading-relaxed">Por 5€ al año desbloqueas el modo Master (gestión de campañas, invitar jugadores, registro de sesiones), tirador de dados avanzado, exportar a PDF, temas personalizados y soporte prioritario.</p>
+        </details>
+        <details class="faq-item group">
+          <summary class="flex justify-between items-center p-5 cursor-pointer select-none">
+            <span class="text-[14px] font-semibold text-[#272519] pr-4">¿Hay app para iOS?</span>
+            <svg class="w-4 h-4 text-[#978F62] shrink-0 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="px-5 pb-5 text-[14px] text-[#555137] leading-relaxed">La app nativa está disponible para Android. En iOS puedes usar la versión web desde el navegador, que funciona perfectamente en cualquier dispositivo.</p>
+        </details>
+        <details class="faq-item group">
+          <summary class="flex justify-between items-center p-5 cursor-pointer select-none">
+            <span class="text-[14px] font-semibold text-[#272519] pr-4">¿Se sincronizan web y app?</span>
+            <svg class="w-4 h-4 text-[#978F62] shrink-0 transition-transform duration-300 group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <p class="px-5 pb-5 text-[14px] text-[#555137] leading-relaxed">Sí. Personajes, campañas y configuración se sincronizan automáticamente entre web y app. Crea en el ordenador, juega en el móvil.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ CTA BANNER — dark band ══════ -->
+  <section class="relative py-20 sm:py-24 px-6 overflow-hidden bg-[#0e0d09]">
+    <div class="absolute inset-0 opacity-15" style="background-image:url('data:image/svg+xml,%3Csvg%20width%3D%2280%22%20height%3D%2280%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Crect%20x%3D%221%22%20y%3D%221%22%20width%3D%2278%22%20height%3D%2238%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23332f20%22%20stroke-width%3D%220.5%22/%3E%3Crect%20x%3D%2240%22%20y%3D%2241%22%20width%3D%2278%22%20height%3D%2238%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22%23332f20%22%20stroke-width%3D%220.5%22/%3E%3C/svg%3E')"></div>
+    <div class="absolute inset-0" style="background:radial-gradient(ellipse at center,rgba(143,61,56,.1),transparent 60%)"></div>
+    <div class="relative mx-auto max-w-xl text-center reveal">
+      <h2 class="font-display font-bold text-2xl sm:text-3xl text-white mb-3">¿Listo para la aventura?</h2>
+      <p class="text-[15px] text-[#CDC9B2]/80 mb-8">Empieza gratis en web o Android. Sin compromisos.</p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="/login" class="w-full sm:w-auto text-sm font-semibold bg-[#8f3d38] hover:bg-[#a04540] text-white px-8 py-3 rounded-xl transition-all hover:shadow-xl hover:shadow-[#8f3d38]/30 hover:-translate-y-0.5 text-center">Empezar gratis →</a>
+        <a href="https://play.google.com/store/apps/details?id=com.dymes" target="_blank" rel="noopener" class="w-full sm:w-auto text-sm font-medium border border-white/15 text-[#CDC9B2] hover:bg-white/5 px-8 py-3 rounded-xl transition-all flex items-center justify-center gap-2 hover:-translate-y-0.5">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.61 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.302 2.302-10.937 6.333 8.635-8.635zm3.199-3.199l2.302 2.302a1 1 0 0 1 0 1.38l-2.302 2.302L15.396 13l2.302-2.492zM5.864 2.658L16.8 8.99l-2.302 2.302L5.864 2.658z"/></svg>
+          Google Play
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ FOOTER ══════ -->
+  <footer class="border-t border-[#D4D1BD]/15 py-12 px-6">
+    <div class="mx-auto max-w-5xl">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-8 mb-8">
+        <div class="flex items-center gap-2.5">
+          <img src="/favicon.svg" alt="" class="w-7 h-7" />
+          <span class="font-display font-bold text-[15px] text-[#6B6343]">DyMEs</span>
+        </div>
+        <div class="flex flex-wrap gap-x-8 gap-y-3 text-[13px] text-[#978F62]">
+          <a href="#features" class="hover:text-[#8f3d38] transition-colors">Funciones</a>
+          <a href="#pricing" class="hover:text-[#8f3d38] transition-colors">Premium</a>
+          <a href="#faq" class="hover:text-[#8f3d38] transition-colors">FAQ</a>
+          <a href="https://play.google.com/store/apps/details?id=com.dymes" target="_blank" rel="noopener" class="hover:text-[#8f3d38] transition-colors">Google Play</a>
+        </div>
+      </div>
+      <div class="pt-6 border-t border-[#D4D1BD]/10">
+        <p class="text-[11px] text-[#978F62]/70">© 2025 DyMEs · SRD 5.1 bajo OGL 1.0a · No afiliado con Wizards of the Coast.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════ STYLES ══════ -->
+  <style>
+    /* Hero gradient text */
+    .text-gradient-hero {
+      background: linear-gradient(135deg, #CDC9B2 0%, #b25550 50%, #ef5350 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Nav items */
+    .nav-item {
+      @apply px-3 py-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-all;
+    }
+
+    /* Nav solid on scroll */
+    .nav-solid { background: rgba(255,255,255,0.92); backdrop-filter: blur(16px) saturate(180%); border-bottom: 1px solid rgba(212,209,189,0.2); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+    .nav-solid .nav-item { color: rgba(85,81,55,0.7) !important; }
+    .nav-solid .nav-item:hover { color: #272519 !important; background: rgba(0,0,0,0.04) !important; }
+    .nav-solid .nav-login { color: rgba(85,81,55,0.7) !important; background: transparent !important; }
+    .nav-solid .nav-login:hover { color: #272519 !important; background: rgba(0,0,0,0.04) !important; }
+    .nav-solid span { color: #555137 !important; }
+    .nav-solid button svg { color: #978F62 !important; }
+    .nav-solid button:hover { background: rgba(0,0,0,0.04) !important; }
+    
+
+    /* Feature cards */
+    .feat-card {
+      @apply rounded-2xl border p-6 sm:p-7 transition-all duration-300;
+      background: rgba(250,250,247,0.6);
+      border-color: rgba(212,209,189,0.3);
+    }
+    .feat-card:hover {
+      border-color: rgba(151,143,98,0.5);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
+      transform: translateY(-3px);
+    }
+    .feat-card-icon {
+      @apply w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-transform duration-300;
+    }
+    .feat-card:hover .feat-card-icon { transform: scale(1.08); }
+    .feat-tag {
+      @apply text-[11px] font-medium px-2.5 py-1 rounded-full;
+      background: rgba(39,37,25,0.05);
+      color: #555137;
+    }
+    .feat-card-master {
+      @apply rounded-2xl border p-6 sm:p-7 transition-all duration-300;
+      background: linear-gradient(135deg, rgba(245,158,11,0.06) 0%, rgba(250,250,247,0.6) 50%, rgba(143,61,56,0.04) 100%);
+      border-color: rgba(245,158,11,0.25);
+    }
+    .feat-card-master:hover {
+      border-color: rgba(245,158,11,0.5);
+      box-shadow: 0 8px 30px rgba(245,158,11,0.08);
+      transform: translateY(-3px);
+    }
+    .feat-card-master:hover .feat-card-icon { transform: scale(1.08); }
+
+    /* Phone character cards */
+    .char-card {
+      @apply rounded-xl p-3 transition-all;
+      background: rgba(50,48,33,0.6);
+      border: 1px solid rgba(81,77,53,0.25);
+    }
+
+    /* Pricing cards */
+    .pricing-card {
+      @apply rounded-2xl border p-7 transition-all duration-300;
+      background: rgba(250,250,247,0.6);
+      border-color: rgba(212,209,189,0.3);
+    }
+    .pricing-card:hover { box-shadow: 0 8px 40px rgba(0,0,0,0.06); transform: translateY(-2px); }
+    .pricing-card-pro { @apply relative border-2; border-color: rgba(143,61,56,0.4) !important; }
+    .pricing-card-pro:hover { border-color: rgba(143,61,56,0.6) !important; }
+
+    /* FAQ */
+    .faq-item {
+      @apply rounded-xl border overflow-hidden transition-all;
+      background: rgba(250,250,247,0.5);
+      border-color: rgba(212,209,189,0.2);
+    }
+    .faq-item[open] { border-color: rgba(151,143,98,0.3); }
+
+    /* Reveal animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+
+  <!-- ══════ SCRIPTS ══════ -->
+  <script>
+    // Mobile menu
+    document.getElementById('mobile-btn')?.addEventListener('click', () => {
+      document.getElementById('mobile-menu')?.classList.toggle('hidden');
+    });
+    document.querySelectorAll('#mobile-menu a').forEach(a =>
+      a.addEventListener('click', () => document.getElementById('mobile-menu')?.classList.add('hidden'))
+    );
+
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    const updateNav = () => {
+      if (window.scrollY > 60) nav?.classList.add('nav-solid');
+      else nav?.classList.remove('nav-solid');
+    };
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const h = a.getAttribute('href');
+        if (h) document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Reveal on scroll
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = parseInt(entry.target.dataset.delay || '0');
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  </script>
+</Layout>
