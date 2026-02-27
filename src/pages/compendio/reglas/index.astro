@@ -13,7 +13,7 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
   <section class="docs-section scroll-mt-20">
     <div class="docs-section-header">
-      <span class="docs-section-badge">📐 Reglas</span>
+      <span class="docs-section-badge"><i class="fa-solid fa-scale-balanced"></i> Reglas</span>
       <h1 class="docs-h1">Reglas Básicas</h1>
       <p class="docs-lead">Referencia rápida de las mecánicas fundamentales de D&D 5ª edición según el SRD 5.1.</p>
     </div>
@@ -21,32 +21,32 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
     <!-- Quick nav cards -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
       <a href="#caracteristicas" class="docs-summary-card group">
-        <span class="text-2xl mb-2">🎲</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-dice-d20"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Características</span>
         <span class="text-[12px] text-[#978F62]">6 puntuaciones y modificadores</span>
       </a>
       <a href="#combate" class="docs-summary-card group">
-        <span class="text-2xl mb-2">⚔️</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-shield-halved"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Combate</span>
         <span class="text-[12px] text-[#978F62]">Iniciativa, ataques, daño</span>
       </a>
       <a href="#condiciones" class="docs-summary-card group">
-        <span class="text-2xl mb-2">⚠️</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-triangle-exclamation"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Condiciones</span>
         <span class="text-[12px] text-[#978F62]">{CONDITIONS.length} estados</span>
       </a>
       <a href="#descansos" class="docs-summary-card group">
-        <span class="text-2xl mb-2">🛏️</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-bed"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Descansos</span>
         <span class="text-[12px] text-[#978F62]">Corto y largo</span>
       </a>
       <a href="#tipos-dano" class="docs-summary-card group">
-        <span class="text-2xl mb-2">💥</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-burst"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Tipos de daño</span>
         <span class="text-[12px] text-[#978F62]">{DAMAGE_TYPES.length} tipos</span>
       </a>
       <a href="#pruebas" class="docs-summary-card group">
-        <span class="text-2xl mb-2">🎯</span>
+        <span class="text-2xl mb-2"><i class="fa-solid fa-crosshairs"></i></span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Pruebas</span>
         <span class="text-[12px] text-[#978F62]">1d20 + modificadores</span>
       </a>
@@ -56,7 +56,7 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ ABILITY SCORES ═══ -->
     <div id="caracteristicas" class="scroll-mt-20">
-      <h2 class="docs-h2">🎲 Puntuaciones de Característica</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-dice-d20"></i> Puntuaciones de Característica</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">Cada personaje tiene seis puntuaciones que definen sus capacidades físicas y mentales. El modificador se calcula como: <strong>(puntuación − 10) ÷ 2</strong>, redondeando hacia abajo.</p>
 
       <!-- Modifier table -->
@@ -111,10 +111,10 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ CHECKS ═══ -->
     <div id="pruebas" class="scroll-mt-20">
-      <h2 class="docs-h2">🎯 Pruebas de Característica</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-crosshairs"></i> Pruebas de Característica</h2>
 
       <div class="docs-callout" style="margin-top: 1rem;">
-        <div class="docs-callout-icon">🎲</div>
+        <div class="docs-callout-icon"><i class="fa-solid fa-dice-d20"></i></div>
         <div>
           <p class="text-[13px] font-semibold text-[#272519] mb-1">La regla fundamental</p>
           <p class="text-[13px] text-[#555137] leading-relaxed">
@@ -150,14 +150,14 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ COMBAT ═══ -->
     <div id="combate" class="scroll-mt-20">
-      <h2 class="docs-h2">⚔️ Combate</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-shield-halved"></i> Combate</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">El combate se estructura en rondas. Cada ronda representa unos 6 segundos de tiempo en el mundo del juego.</p>
 
       <div class="reglas-combat-grid">
         {COMBAT_RULES.map(rule => (
           <div class="reglas-combat-card" id={`combat-${rule.id}`}>
             <div class="reglas-combat-header">
-              <span class="reglas-combat-icon">{rule.icon}</span>
+              <span class="reglas-combat-icon"><i class={rule.icon}></i></span>
               <h3 class="reglas-combat-title">{rule.titulo}</h3>
             </div>
             <p class="reglas-combat-content">{rule.contenido}</p>
@@ -170,14 +170,14 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ CONDITIONS ═══ -->
     <div id="condiciones" class="scroll-mt-20">
-      <h2 class="docs-h2">⚠️ Condiciones</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-triangle-exclamation"></i> Condiciones</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">Las condiciones alteran las capacidades de un personaje de diversas maneras. La mayoría son perjudiciales, pero algunas pueden ser beneficiosas.</p>
 
       <div class="reglas-conditions-grid">
         {CONDITIONS.map(cond => (
           <details class="reglas-condition-card" id={`cond-${cond.id}`}>
             <summary class="reglas-condition-summary">
-              <span class="reglas-condition-icon">{cond.icon}</span>
+              <span class="reglas-condition-icon"><i class={cond.icon}></i></span>
               <span class="reglas-condition-name">{cond.nombre}</span>
             </summary>
             <div class="reglas-condition-body">
@@ -197,14 +197,14 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ RESTING ═══ -->
     <div id="descansos" class="scroll-mt-20">
-      <h2 class="docs-h2">🛏️ Descansos</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-bed"></i> Descansos</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">Los descansos permiten a los personajes recuperar recursos gastados durante la aventura.</p>
 
       <div class="grid sm:grid-cols-2 gap-4">
         {REST_RULES.map(rest => (
           <div class="reglas-rest-card">
             <div class="reglas-rest-header">
-              <span class="text-2xl">{rest.icon}</span>
+              <span class="text-2xl"><i class={rest.icon}></i></span>
               <div>
                 <h3 class="reglas-rest-title">{rest.titulo}</h3>
                 <span class="reglas-rest-duration">{rest.duracion}</span>
@@ -231,11 +231,11 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
 
     <!-- ═══ DAMAGE TYPES ═══ -->
     <div id="tipos-dano" class="scroll-mt-20">
-      <h2 class="docs-h2">💥 Tipos de Daño</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-burst"></i> Tipos de Daño</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">En D&D 5e hay 13 tipos de daño. Las resistencias y vulnerabilidades a tipos de daño pueden modificar el total recibido.</p>
 
       <div class="docs-callout" style="margin-bottom: 1.25rem;">
-        <div class="docs-callout-icon">🛡️</div>
+        <div class="docs-callout-icon"><i class="fa-solid fa-shield"></i></div>
         <div>
           <p class="text-[13px] text-[#555137] leading-relaxed">
             <strong>Resistencia:</strong> el daño de ese tipo se reduce a la mitad. <strong>Vulnerabilidad:</strong> el daño de ese tipo se duplica. <strong>Inmunidad:</strong> no recibes daño de ese tipo. Si tienes resistencia y vulnerabilidad al mismo tipo, se cancelan.
@@ -246,7 +246,7 @@ for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
       <div class="reglas-damage-grid">
         {DAMAGE_TYPES.map(dt => (
           <div class="reglas-damage-card">
-            <span class="reglas-damage-icon">{dt.icon}</span>
+            <span class="reglas-damage-icon"><i class={dt.icon}></i></span>
             <div>
               <span class="reglas-damage-name">{dt.nombre}</span>
               <p class="reglas-damage-desc">{dt.descripcion}</p>

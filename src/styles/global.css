@@ -11,15 +11,15 @@
     --app-bg-alt: #EDEDEA;
     --app-main-gradient: linear-gradient(180deg, #F5F4EF 0%, #EDEDEA 100%);
     --app-sidebar-bg: linear-gradient(180deg, #E8E6DC 0%, #F0EFE8 50%, #E8E6DC 100%);
-    --app-header-bg: rgba(240, 239, 232, 0.95);
+    --app-header-bg: rgba(14, 13, 9, 0.92);
     --app-surface: #FFFFFF;
     --app-surface-gradient: linear-gradient(145deg, #FAFAF7, #F3F2EB);
     --app-card-gradient: linear-gradient(145deg, #FFFFFF, #F5F4EF);
     --app-banner-bg: linear-gradient(135deg, rgba(143,61,56,0.04) 0%, rgba(240,239,232,0.7) 50%, rgba(212,209,189,0.06) 100%);
     --app-text: #272519;
-    --app-text-secondary: #555137;
-    --app-text-muted: #978F62;
-    --app-text-faint: #B2AE96;
+    --app-text-secondary: #3d3a26;
+    --app-text-muted: #706842;
+    --app-text-faint: #8a8568;
     --app-border: rgba(212, 209, 189, 0.4);
     --app-border-subtle: rgba(212, 209, 189, 0.2);
     --app-hover-bg: rgba(0, 0, 0, 0.04);
@@ -38,13 +38,9 @@
     --app-kbd-border: rgba(0, 0, 0, 0.08);
     --app-accent-soft: rgba(143, 61, 56, 0.06);
     --app-accent-glow: rgba(143, 61, 56, 0.04);
-    --app-sidebar-link-color: #555137;
-    --app-sidebar-link-hover-bg: rgba(39, 37, 25, 0.04);
-    --app-sidebar-link-hover-color: #272519;
     --app-sidebar-border: rgba(212, 209, 189, 0.25);
     --app-sidebar-search-bg: rgba(0, 0, 0, 0.03);
     --app-sidebar-search-border: rgba(0, 0, 0, 0.08);
-    --app-sidebar-section-label: rgba(85, 81, 55, 0.7);
     --app-loading-bg: linear-gradient(180deg, #E5E3D5 0%, #F0EFE8 100%);
     --app-loading-text: #978F62;
     --app-loading-bar-track: rgba(0,0,0,0.06);
@@ -81,13 +77,9 @@
     --app-kbd-border: rgba(255, 255, 255, 0.05);
     --app-accent-soft: rgba(143, 61, 56, 0.14);
     --app-accent-glow: rgba(143, 61, 56, 0.05);
-    --app-sidebar-link-color: #807953;
-    --app-sidebar-link-hover-bg: rgba(255, 255, 255, 0.04);
-    --app-sidebar-link-hover-color: #CDC9B2;
     --app-sidebar-border: rgba(81, 77, 53, 0.25);
     --app-sidebar-search-bg: rgba(255, 255, 255, 0.03);
     --app-sidebar-search-border: rgba(255, 255, 255, 0.06);
-    --app-sidebar-section-label: rgba(128, 121, 83, 0.7);
     --app-loading-bg: linear-gradient(180deg, #0e0d09 0%, #1a1814 100%);
     --app-loading-text: #807953;
     --app-loading-bar-track: rgba(255,255,255,0.06);
@@ -95,6 +87,11 @@
 
   html {
     scroll-behavior: smooth;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {
@@ -128,23 +125,6 @@
 }
 
 @layer components {
-  /* ── Nav Link ────────────────────────── */
-  .nav-link {
-    @apply px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200;
-    color: #555137;
-  }
-  .nav-link:hover {
-    color: #272519;
-    background: rgba(0,0,0,0.04);
-  }
-  .dark .nav-link {
-    color: #AAA37B;
-  }
-  .dark .nav-link:hover {
-    color: #ffffff;
-    background: rgba(255,255,255,0.05);
-  }
-
   /* ── Card ───────────────────────────── */
   .dymes-card {
     @apply rounded-2xl border transition-all duration-300;
@@ -182,6 +162,13 @@
     transform: translateY(0);
     box-shadow: 0 2px 8px rgba(143,61,56,0.3);
   }
+  .btn-gold:focus-visible {
+    outline: 2px solid #8f3d38;
+    outline-offset: 2px;
+  }
+  .dark .btn-gold:focus-visible {
+    outline-color: #CDC9B2;
+  }
 
   /* ── Ghost Button ───────────────────── */
   .btn-ghost {
@@ -206,6 +193,13 @@
     box-shadow: 0 4px 16px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.05);
     transform: translateY(-1px);
   }
+  .btn-ghost:focus-visible {
+    outline: 2px solid #8f3d38;
+    outline-offset: 2px;
+  }
+  .dark .btn-ghost:focus-visible {
+    outline-color: #CDC9B2;
+  }
 
   /* ── Input ──────────────────────────── */
   .dymes-input {
@@ -215,7 +209,7 @@
     color: #272519;
   }
   .dymes-input::placeholder {
-    color: #978F62;
+    color: #8a8568;
   }
   .dymes-input:focus {
     border-color: rgba(143,61,56,0.4);
@@ -392,6 +386,26 @@
 }
 
 @layer utilities {
+  /* ── Focus Visible (Style Guide §12.2) ── */
+  *:focus-visible {
+    outline: 2px solid #8F3D38;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  .dark *:focus-visible {
+    outline-color: #CDC9B2;
+  }
+
+  /* ── Prefers Reduced Motion (Style Guide §9.1, §12.3) ── */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
   .text-gradient-gold {
     background: linear-gradient(135deg, #6B6343, #8A7F55);
     -webkit-background-clip: text;
@@ -417,4 +431,42 @@
   .app-text-secondary { color: var(--app-text-secondary); }
   .app-text-muted { color: var(--app-text-muted); }
   .app-text-faint { color: var(--app-text-faint); }
+
+  /* Hover variants for themed text (can't use Tailwind hover: with custom classes) */
+  .hover\:app-text:hover { color: var(--app-text); }
+  .hover\:app-text-secondary:hover { color: var(--app-text-secondary); }
+  .hover\:app-text-muted:hover { color: var(--app-text-muted); }
+  .group:hover .group-hover\:app-text-secondary { color: var(--app-text-secondary); }
+
+  /* ── Component hover helpers ───────── */
+  .quick-action-pill {
+    background: var(--app-hover-bg);
+    border: 1px solid var(--app-border-subtle);
+  }
+  .quick-action-pill:hover {
+    background: var(--app-hover-bg-strong);
+    border-color: var(--app-border);
+  }
+
+  .character-card-hover {
+    background: var(--app-card-gradient);
+    border-color: var(--app-border);
+    box-shadow: var(--app-card-shadow);
+  }
+  .character-card-hover:hover {
+    border-color: rgba(143, 61, 56, 0.35);
+    box-shadow: var(--app-card-shadow-hover);
+    transform: translateY(-2px);
+  }
+
+  .campaign-card-hover {
+    background: var(--app-card-gradient);
+    border-color: var(--app-border);
+    box-shadow: var(--app-card-shadow);
+  }
+  .campaign-card-hover:hover {
+    border-color: rgba(59, 130, 246, 0.25);
+    box-shadow: var(--app-card-shadow-hover);
+    transform: translateY(-2px);
+  }
 }

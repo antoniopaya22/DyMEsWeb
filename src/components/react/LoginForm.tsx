@@ -67,8 +67,11 @@ export default function LoginForm() {
   return (
     <div className="animate-fade-in">
       {/* Tab selector */}
-      <div className="flex rounded-xl p-1 mb-8" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
+      <div className="flex rounded-xl p-1 mb-8" role="tablist" aria-label="Tipo de acceso" style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}>
         <button
+          role="tab"
+          aria-selected={tab === 'login'}
+          aria-controls="login-form"
           onClick={() => { setTab('login'); setMessage(null); }}
           className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
             tab === 'login'
@@ -80,6 +83,9 @@ export default function LoginForm() {
           Iniciar sesión
         </button>
         <button
+          role="tab"
+          aria-selected={tab === 'register'}
+          aria-controls="login-form"
           onClick={() => { setTab('register'); setMessage(null); }}
           className={`flex-1 py-3 rounded-lg text-sm font-semibold transition-all duration-300 ${
             tab === 'register'
@@ -94,7 +100,7 @@ export default function LoginForm() {
 
       {/* Message */}
       {message && (
-        <div className={`mb-6 p-4 rounded-xl border text-sm backdrop-blur-sm ${
+        <div role="alert" aria-live="polite" className={`mb-6 p-4 rounded-xl border text-sm backdrop-blur-sm ${
           message.type === 'error'
             ? 'bg-red-500/10 border-red-500/20 text-red-400'
             : 'bg-green-500/10 border-green-500/20 text-green-400'
@@ -104,45 +110,54 @@ export default function LoginForm() {
       )}
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" id="login-form" role="tabpanel">
         {tab === 'register' && (
           <div>
-            <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Nombre</label>
+            <label htmlFor="login-nombre" className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Nombre</label>
             <input
+              id="login-nombre"
               type="text"
               value={nombre}
               onChange={e => setNombre(e.target.value)}
               placeholder="Tu nombre de aventurero"
+              autoComplete="name"
               className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)]"
             />
           </div>
         )}
 
         <div>
-          <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Email</label>
+          <label htmlFor="login-email" className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Email</label>
           <input
+            id="login-email"
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="aventurero@dungeon.com"
+            autoComplete="email"
+            aria-invalid={message?.type === 'error' ? true : undefined}
             className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)]"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Contraseña</label>
+          <label htmlFor="login-password" className="block text-xs font-medium text-[#CDC9B2]/70 mb-2 uppercase tracking-wider">Contraseña</label>
           <div className="relative">
             <input
+              id="login-password"
               type={showPassword ? 'text' : 'password'}
               value={password}
               onChange={e => setPassword(e.target.value)}
               placeholder="••••••"
+              autoComplete={tab === 'login' ? 'current-password' : 'new-password'}
+              aria-invalid={message?.type === 'error' ? true : undefined}
               className="w-full px-4 py-3 rounded-xl border border-white/[.08] bg-white/[.04] text-white placeholder-[#807953] outline-none transition-all duration-300 focus:border-[#8f3d38]/50 focus:bg-white/[.06] focus:shadow-[0_0_0_3px_rgba(143,61,56,0.1)] pr-12"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#807953] hover:text-[#AAA37B] transition-colors"
+              aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-[#807953] hover:text-[#AAA37B] transition-colors p-1"
             >
               {showPassword ? (
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>

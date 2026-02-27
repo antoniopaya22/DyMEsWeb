@@ -6,7 +6,7 @@ import { BACKGROUNDS } from '../../../data/backgrounds';
 <CompendioLayout title="Trasfondos — Compendio SRD 5.1" section="trasfondos" breadcrumb="Trasfondos">
   <section class="docs-section scroll-mt-20">
     <div class="docs-section-header">
-      <span class="docs-section-badge">📖 Trasfondos</span>
+      <span class="docs-section-badge"><i class="fa-solid fa-scroll"></i> Trasfondos</span>
       <h2 class="docs-h2">Trasfondos</h2>
       <p class="docs-p text-[#555137]">Los trasfondos describen el origen de tu personaje antes de la aventura, otorgando habilidades, equipo y rasgos narrativos.</p>
     </div>
@@ -14,7 +14,7 @@ import { BACKGROUNDS } from '../../../data/backgrounds';
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
       {BACKGROUNDS.map((bg) => (
         <a href={`/compendio/trasfondos/${bg.id}`} class="docs-item-card group">
-          <span class="docs-item-card-icon">{bg.icon}</span>
+          <span class="docs-item-card-icon"><i class={bg.icon}></i></span>
           <div class="docs-item-card-body">
             <h3 class="docs-item-card-title">{bg.nombre}</h3>
             <p class="docs-item-card-desc">{bg.descripcion}</p>

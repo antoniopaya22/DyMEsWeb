@@ -19,7 +19,7 @@ const nextRace = raceIndex < RACES.length - 1 ? RACES[raceIndex + 1] : null;
   <article class="docs-detail-page">
     <!-- Header -->
     <div class="docs-detail-header">
-      <span class="docs-detail-icon">{race.icon}</span>
+      <span class="docs-detail-icon"><i class={race.icon}></i></span>
       <div>
         <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{race.nombre}</h1>
         <span class="docs-tag">Raza</span>
@@ -65,13 +65,13 @@ const nextRace = raceIndex < RACES.length - 1 ? RACES[raceIndex + 1] : null;
       {prevRace ? (
         <a href={`/compendio/razas/${prevRace.id}`} class="docs-prev-next-link">
           <span class="docs-prev-next-dir">← Anterior</span>
-          <span class="docs-prev-next-name">{prevRace.icon} {prevRace.nombre}</span>
+          <span class="docs-prev-next-name"><i class={prevRace.icon}></i> {prevRace.nombre}</span>
         </a>
       ) : <div />}
       {nextRace ? (
         <a href={`/compendio/razas/${nextRace.id}`} class="docs-prev-next-link docs-prev-next-right">
           <span class="docs-prev-next-dir">Siguiente →</span>
-          <span class="docs-prev-next-name">{nextRace.nombre} {nextRace.icon}</span>
+          <span class="docs-prev-next-name">{nextRace.nombre} <i class={nextRace.icon}></i></span>
         </a>
       ) : <div />}
     </nav>

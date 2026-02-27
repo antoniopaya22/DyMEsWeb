@@ -18,7 +18,7 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
     <p class="docs-lead">Referencia completa del System Reference Document 5.1 de Dungeons & Dragons 5ª edición, traducido al español.</p>
 
     <div class="docs-callout">
-      <div class="docs-callout-icon">📜</div>
+      <div class="docs-callout-icon"><i class="fa-solid fa-scroll text-[#8f3d38]"></i></div>
       <div>
         <p class="text-[13px] font-semibold text-[#272519] mb-1">Sobre este compendio</p>
         <p class="text-[13px] text-[#555137] leading-relaxed">Este compendio contiene la información completa del SRD 5.1 — las reglas y opciones disponibles bajo la Open Gaming License. Incluye <strong>{RACES.length} razas</strong>, <strong>{CLASSES.length} clases</strong>, <strong>{BACKGROUNDS.length} trasfondos</strong>, <strong>{TOTAL_SPELLS} conjuros</strong> (trucos y niveles 1-9) y una sección de <strong>reglas básicas</strong> para crear y gestionar tu personaje.</p>
@@ -28,27 +28,27 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
     <!-- Quick summary cards -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-8">
       <a href="/compendio/razas" class="docs-summary-card group">
-        <span class="text-2xl mb-2">🧝</span>
+        <i class="fa-solid fa-users text-2xl mb-2 text-[#8f3d38]"></i>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Razas</span>
         <span class="text-[12px] text-[#978F62]">{RACES.length} opciones</span>
       </a>
       <a href="/compendio/clases" class="docs-summary-card group">
-        <span class="text-2xl mb-2">⚔️</span>
+        <i class="fa-solid fa-shield-halved text-2xl mb-2 text-[#8f3d38]"></i>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Clases</span>
         <span class="text-[12px] text-[#978F62]">{CLASSES.length} opciones</span>
       </a>
       <a href="/compendio/trasfondos" class="docs-summary-card group">
-        <span class="text-2xl mb-2">📖</span>
+        <i class="fa-solid fa-scroll text-2xl mb-2 text-[#8f3d38]"></i>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Trasfondos</span>
         <span class="text-[12px] text-[#978F62]">{BACKGROUNDS.length} opciones</span>
       </a>
       <a href="/compendio/conjuros" class="docs-summary-card group">
-        <span class="text-2xl mb-2">✨</span>
+        <i class="fa-solid fa-wand-sparkles text-2xl mb-2 text-[#8f3d38]"></i>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Conjuros</span>
         <span class="text-[12px] text-[#978F62]">{TOTAL_SPELLS} conjuros</span>
       </a>
       <a href="/compendio/reglas" class="docs-summary-card group">
-        <span class="text-2xl mb-2">📐</span>
+        <i class="fa-solid fa-scale-balanced text-2xl mb-2 text-[#8f3d38]"></i>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Reglas Básicas</span>
         <span class="text-[12px] text-[#978F62]">Mecánicas fundamentales</span>
       </a>
@@ -58,43 +58,43 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
 
     <!-- ─── Quick Reference ─── -->
     <div id="referencia-rapida">
-      <h2 class="docs-h2">⚡ Referencia Rápida</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-bolt text-[#8f3d38] mr-2"></i>Referencia Rápida</h2>
       <p class="docs-p" style="margin-bottom: 1.25rem;">Las mecánicas más consultadas durante una partida, a un vistazo.</p>
 
       <div class="grid sm:grid-cols-2 gap-4">
         <!-- Dice check -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">🎲 Pruebas</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-dice-d20 mr-1.5"></i>Pruebas</h3>
           <p class="intro-ref-text"><strong>1d20 + modificador + competencia</strong> ≥ CD = éxito</p>
           <p class="intro-ref-sub">Ventaja = 2d20 (mayor) · Desventaja = 2d20 (menor)</p>
         </div>
         <!-- Combat turn -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">⚔️ Turno de combate</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-shield-halved mr-1.5"></i>Turno de combate</h3>
           <p class="intro-ref-text"><strong>Movimiento</strong> + <strong>Acción</strong> + <strong>Acción adicional</strong> (si la hay)</p>
           <p class="intro-ref-sub">1 reacción por ronda · 1 interacción libre con objetos</p>
         </div>
         <!-- Attack roll -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">🎯 Ataque</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-crosshairs mr-1.5"></i>Ataque</h3>
           <p class="intro-ref-text"><strong>1d20 + mod. característica + competencia</strong> ≥ CA</p>
           <p class="intro-ref-sub">20 natural = golpe crítico · 1 natural = fallo automático</p>
         </div>
         <!-- Death saves -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">💀 Salvaciones de muerte</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-skull mr-1.5"></i>Salvaciones de muerte</h3>
           <p class="intro-ref-text">Con 0 PG: <strong>1d20</strong>, ≥ 10 = éxito. 3 éxitos = estabilizado.</p>
           <p class="intro-ref-sub">3 fallos = muerte · 20 natural = 1 PG · 1 natural = 2 fallos</p>
         </div>
         <!-- Resting -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">🛏️ Descansos</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-bed mr-1.5"></i>Descansos</h3>
           <p class="intro-ref-text"><strong>Corto</strong> (1h): dados de golpe · <strong>Largo</strong> (8h): recuperación total</p>
           <p class="intro-ref-sub">Largo: recupera todos los PG + mitad dados de golpe</p>
         </div>
         <!-- Cover -->
         <div class="intro-ref-card">
-          <h3 class="intro-ref-title">🛡️ Cobertura</h3>
+          <h3 class="intro-ref-title"><i class="fa-solid fa-shield mr-1.5"></i>Cobertura</h3>
           <p class="intro-ref-text"><strong>Media</strong>: +2 CA/DEX · <strong>3/4</strong>: +5 CA/DEX · <strong>Total</strong>: no se puede tomar como objetivo</p>
           <p class="intro-ref-sub">Aplica a ataques y salvaciones de Destreza</p>
         </div>
@@ -105,13 +105,13 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
 
     <!-- ─── Conditions Quick Ref ─── -->
     <div id="condiciones-rapidas">
-      <h2 class="docs-h2">⚠️ Condiciones de un vistazo</h2>
+      <h2 class="docs-h2"><i class="fa-solid fa-triangle-exclamation text-[#8f3d38] mr-2"></i>Condiciones de un vistazo</h2>
       <p class="docs-p" style="margin-bottom: 1rem;">Las {CONDITIONS.length} condiciones del juego. <a href="/compendio/reglas#condiciones" class="text-[#8f3d38] font-semibold hover:underline">Ver detalle completo →</a></p>
 
       <div class="intro-conditions-grid">
         {CONDITIONS.map(c => (
           <a href={`/compendio/reglas#cond-${c.id}`} class="intro-condition-pill">
-            <span>{c.icon}</span>
+            <i class={c.icon}></i>
             <span>{c.nombre}</span>
           </a>
         ))}

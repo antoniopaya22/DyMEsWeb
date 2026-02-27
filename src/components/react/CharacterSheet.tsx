@@ -4,14 +4,22 @@ import { CLASS_NAMES, CLASS_ICONS, RACE_NAMES, ABILITY_NAMES, ABILITY_ABBR, SKIL
 import { calcModifier, calcProficiencyBonus, formatModifier } from '../../utils/character';
 import { getItem, STORAGE_KEYS } from '../../utils/storage';
 
-type Tab = 'general' | 'combat' | 'spells' | 'inventory' | 'notes';
+type Tab = 'general' | 'combat' | 'abilities' | 'inventory' | 'notes';
 
-const TABS: { key: Tab; label: string; icon: string }[] = [
-  { key: 'general', label: 'General', icon: '📋' },
-  { key: 'combat', label: 'Combate', icon: '⚔️' },
-  { key: 'spells', label: 'Hechizos', icon: '✨' },
-  { key: 'inventory', label: 'Inventario', icon: '🎒' },
-  { key: 'notes', label: 'Notas', icon: '📝' },
+const TabIcons: Record<Tab, React.ReactNode> = {
+  general: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>,
+  combat: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><polyline points="14.5 17.5 3 6 3 3 6 3 17.5 14.5"/><line x1="13" x2="19" y1="19" y2="13"/><line x1="16" x2="20" y1="16" y2="20"/><line x1="19" x2="21" y1="21" y2="19"/><polyline points="14.5 6.5 18 3 21 3 21 6 17.5 9.5"/><line x1="5" x2="9" y1="14" y2="18"/><line x1="7" x2="4" y1="17" y2="20"/><line x1="3" x2="5" y1="19" y2="21"/></svg>,
+  abilities: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>,
+  inventory: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+  notes: <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838.838-2.872a2 2 0 0 1 .506-.855z"/></svg>,
+};
+
+const TABS: { key: Tab; label: string }[] = [
+  { key: 'general', label: 'Información general' },
+  { key: 'combat', label: 'Combate' },
+  { key: 'abilities', label: 'Habilidades' },
+  { key: 'inventory', label: 'Inventario' },
+  { key: 'notes', label: 'Notas' },
 ];
 
 export default function CharacterSheet({ characterId }: { characterId: string }) {
@@ -29,9 +37,9 @@ export default function CharacterSheet({ characterId }: { characterId: string })
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
         <div className="relative">
-          <div className="w-12 h-12 rounded-full border-2 border-[#514D35] border-t-[#8f3d38] animate-spin" />
+          <div className="w-12 h-12 rounded-full border-2 border-[var(--app-text-faint)] border-t-[#8f3d38] animate-spin" />
         </div>
-        <p className="text-sm text-[#807953]">Cargando personaje...</p>
+        <p className="text-sm app-text-faint">Cargando personaje...</p>
       </div>
     );
   }
@@ -50,8 +58,8 @@ export default function CharacterSheet({ characterId }: { characterId: string })
           }}>
             <span className="text-4xl">🔍</span>
           </div>
-          <h3 className="text-xl font-display font-semibold text-white mb-3">Personaje no encontrado</h3>
-          <p className="text-sm text-[#AAA37B] mb-8">No se pudo cargar este personaje.</p>
+          <h3 className="text-xl font-display font-semibold app-text mb-3">Personaje no encontrado</h3>
+          <p className="text-sm app-text-muted mb-8">No se pudo cargar este personaje.</p>
           <a href="/app" className="btn-gold text-sm !px-8 !py-3.5 rounded-xl">Volver a personajes</a>
         </div>
       </div>
@@ -69,7 +77,7 @@ export default function CharacterSheet({ characterId }: { characterId: string })
       <div className="absolute top-60 -left-20 w-60 h-60 rounded-full opacity-[0.03] pointer-events-none" style={{ background: 'radial-gradient(circle, #3b82f6, transparent 70%)' }} />
 
       {/* Back link */}
-      <a href="/app" className="inline-flex items-center gap-2 text-sm text-[#AAA37B] hover:text-white transition-colors mb-8 group">
+      <a href="/app" className="inline-flex items-center gap-2 text-sm app-text-muted hover:app-text transition-colors mb-8 group">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="transition-transform group-hover:-translate-x-1"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
         Mis Personajes
       </a>
@@ -118,27 +126,65 @@ export default function CharacterSheet({ characterId }: { characterId: string })
         </div>
       </div>
 
-      {/* Tab bar */}
-      <div className="flex gap-2.5 mb-10 overflow-x-auto pb-2">
+      {/* ── Mobile tab bar ── */}
+      <div className="lg:hidden flex gap-2 mb-6 overflow-x-auto pb-2 -mx-1 px-1">
         {TABS.map(tab => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`dymes-tab whitespace-nowrap flex items-center gap-2 ${activeTab === tab.key ? 'active' : ''}`}
           >
-            <span>{tab.icon}</span>
-            <span>{tab.label}</span>
+            <span className="shrink-0">{TabIcons[tab.key]}</span>
+            <span className="text-sm">{tab.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
-      <div className="animate-fade-in" key={activeTab}>
-        {activeTab === 'general' && <GeneralTab character={character} />}
-        {activeTab === 'combat' && <CombatTab character={character} />}
-        {activeTab === 'spells' && <SpellsTab character={character} />}
-        {activeTab === 'inventory' && <InventoryTab character={character} />}
-        {activeTab === 'notes' && <NotesTab character={character} />}
+      {/* ── Sidebar + Content layout ── */}
+      <div className="flex gap-8">
+        {/* Desktop sidebar */}
+        <aside className="hidden lg:block w-56 shrink-0">
+          <nav className="sticky top-6 space-y-1">
+            {TABS.map(tab => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(tab.key)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-left text-sm font-medium transition-all duration-200 ${
+                  activeTab === tab.key
+                    ? 'app-text shadow-sm'
+                    : 'app-text-muted hover:app-text dark:hover:bg-white/[0.04] hover:bg-black/[0.04]'
+                }`}
+                style={activeTab === tab.key ? {
+                  background: 'linear-gradient(135deg, rgba(143,61,56,0.15), rgba(143,61,56,0.06))',
+                  border: '1px solid rgba(143,61,56,0.2)',
+                  boxShadow: '0 2px 8px rgba(143,61,56,0.1)',
+                } : { border: '1px solid transparent' }}
+              >
+                <span className="shrink-0" style={activeTab === tab.key ? { color: '#8f3d38' } : {}}>{TabIcons[tab.key]}</span>
+                {tab.label}
+              </button>
+            ))}
+
+            {/* Divider */}
+            <div className="!my-4 h-px" style={{ background: 'linear-gradient(to right, rgba(81,77,53,0.3), transparent)' }} />
+
+            {/* Character quick info */}
+            <div className="px-4 py-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
+              <div className="text-[10px] app-text-faint uppercase tracking-widest mb-2 font-medium">Personaje</div>
+              <p className="text-sm app-text-secondary font-semibold truncate">{character.nombre}</p>
+              <p className="text-xs app-text-faint mt-0.5">{raceName} · {className} Nv.{character.nivel}</p>
+            </div>
+          </nav>
+        </aside>
+
+        {/* Main content */}
+        <div className="flex-1 min-w-0 animate-fade-in" key={activeTab}>
+          {activeTab === 'general' && <GeneralTab character={character} />}
+          {activeTab === 'combat' && <CombatTab character={character} />}
+          {activeTab === 'abilities' && <AbilitiesTab character={character} />}
+          {activeTab === 'inventory' && <InventoryTab character={character} />}
+          {activeTab === 'notes' && <NotesTab character={character} />}
+        </div>
       </div>
     </div>
   );
@@ -175,10 +221,10 @@ function GeneralTab({ character }: { character: Character }) {
                 border: '1px solid rgba(255,255,255,0.06)',
                 boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.03)',
               }}>
-                <div className="text-[10px] text-[#807953] uppercase tracking-widest mb-1.5 font-medium">
+                <div className="text-[10px] app-text-faint uppercase tracking-widest mb-1.5 font-medium">
                   {ABILITY_ABBR[key]}
                 </div>
-                <div className="text-2xl font-bold text-white">{detail.total}</div>
+                <div className="text-2xl font-bold app-text">{detail.total}</div>
                 <div className="text-sm font-bold mt-0.5" style={{ color: detail.modifier >= 0 ? '#22c55e' : '#ef4444' }}>
                   {formatModifier(detail.modifier)}
                 </div>
@@ -202,10 +248,10 @@ function GeneralTab({ character }: { character: Character }) {
               <div key={key} className="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-white/[.03] transition-all duration-200">
                 <div className="flex items-center gap-2.5">
                   <span className={`w-2 h-2 rounded-full transition-all ${isProficient ? 'bg-[#22c55e] shadow-[0_0_6px_rgba(34,197,94,0.4)]' : 'bg-[#514D35]'}`}></span>
-                  <span className="text-sm text-[#AAA37B]">{skill.nombre}</span>
-                  <span className="text-[9px] text-[#807953] uppercase tracking-wider">({ABILITY_ABBR[skill.habilidad]})</span>
+                  <span className="text-sm app-text-muted">{skill.nombre}</span>
+                  <span className="text-[9px] app-text-faint uppercase tracking-wider">({ABILITY_ABBR[skill.habilidad]})</span>
                 </div>
-                <span className={`text-sm font-bold ${bonus >= 0 ? 'text-white' : 'text-red-400'}`}>
+                <span className={`text-sm font-bold ${bonus >= 0 ? 'app-text' : 'text-red-400'}`}>
                   {formatModifier(bonus)}
                 </span>
               </div>
@@ -230,9 +276,9 @@ function GeneralTab({ character }: { character: Character }) {
               }}>
                 <div className="flex items-center gap-2.5">
                   <span className={`w-2 h-2 rounded-full ${save.proficient ? 'bg-[#22c55e] shadow-[0_0_6px_rgba(34,197,94,0.4)]' : 'bg-[#514D35]'}`}></span>
-                  <span className="text-sm text-[#AAA37B]">{ABILITY_NAMES[key]}</span>
+                  <span className="text-sm app-text-muted">{ABILITY_NAMES[key]}</span>
                 </div>
-                <span className="text-sm font-bold text-white">{formatModifier(bonus)}</span>
+                <span className="text-sm font-bold app-text">{formatModifier(bonus)}</span>
               </div>
             );
           })}
@@ -251,16 +297,16 @@ function GeneralTab({ character }: { character: Character }) {
                 border: '1px solid rgba(255,255,255,0.06)',
               }}>
                 <div className="flex items-center justify-between mb-1.5">
-                  <h4 className="text-sm font-semibold text-white">{trait.nombre}</h4>
+                  <h4 className="text-sm font-semibold app-text">{trait.nombre}</h4>
                   <span className="text-[9px] px-2.5 py-0.5 rounded-full uppercase tracking-wider font-medium" style={{
                     background: 'rgba(178,172,136,0.1)',
                     color: '#AAA37B',
                     border: '1px solid rgba(178,172,136,0.15)',
                   }}>{trait.origen}</span>
                 </div>
-                <p className="text-xs text-[#AAA37B] leading-relaxed">{trait.descripcion}</p>
+                <p className="text-xs app-text-muted leading-relaxed">{trait.descripcion}</p>
                 {trait.maxUses !== null && (
-                  <div className="mt-2.5 text-[10px] text-[#807953] font-medium">
+                  <div className="mt-2.5 text-[10px] app-text-faint font-medium">
                     Usos: {trait.currentUses}/{trait.maxUses}
                     {trait.recharge && ` (${trait.recharge === 'short_rest' ? 'Descanso corto' : trait.recharge === 'long_rest' ? 'Descanso largo' : 'Amanecer'})`}
                   </div>
@@ -322,8 +368,8 @@ function CombatTab({ character }: { character: Character }) {
       {/* HP */}
       <SectionCard title="Puntos de Golpe" icon="❤️">
         <div className="text-center mb-5">
-          <div className="text-5xl font-bold text-white">{character.hp.current}</div>
-          <div className="text-sm text-[#AAA37B] mt-1">/ {character.hp.max} PG</div>
+          <div className="text-5xl font-bold app-text">{character.hp.current}</div>
+          <div className="text-sm app-text-muted mt-1">/ {character.hp.max} PG</div>
           {character.hp.temp > 0 && (
             <div className="text-sm text-[#3b82f6] mt-1 font-medium">+{character.hp.temp} temporales</div>
           )}
@@ -341,23 +387,23 @@ function CombatTab({ character }: { character: Character }) {
       <SectionCard title="Movimiento y Muerte" icon="💀">
         <div className="grid grid-cols-2 gap-3 mb-5">
           <div className="dymes-stat-pill">
-            <div className="text-lg font-bold text-white">{character.speed.walk} pies</div>
-            <div className="text-[9px] text-[#807953] uppercase tracking-widest font-medium">Velocidad</div>
+            <div className="text-lg font-bold app-text">{character.speed.walk} pies</div>
+            <div className="text-[9px] app-text-faint uppercase tracking-widest font-medium">Velocidad</div>
           </div>
           <div className="dymes-stat-pill">
-            <div className="text-lg font-bold text-white">{character.hitDice.remaining}/{character.hitDice.total}</div>
-            <div className="text-[9px] text-[#807953] uppercase tracking-widest font-medium">Dados ({character.hitDice.die})</div>
+            <div className="text-lg font-bold app-text">{character.hitDice.remaining}/{character.hitDice.total}</div>
+            <div className="text-[9px] app-text-faint uppercase tracking-widest font-medium">Dados ({character.hitDice.die})</div>
           </div>
         </div>
         <div className="flex items-center justify-center gap-8 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
           <div className="text-center">
             <div className="text-sm text-[#22c55e] font-bold">{character.deathSaves.successes}/3</div>
-            <div className="text-[10px] text-[#807953] mt-0.5">Éxitos</div>
+            <div className="text-[10px] app-text-faint mt-0.5">Éxitos</div>
           </div>
           <div className="w-px h-8" style={{ background: 'linear-gradient(180deg, transparent, rgba(81,77,53,0.4), transparent)' }} />
           <div className="text-center">
             <div className="text-sm text-[#ef4444] font-bold">{character.deathSaves.failures}/3</div>
-            <div className="text-[10px] text-[#807953] mt-0.5">Fallos</div>
+            <div className="text-[10px] app-text-faint mt-0.5">Fallos</div>
           </div>
         </div>
       </SectionCard>
@@ -393,7 +439,7 @@ function CombatTab({ character }: { character: Character }) {
                 background: 'linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))',
                 border: '1px solid rgba(255,255,255,0.06)',
               }}>
-                <span className="text-sm text-white capitalize font-medium">{dm.type}</span>
+                <span className="text-sm app-text capitalize font-medium">{dm.type}</span>
                 <span className="text-[10px] px-3 py-1 rounded-full uppercase tracking-wider font-semibold" style={{
                   background: dm.modifier === 'resistance' ? 'rgba(59,130,246,0.12)' : dm.modifier === 'immunity' ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.12)',
                   color: dm.modifier === 'resistance' ? '#3b82f6' : dm.modifier === 'immunity' ? '#22c55e' : '#ef4444',
@@ -412,16 +458,21 @@ function CombatTab({ character }: { character: Character }) {
 
 // ─── Placeholder tabs ────────────────────────────────────────────────
 
-function SpellsTab({ character }: { character: Character }) {
+function AbilitiesTab({ character }: { character: Character }) {
   return (
-    <SectionCard title="Hechizos" icon="✨">
-      <EmptyTabContent
-        icon="✨"
-        text={character.knownSpellIds.length > 0
-          ? `${character.knownSpellIds.length} hechizos conocidos, ${character.preparedSpellIds.length} preparados`
-          : 'Sin hechizos. Este personaje no es un lanzador o aún no ha aprendido ninguno.'}
-      />
-    </SectionCard>
+    <div className="grid lg:grid-cols-2 gap-6">
+      <SectionCard title="Hechizos" icon="✨">
+        <EmptyTabContent
+          icon="✨"
+          text={character.knownSpellIds.length > 0
+            ? `${character.knownSpellIds.length} hechizos conocidos, ${character.preparedSpellIds.length} preparados`
+            : 'Sin hechizos. Este personaje no es un lanzador o aún no ha aprendido ninguno.'}
+        />
+      </SectionCard>
+      <SectionCard title="Rasgos de clase" icon="⚡">
+        <EmptyTabContent icon="⚡" text="Los rasgos de clase aparecerán aquí conforme subas de nivel." />
+      </SectionCard>
+    </div>
   );
 }
 
@@ -446,7 +497,7 @@ function NotesTab({ character }: { character: Character }) {
 function SectionCard({ title, icon, children }: { title: string; icon: string; children: React.ReactNode }) {
   return (
     <div className="dymes-section-card">
-      <h3 className="flex items-center gap-2.5 text-base font-display font-semibold text-[#CDC9B2] mb-5">
+      <h3 className="flex items-center gap-2.5 text-base font-display font-semibold app-text-secondary mb-5">
         <span>{icon}</span>
         {title}
       </h3>
@@ -464,7 +515,7 @@ function EmptyTabContent({ icon, text }: { icon: string; text: string }) {
       }}>
         <span className="text-2xl opacity-60">{icon}</span>
       </div>
-      <p className="text-sm text-[#807953] max-w-xs mx-auto leading-relaxed">{text}</p>
+      <p className="text-sm app-text-faint max-w-xs mx-auto leading-relaxed">{text}</p>
     </div>
   );
 }
@@ -475,8 +526,8 @@ function PersonalityField({ label, value }: { label: string; value: string }) {
       background: 'linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))',
       border: '1px solid rgba(255,255,255,0.06)',
     }}>
-      <div className="text-[10px] text-[#807953] uppercase tracking-widest mb-1.5 font-medium">{label}</div>
-      <p className="text-sm text-[#AAA37B] leading-relaxed">{value}</p>
+      <div className="text-[10px] app-text-faint uppercase tracking-widest mb-1.5 font-medium">{label}</div>
+      <p className="text-sm app-text-muted leading-relaxed">{value}</p>
     </div>
   );
 }
@@ -484,13 +535,13 @@ function PersonalityField({ label, value }: { label: string; value: string }) {
 function ProficiencyGroup({ label, items }: { label: string; items: string[] }) {
   return (
     <div>
-      <div className="text-[10px] text-[#807953] uppercase tracking-widest mb-2 font-medium">{label}</div>
+      <div className="text-[10px] app-text-faint uppercase tracking-widest mb-2 font-medium">{label}</div>
       <div className="flex flex-wrap gap-1.5">
         {items.map(item => (
           <span key={item} className="text-xs px-2.5 py-1 rounded-lg" style={{
             background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))',
             border: '1px solid rgba(255,255,255,0.08)',
-            color: '#CDC9B2',
+            color: 'var(--app-text-secondary)',
           }}>
             {item}
           </span>

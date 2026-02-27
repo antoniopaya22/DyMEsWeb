@@ -37,14 +37,14 @@ const searchData = [
   ...RACES.map(r => ({ nombre: r.nombre, icon: r.icon, category: 'Raza', url: `/compendio/razas/${r.id}` })),
   ...CLASSES.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Clase', url: `/compendio/clases/${c.id}` })),
   ...BACKGROUNDS.map(b => ({ nombre: b.nombre, icon: b.icon, category: 'Trasfondo', url: `/compendio/trasfondos/${b.id}` })),
-  ...CANTRIPS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Truco', url: `/compendio/conjuros#spell-${s.id}` })),
-  ...ALL_SPELLS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Conjuro', url: `/compendio/conjuros#spell-${s.id}` })),
+  ...CANTRIPS.map(s => ({ nombre: s.nombre, icon: 'fa-solid fa-wand-sparkles', category: 'Truco', url: `/compendio/conjuros#spell-${s.id}` })),
+  ...ALL_SPELLS.map(s => ({ nombre: s.nombre, icon: 'fa-solid fa-wand-sparkles', category: 'Conjuro', url: `/compendio/conjuros#spell-${s.id}` })),
   ...CONDITIONS.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Condición', url: `/compendio/reglas#cond-${c.id}` })),
   ...DAMAGE_TYPES.map(d => ({ nombre: d.nombre, icon: d.icon, category: 'Tipo de daño', url: `/compendio/reglas#tipos-dano` })),
-  { nombre: 'Combate', icon: '⚔️', category: 'Reglas', url: '/compendio/reglas#combate' },
-  { nombre: 'Descansos', icon: '🛏️', category: 'Reglas', url: '/compendio/reglas#descansos' },
-  { nombre: 'Pruebas de Característica', icon: '🎯', category: 'Reglas', url: '/compendio/reglas#pruebas' },
-  { nombre: 'Puntuaciones de Característica', icon: '🎲', category: 'Reglas', url: '/compendio/reglas#caracteristicas' },
+  { nombre: 'Combate', icon: 'fa-solid fa-shield-halved', category: 'Reglas', url: '/compendio/reglas#combate' },
+  { nombre: 'Descansos', icon: 'fa-solid fa-bed', category: 'Reglas', url: '/compendio/reglas#descansos' },
+  { nombre: 'Pruebas de Característica', icon: 'fa-solid fa-crosshairs', category: 'Reglas', url: '/compendio/reglas#pruebas' },
+  { nombre: 'Puntuaciones de Característica', icon: 'fa-solid fa-dice-d20', category: 'Reglas', url: '/compendio/reglas#caracteristicas' },
 ];
 
 // Determine current page path for active nav highlighting
@@ -56,6 +56,9 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
   <!-- ─── Top Header Bar ─── -->
   <header class="docs-header">
     <div class="docs-header-inner">
+      <button id="sidebar-toggle" class="docs-header-burger lg:hidden" type="button" aria-label="Abrir menú">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
       <a href="/" class="docs-logo">
         <img src="/favicon.svg" alt="" class="w-6 h-6" />
         <span class="font-display font-bold text-[14px] text-[#272519]">DyMEs</span>
@@ -74,10 +77,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
     </div>
   </header>
 
-  <!-- ─── Mobile sidebar toggle ─── -->
-  <button id="sidebar-toggle" class="docs-sidebar-toggle lg:hidden" type="button" aria-label="Abrir menú">
-    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-  </button>
+
 
   <!-- ─── Backdrop ─── -->
   <div id="sidebar-backdrop" class="docs-backdrop hidden lg:hidden"></div>
@@ -92,7 +92,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
         <!-- Sidebar header -->
         <div class="docs-sidebar-header">
           <div class="flex items-center gap-2">
-            <span class="text-lg">📚</span>
+            <i class="fa-solid fa-book-open text-sm text-[#8f3d38]"></i>
             <div>
               <div class="text-[13px] font-display font-bold text-[#272519]">Compendio SRD</div>
               <div class="text-[10px] text-[#978F62] tracking-wide">D&D 5e · Español</div>
@@ -113,7 +113,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           <div class="docs-nav-group">
             <button class="docs-nav-group-btn" data-section="razas" data-active={section === 'razas' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
-                <span class="text-sm">🧝</span>
+                <i class="fa-solid fa-users text-sm"></i>
                 <span>Razas</span>
               </span>
               <span class="flex items-center gap-1.5">
@@ -135,7 +135,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           <div class="docs-nav-group">
             <button class="docs-nav-group-btn" data-section="clases" data-active={section === 'clases' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
-                <span class="text-sm">⚔️</span>
+                <i class="fa-solid fa-shield-halved text-sm"></i>
                 <span>Clases</span>
               </span>
               <span class="flex items-center gap-1.5">
@@ -157,7 +157,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           <div class="docs-nav-group">
             <button class="docs-nav-group-btn" data-section="trasfondos" data-active={section === 'trasfondos' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
-                <span class="text-sm">📖</span>
+                <i class="fa-solid fa-scroll text-sm"></i>
                 <span>Trasfondos</span>
               </span>
               <span class="flex items-center gap-1.5">
@@ -179,7 +179,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           <div class="docs-nav-group">
             <button class="docs-nav-group-btn" data-section="conjuros" data-active={section === 'conjuros' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
-                <span class="text-sm">✨</span>
+                <i class="fa-solid fa-wand-sparkles text-sm"></i>
                 <span>Conjuros</span>
               </span>
               <span class="flex items-center gap-1.5">
@@ -201,7 +201,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
           <div class="docs-nav-group">
             <button class="docs-nav-group-btn" data-section="reglas" data-active={section === 'reglas' ? 'true' : 'false'} type="button">
               <span class="flex items-center gap-2">
-                <span class="text-sm">📐</span>
+                <i class="fa-solid fa-scale-balanced text-sm"></i>
                 <span>Reglas</span>
               </span>
               <span class="flex items-center gap-1.5">
@@ -295,7 +295,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       </div>
       <div id="search-results" class="docs-search-results">
         <div class="docs-search-empty">
-          <span class="text-2xl mb-2">🔍</span>
+          <i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-[#978F62]"></i>
           <span class="text-[13px] text-[#978F62]">Escribe para buscar en el compendio</span>
         </div>
       </div>
@@ -344,16 +344,17 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       margin-left: auto; flex-shrink: 0;
     }
 
-    /* ─── Mobile toggle ─── */
-    .docs-sidebar-toggle {
-      position: fixed; bottom: 1.25rem; right: 1.25rem; z-index: 45;
-      width: 48px; height: 48px; border-radius: 14px;
-      background: #8f3d38; color: white; border: none;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(143, 61, 56, 0.35);
-      cursor: pointer; transition: all 0.2s;
+    /* ─── Mobile header burger ─── */
+    .docs-header-burger {
+      display: none; align-items: center; justify-content: center;
+      background: none; border: none; cursor: pointer;
+      color: #555137; padding: 0.35rem; border-radius: 8px;
+      transition: all 0.15s; flex-shrink: 0;
     }
-    .docs-sidebar-toggle:hover { transform: scale(1.05); }
+    .docs-header-burger:hover { color: #272519; background: rgba(39,37,25,0.06); }
+    @media (max-width: 1023px) {
+      .docs-header-burger { display: flex; }
+    }
 
     .docs-backdrop {
       position: fixed; inset: 0; z-index: 35;
@@ -977,7 +978,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
 
     function renderResults(q: string) {
       if (!q.trim()) {
-        searchResults.innerHTML = '<div class="docs-search-empty"><span class="text-2xl mb-2">🔍</span><span class="text-[13px] text-[#978F62]">Escribe para buscar en el compendio</span></div>';
+        searchResults.innerHTML = '<div class="docs-search-empty"><i class="fa-solid fa-magnifying-glass text-2xl mb-2 text-[#978F62]"></i><span class="text-[13px] text-[#978F62]">Escribe para buscar en el compendio</span></div>';
         return;
       }
       const lower = q.toLowerCase();
@@ -988,7 +989,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, '');
       }
       searchResults.innerHTML = matches.map((m, i) =>
         '<a href="' + m.url + '" class="docs-search-result' + (i === 0 ? ' focused' : '') + '" data-idx="' + i + '">' +
-          '<span class="docs-search-result-icon">' + m.icon + '</span>' +
+          '<span class="docs-search-result-icon"><i class="' + m.icon + '"></i></span>' +
           '<div>' +
             '<div class="docs-search-result-name">' + m.nombre + '</div>' +
             '<div class="docs-search-result-cat">' + m.category + '</div>' +

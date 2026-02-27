@@ -14,7 +14,7 @@ export interface Background {
 }
 
 export const BACKGROUNDS: Background[] = [
-  { id: 'acolito', nombre: 'Acólito', icon: '⛪',
+  { id: 'acolito', nombre: 'Acólito', icon: 'fa-solid fa-church',
     descripcion: 'Has dedicado tu vida al servicio de un templo consagrado a un dios o a un panteón concretos. Intermedias entre el reino de lo sagrado y el mundo mortal, y realizas rituales religiosos y ofreces sacrificios para que los fieles puedan ser partícipes de la presencia divina.',
     details: [
       { label: 'Habilidades', value: 'Perspicacia, Religión' },
@@ -24,7 +24,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Mereces el respeto de todos los que profesan tu fe. Puedes esperar sanación y cuidados sin coste en templos de tu fe, y tienes residencia en un templo con el que tengas lazos.',
   },
-  { id: 'charlatan', nombre: 'Charlatán', icon: '🎭',
+  { id: 'charlatan', nombre: 'Charlatán', icon: 'fa-solid fa-masks-theater',
     descripcion: 'Siempre has tenido facilidad para tratar con la gente. Sabes qué les hace reír, puedes dirigir sus emociones, y usas el ingenio para engañar y salir de apuros.',
     details: [
       { label: 'Habilidades', value: 'Engaño, Juego de manos' },
@@ -34,7 +34,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Has creado una segunda identidad con documentación, contactos y disfraces. Puedes falsificar documentos y credenciales oficiales.',
   },
-  { id: 'criminal', nombre: 'Criminal', icon: '🔓',
+  { id: 'criminal', nombre: 'Criminal', icon: 'fa-solid fa-lock-open',
     descripcion: 'Eres un delincuente experimentado con un historial de infringir la ley. Estás familiarizado con el mundo del asesinato, el robo y la violencia del submundo.',
     details: [
       { label: 'Habilidades', value: 'Engaño, Sigilo' },
@@ -44,7 +44,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Tienes un contacto fiable que actúa como enlace con una red criminal. Sabes cómo enviar y recibir mensajes a través de mensajeros, caravanas corruptas y marineros sospechosos.',
   },
-  { id: 'artista', nombre: 'Artista', icon: '🎪',
+  { id: 'artista', nombre: 'Artista', icon: 'fa-solid fa-palette',
     descripcion: 'Prosperas frente al público. Sabes cómo cautivar, entretener e incluso inspirar. Tu poesía, tu música o tus danzas pueden conmover los corazones de quienes escuchan.',
     details: [
       { label: 'Habilidades', value: 'Acrobacias, Interpretación' },
@@ -54,7 +54,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Siempre encontrarás un lugar donde actuar. Cuando actúas, puedes conseguir alojamiento y comida gratis de un nivel modesto o cómodo, siempre y cuando actúes cada noche.',
   },
-  { id: 'heroe_popular', nombre: 'Héroe Popular', icon: '🦸',
+  { id: 'heroe_popular', nombre: 'Héroe Popular', icon: 'fa-solid fa-star',
     descripcion: 'Provienes de un entorno humilde pero estás destinado a mucho más. Tu gente ya te considera un héroe: alguien que se levantó contra la tiranía o defendió a los indefensos.',
     details: [
       { label: 'Habilidades', value: 'Trato con animales, Supervivencia' },
@@ -64,7 +64,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Como vienes del pueblo llano, encajas perfectamente entre ellos. Puedes encontrar cobijo, comida y un lugar donde esconderte entre la gente corriente, que te protegerán de la ley o de cualquiera que te busque, siempre y que no pongas en peligro a nadie.',
   },
-  { id: 'ermitano', nombre: 'Ermitaño', icon: '🏔️',
+  { id: 'ermitano', nombre: 'Ermitaño', icon: 'fa-solid fa-mountain',
     descripcion: 'Has vivido en reclusión durante gran parte de tu vida, ya sea en una comunidad aislada, en la naturaleza o meditando en un templo solitario. Es un tiempo para la reflexión y el descubrimiento espiritual.',
     details: [
       { label: 'Habilidades', value: 'Medicina, Religión' },
@@ -75,7 +75,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'La naturaleza tranquila de tu reclusión te ha dado acceso a un descubrimiento único e importante. Puede ser una gran verdad sobre el cosmos, los dioses, los seres de los planos exteriores o las fuerzas de la naturaleza.',
   },
-  { id: 'noble', nombre: 'Noble', icon: '👑',
+  { id: 'noble', nombre: 'Noble', icon: 'fa-solid fa-crown',
     descripcion: 'Comprendes la riqueza, el poder y los privilegios. Llevas un título nobiliario y tu familia posee tierras, recauda impuestos y ejerce una influencia política significativa.',
     details: [
       { label: 'Habilidades', value: 'Historia, Persuasión' },
@@ -86,7 +86,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Gracias a tu noble cuna, la gente tiende a pensar lo mejor de ti. Eres bienvenido en la alta sociedad y la gente asume que tienes derecho a estar dondequiera que vayas. La gente común te trata con respeto y la nobleza te reconoce como igual.',
   },
-  { id: 'forajido', nombre: 'Forajido', icon: '🌲',
+  { id: 'forajido', nombre: 'Forajido', icon: 'fa-solid fa-campground',
     descripcion: 'Creciste en la naturaleza, lejos de la civilización y de las comodidades de la ciudad. Has observado la migración de las manadas y sobrevivido a los elementos durante estaciones enteras.',
     details: [
       { label: 'Habilidades', value: 'Atletismo, Supervivencia' },
@@ -97,7 +97,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Tienes una memoria excelente para los mapas y la geografía. Siempre recuerdas la disposición general del terreno, los asentamientos y otros elementos a tu alrededor. Además, puedes encontrar comida y agua fresca para ti y hasta cinco personas cada día, siempre que la tierra lo permita.',
   },
-  { id: 'sabio', nombre: 'Sabio', icon: '📚',
+  { id: 'sabio', nombre: 'Sabio', icon: 'fa-solid fa-book',
     descripcion: 'Has dedicado años de tu vida al estudio del multiverso. Has escudriñado manuscritos, estudiado pergaminos y escuchado a los mayores expertos en los temas que te interesan.',
     details: [
       { label: 'Habilidades', value: 'Arcanos, Historia' },
@@ -107,7 +107,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Cuando intentas aprender o recordar información, si no la sabes, a menudo sabes dónde y de quién puedes obtenerla. Normalmente esta información viene de una biblioteca, un scriptorio, una universidad o un sabio. Tu GM puede dictaminar que el conocimiento que buscas está en un lugar prácticamente inaccesible.',
   },
-  { id: 'marinero', nombre: 'Marinero', icon: '⚓',
+  { id: 'marinero', nombre: 'Marinero', icon: 'fa-solid fa-anchor',
     descripcion: 'Has navegado durante años y has resistido tormentas terribles. Has explorado aguas que la mayoría no se atrevería a navegar.',
     details: [
       { label: 'Habilidades', value: 'Atletismo, Percepción' },
@@ -117,7 +117,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Cuando lo necesites, puedes asegurarte un pasaje gratis en un barco para ti y tus compañeros. Puede que viajes en el barco en el que servías o en otro con una tripulación que te conozca. A cambio, se espera que ayudes con las tareas del barco.',
   },
-  { id: 'soldado', nombre: 'Soldado', icon: '🎖️',
+  { id: 'soldado', nombre: 'Soldado', icon: 'fa-solid fa-medal',
     descripcion: 'Pasaste años sirviendo en la milicia o en un ejército mercenario. Estás entrenado en el uso de las armas, has soportado marchas extenuantes y sabes cómo sobrevivir en el campo de batalla.',
     details: [
       { label: 'Habilidades', value: 'Atletismo, Intimidación' },
@@ -127,7 +127,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Tu rango militar te otorga cierta influencia. Los soldados leales a tu antiguo ejército te reconocen y te respetan. Puedes invocar tu rango para obtener acceso temporal a instalaciones militares y ejercer influencia sobre soldados de rango inferior.',
   },
-  { id: 'pilluelo', nombre: 'Pilluelo', icon: '🐀',
+  { id: 'pilluelo', nombre: 'Pilluelo', icon: 'fa-solid fa-street-view',
     descripcion: 'Creciste en las calles, solo, huérfano y pobre. No tuviste a nadie que velara por ti ni recursos a los que recurrir, así que aprendiste a valerte por ti mismo.',
     details: [
       { label: 'Habilidades', value: 'Juego de manos, Sigilo' },
@@ -137,7 +137,7 @@ export const BACKGROUNDS: Background[] = [
     ],
     rasgoDesc: 'Conoces los pasajes secretos, los callejones traseros y las rutas alternativas de tu ciudad. Puedes encontrar el camino más rápido a través de las calles y guiar a tu grupo a una velocidad de viaje doble entre dos ubicaciones dentro de la ciudad.',
   },
-  { id: 'guildartisan', nombre: 'Artesano Gremial', icon: '🔨',
+  { id: 'guildartisan', nombre: 'Artesano Gremial', icon: 'fa-solid fa-gavel',
     descripcion: 'Eres miembro de un gremio de artesanos y dominas un conjunto de habilidades especiales. Empezaste como aprendiz bajo un artesano maestro y aprendiste los secretos de tu oficio.',
     details: [
       { label: 'Habilidades', value: 'Perspicacia, Persuasión' },

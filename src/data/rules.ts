@@ -96,7 +96,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'agarrado',
     nombre: 'Agarrado',
-    icon: '🤲',
+    icon: 'fa-solid fa-hand',
     descripcion: 'Una criatura agarrada ve su velocidad reducida a 0 y no se beneficia de ningún bonificador a la velocidad.',
     efectos: [
       'Tu velocidad se convierte en 0 y no puedes beneficiarte de bonificadores a la velocidad.',
@@ -107,7 +107,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'asustado',
     nombre: 'Asustado',
-    icon: '😨',
+    icon: 'fa-solid fa-ghost',
     descripcion: 'Una criatura asustada tiene desventaja en pruebas de característica y tiradas de ataque mientras pueda ver la fuente de su miedo.',
     efectos: [
       'Desventaja en pruebas de característica y tiradas de ataque mientras la fuente del miedo esté a la vista.',
@@ -117,7 +117,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'aturdido',
     nombre: 'Aturdido',
-    icon: '💫',
+    icon: 'fa-solid fa-face-dizzy',
     descripcion: 'Una criatura aturdida está incapacitada, no puede moverse y solo habla con dificultad.',
     efectos: [
       'Estás incapacitado, no puedes moverte y solo hablas con dificultad.',
@@ -128,7 +128,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'cegado',
     nombre: 'Cegado',
-    icon: '🙈',
+    icon: 'fa-solid fa-eye-slash',
     descripcion: 'Una criatura cegada no puede ver y falla automáticamente cualquier prueba que requiera visión.',
     efectos: [
       'Fallas automáticamente cualquier prueba que requiera visión.',
@@ -139,7 +139,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'derribado',
     nombre: 'Derribado',
-    icon: '🤸',
+    icon: 'fa-solid fa-person-falling',
     descripcion: 'Una criatura derribada solo puede arrastrarse, a menos que se levante terminando la condición.',
     efectos: [
       'Solo puedes moverte arrastrándote, a menos que te levantes y termines la condición.',
@@ -150,7 +150,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'ensordecido',
     nombre: 'Ensordecido',
-    icon: '🔇',
+    icon: 'fa-solid fa-volume-xmark',
     descripcion: 'Una criatura ensordecida no puede oír y falla automáticamente cualquier prueba que requiera oído.',
     efectos: [
       'No puedes oír.',
@@ -160,7 +160,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'envenenado',
     nombre: 'Envenenado',
-    icon: '🤢',
+    icon: 'fa-solid fa-biohazard',
     descripcion: 'Una criatura envenenada tiene desventaja en tiradas de ataque y pruebas de característica.',
     efectos: [
       'Desventaja en tiradas de ataque.',
@@ -170,7 +170,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'hechizado',
     nombre: 'Hechizado',
-    icon: '💝',
+    icon: 'fa-solid fa-heart',
     descripcion: 'Una criatura hechizada no puede atacar al encantador ni elegirlo como objetivo de habilidades o efectos mágicos dañinos.',
     efectos: [
       'No puedes atacar al encantador ni elegirlo como objetivo de habilidades o efectos mágicos dañinos.',
@@ -180,7 +180,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'incapacitado',
     nombre: 'Incapacitado',
-    icon: '🚫',
+    icon: 'fa-solid fa-ban',
     descripcion: 'Una criatura incapacitada no puede llevar a cabo acciones ni reacciones.',
     efectos: [
       'No puedes llevar a cabo acciones ni reacciones.',
@@ -189,7 +189,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'inconsciente',
     nombre: 'Inconsciente',
-    icon: '😵',
+    icon: 'fa-solid fa-bed-pulse',
     descripcion: 'Una criatura inconsciente está incapacitada, no puede moverse ni hablar, y no percibe lo que le rodea.',
     efectos: [
       'Estás incapacitado, no puedes moverte ni hablar, y no percibir nada.',
@@ -202,7 +202,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'invisible',
     nombre: 'Invisible',
-    icon: '👻',
+    icon: 'fa-solid fa-eye-low-vision',
     descripcion: 'Una criatura invisible es imposible de ver sin la ayuda de magia o sentidos especiales.',
     efectos: [
       'Eres imposible de ver sin la ayuda de magia o sentidos especiales.',
@@ -214,7 +214,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'paralizado',
     nombre: 'Paralizado',
-    icon: '🧊',
+    icon: 'fa-solid fa-snowflake',
     descripcion: 'Una criatura paralizada está incapacitada y no puede moverse ni hablar.',
     efectos: [
       'Estás incapacitado y no puedes moverte ni hablar.',
@@ -226,7 +226,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'petrificado',
     nombre: 'Petrificado',
-    icon: '🗿',
+    icon: 'fa-solid fa-gem',
     descripcion: 'Una criatura petrificada se transforma, junto con los objetos no mágicos que lleve, en una sustancia sólida inanimada.',
     efectos: [
       'Te transformas en una sustancia sólida inanimada (normalmente piedra). Tu peso se multiplica por diez.',
@@ -251,7 +251,7 @@ export const CONDITIONS: Condition[] = [
   {
     id: 'cansancio',
     nombre: 'Cansancio (Agotamiento)',
-    icon: '😫',
+    icon: 'fa-solid fa-battery-quarter',
     descripcion: 'El agotamiento se mide en seis niveles acumulables. Cada nivel tiene efectos cada vez más severos.',
     efectos: [
       'Nivel 1: Desventaja en pruebas de característica.',
@@ -278,49 +278,49 @@ export const COMBAT_RULES: CombatRule[] = [
   {
     id: 'iniciativa',
     titulo: 'Iniciativa',
-    icon: '⚡',
+    icon: 'fa-solid fa-bolt',
     contenido: 'Al comenzar el combate, cada participante hace una prueba de Destreza para determinar el orden de turno. El resultado es tu puntuación de iniciativa. El GM ordena a todos de mayor a menor. En caso de empate, el GM decide (normalmente, empate entre jugadores lo deciden ellos).',
   },
   {
     id: 'turno',
     titulo: 'Tu turno en combate',
-    icon: '🔄',
+    icon: 'fa-solid fa-rotate',
     contenido: 'En tu turno puedes: moverte una distancia igual o menor a tu velocidad, realizar una acción (Atacar, Lanzar un conjuro, Esquivar, Disparar, Ayudar, Esconderte, Preparar, Desactivar, Usar objeto), y opcionalmente una acción adicional si tienes algún rasgo que la otorgue. También puedes llevar a cabo una interacción gratuita con el entorno (abrir una puerta, desenvainar un arma).',
   },
   {
     id: 'ataque',
     titulo: 'Tirada de ataque',
-    icon: '🎯',
+    icon: 'fa-solid fa-crosshairs',
     contenido: 'Para determinar si un ataque acierta: tira 1d20 + modificador de característica + bonificador de competencia (si eres competente con el arma o conjuro). Si el resultado iguala o supera la CA (Clase de Armadura) del objetivo, el ataque impacta. Un 20 natural es siempre un golpe crítico (doble dados de daño). Un 1 natural es siempre un fallo.',
   },
   {
     id: 'dano',
     titulo: 'Tirada de daño',
-    icon: '💥',
+    icon: 'fa-solid fa-burst',
     contenido: 'Si un ataque impacta, tira los dados de daño del arma o conjuro y suma el modificador correspondiente. Los ataques cuerpo a cuerpo suman FUE mod (o DES si es un arma sutil). Los ataques a distancia suman DES mod. Los conjuros usan su propia fórmula de daño. En un golpe crítico, tiras todos los dados de daño del ataque dos veces.',
   },
   {
     id: 'cobertura',
     titulo: 'Cobertura',
-    icon: '🛡️',
+    icon: 'fa-solid fa-shield',
     contenido: 'Media cobertura: +2 a CA y salvaciones de DES (muro bajo, mueble). Tres cuartos de cobertura: +5 a CA y salvaciones de DES (reja de hierro, tronera). Cobertura total: no puedes ser objetivo directo de ataques o conjuros, aunque puedes ser alcanzado por áreas de efecto.',
   },
   {
     id: 'reacciones',
     titulo: 'Reacciones',
-    icon: '⚔️',
+    icon: 'fa-solid fa-arrow-rotate-left',
     contenido: 'Algunos rasgos y conjuros te permiten realizar una reacción: una respuesta instantánea al turno de otro. El ejemplo más común es el ataque de oportunidad: cuando una criatura hostil sale de tu alcance, puedes hacer un ataque cuerpo a cuerpo contra ella. Solo puedes usar una reacción por ronda, y se recupera al inicio de tu turno.',
   },
   {
     id: 'muerte',
     titulo: 'Salvaciones de muerte',
-    icon: '💀',
+    icon: 'fa-solid fa-skull',
     contenido: 'Cuando caes a 0 PG, caes inconsciente y comienzas a hacer tiradas de salvación de muerte al inicio de cada turno: tira 1d20. Con 10+ es un éxito, con 9 o menos es un fracaso. 3 éxitos = te estabilizas (con 0 PG). 3 fracasos = mueres. Un 20 natural te deja con 1 PG. Un 1 natural cuenta como 2 fracasos. Si recibes daño a 0 PG, sumas un fracaso (o 2 si es un crítico).',
   },
   {
     id: 'acciones_combate',
     titulo: 'Acciones en combate',
-    icon: '📋',
+    icon: 'fa-solid fa-list-check',
     contenido: 'Atacar: realiza uno o más ataques con arma o desarmados. Lanzar un conjuro: usa tu acción para lanzar un conjuro con tiempo de 1 acción. Esquivar: todo ataque contra ti tiene desventaja y tus salvaciones de DES tienen ventaja. Desactivar: intentas derribar, agarrar o empujar a un oponente. Ayudar: el siguiente ataque de un aliado tiene ventaja. Esconderte: haces una prueba de DES (Sigilo). Preparar: preparas una acción para actuar como reacción. Correr: duplicas tu velocidad por un turno. Usar un objeto: interactúas con un objeto.',
   },
 ];
@@ -340,7 +340,7 @@ export const REST_RULES: RestRule[] = [
   {
     id: 'corto',
     titulo: 'Descanso corto',
-    icon: '☕',
+    icon: 'fa-solid fa-mug-hot',
     duracion: 'Al menos 1 hora',
     beneficios: [
       'Puedes gastar Dados de Golpe para recuperar PG. Por cada dado gastado, tira el dado + CON mod.',
@@ -355,7 +355,7 @@ export const REST_RULES: RestRule[] = [
   {
     id: 'largo',
     titulo: 'Descanso largo',
-    icon: '🛏️',
+    icon: 'fa-solid fa-bed',
     duracion: 'Al menos 8 horas',
     beneficios: [
       'Recuperas todos los PG perdidos.',
@@ -381,17 +381,17 @@ export interface DamageType {
 }
 
 export const DAMAGE_TYPES: DamageType[] = [
-  { nombre: 'Ácido', icon: '🧪', descripcion: 'El aliento corrosivo de un dragón negro o un brebaje de veneno disuelve carne y materia.' },
-  { nombre: 'Contundente', icon: '🔨', descripcion: 'Fuerza bruta: mazas, caídas, garras de criaturas.' },
-  { nombre: 'Cortante', icon: '⚔️', descripcion: 'Espadas, hachas y garras que desgarran la carne.' },
-  { nombre: 'Frío', icon: '❄️', descripcion: 'El punzante frío infernal de un Rayo de escarcha o el aliento de un dragón blanco.' },
-  { nombre: 'Fuego', icon: '🔥', descripcion: 'Dragones rojos, Bola de fuego y muchas criaturas y conjuros volcánicos.' },
-  { nombre: 'Fuerza', icon: '✨', descripcion: 'Magia pura canalizada como energía destructiva, como Proyectil mágico.' },
-  { nombre: 'Necrótico', icon: '💀', descripcion: 'Magia que corrompe la fuerza vital, común en la nigromancia.' },
-  { nombre: 'Perforante', icon: '🏹', descripcion: 'Flechas, colmillos y ataques punzantes.' },
-  { nombre: 'Psíquico', icon: '🧠', descripcion: 'Ataques mentales que destruyen la mente desde dentro.' },
-  { nombre: 'Radiante', icon: '☀️', descripcion: 'Poder divino: Llama sagrada, rayos solares y castigos divinos.' },
-  { nombre: 'Relámpago', icon: '⚡', descripcion: 'Electricidad generada por conjuros como Relámpago o el aliento de un dragón azul.' },
-  { nombre: 'Trueno', icon: '🌩️', descripcion: 'Ondas de choque sónicas producidas por conjuros como Ola atronadora.' },
-  { nombre: 'Veneno', icon: '☠️', descripcion: 'Picaduras venenosas, gases letales y trampas emponzoñadas.' },
+  { nombre: 'Ácido', icon: 'fa-solid fa-flask', descripcion: 'El aliento corrosivo de un dragón negro o un brebaje de veneno disuelve carne y materia.' },
+  { nombre: 'Contundente', icon: 'fa-solid fa-gavel', descripcion: 'Fuerza bruta: mazas, caídas, garras de criaturas.' },
+  { nombre: 'Cortante', icon: 'fa-solid fa-scissors', descripcion: 'Espadas, hachas y garras que desgarran la carne.' },
+  { nombre: 'Frío', icon: 'fa-solid fa-temperature-low', descripcion: 'El punzante frío infernal de un Rayo de escarcha o el aliento de un dragón blanco.' },
+  { nombre: 'Fuego', icon: 'fa-solid fa-fire-flame-curved', descripcion: 'Dragones rojos, Bola de fuego y muchas criaturas y conjuros volcánicos.' },
+  { nombre: 'Fuerza', icon: 'fa-solid fa-hand-sparkles', descripcion: 'Magia pura canalizada como energía destructiva, como Proyectil mágico.' },
+  { nombre: 'Necrótico', icon: 'fa-solid fa-skull-crossbones', descripcion: 'Magia que corrompe la fuerza vital, común en la nigromancia.' },
+  { nombre: 'Perforante', icon: 'fa-solid fa-location-arrow', descripcion: 'Flechas, colmillos y ataques punzantes.' },
+  { nombre: 'Psíquico', icon: 'fa-solid fa-brain', descripcion: 'Ataques mentales que destruyen la mente desde dentro.' },
+  { nombre: 'Radiante', icon: 'fa-solid fa-sun', descripcion: 'Poder divino: Llama sagrada, rayos solares y castigos divinos.' },
+  { nombre: 'Relámpago', icon: 'fa-solid fa-bolt', descripcion: 'Electricidad generada por conjuros como Relámpago o el aliento de un dragón azul.' },
+  { nombre: 'Trueno', icon: 'fa-solid fa-cloud-bolt', descripcion: 'Ondas de choque sónicas producidas por conjuros como Ola atronadora.' },
+  { nombre: 'Veneno', icon: 'fa-solid fa-vial', descripcion: 'Picaduras venenosas, gases letales y trampas emponzoñadas.' },
 ];

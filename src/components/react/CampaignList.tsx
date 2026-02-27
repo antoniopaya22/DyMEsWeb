@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useCampaignStore } from '../../stores/campaignStore';
 import type { Campaign } from '../../types/campaign';
 
@@ -9,8 +9,54 @@ export default function CampaignList() {
   const [descripcion, setDescripcion] = useState('');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [search, setSearch] = useState('');
+  const createModalRef = useRef<HTMLDivElement>(null);
+  const deleteModalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { loadCampaigns(); }, []);
+
+  /* ── Focus trap helper ── */
+  const trapFocus = useCallback((e: KeyboardEvent, ref: React.RefObject<HTMLDivElement | null>) => {
+    if (e.key === 'Escape') {
+      setShowCreate(false);
+      setDeleteId(null);
+      return;
+    }
+    if (e.key !== 'Tab' || !ref.current) return;
+    const focusable = ref.current.querySelectorAll<HTMLElement>(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  }, []);
+
+  /* ── Auto-focus & attach trap when modals open ── */
+  useEffect(() => {
+    if (!showCreate) return;
+    const el = createModalRef.current;
+    if (!el) return;
+    const first = el.querySelector<HTMLElement>('input, button');
+    first?.focus();
+    const handler = (e: KeyboardEvent) => trapFocus(e, createModalRef);
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [showCreate, trapFocus]);
+
+  useEffect(() => {
+    if (!deleteId) return;
+    const el = deleteModalRef.current;
+    if (!el) return;
+    const first = el.querySelector<HTMLElement>('button');
+    first?.focus();
+    const handler = (e: KeyboardEvent) => trapFocus(e, deleteModalRef);
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [deleteId, trapFocus]);
 
   const filtered = campaigns.filter(c =>
     c.nombre.toLowerCase().includes(search.toLowerCase())
@@ -45,7 +91,7 @@ export default function CampaignList() {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
               <div className="flex items-center gap-2 mb-1.5">
-                <span className="text-xl">📖</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="app-text-faint" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
                 <p className="text-[11px] app-text-faint uppercase tracking-[0.2em]">Gestión de partidas</p>
               </div>
               <h1 className="text-2xl sm:text-3xl font-display font-bold app-text tracking-wide">Campañas</h1>
@@ -73,10 +119,11 @@ export default function CampaignList() {
               placeholder="Buscar campañas..."
               value={search}
               onChange={e => setSearch(e.target.value)}
+              aria-label="Buscar campañas"
               className="dymes-input !pl-11 max-w-sm"
             />
             {search && (
-              <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md app-text-faint transition-colors" style={{ background: 'transparent' }} onMouseEnter={e => { e.currentTarget.style.background = 'var(--app-hover-bg)'; }} onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}>
+              <button onClick={() => setSearch('')} aria-label="Limpiar búsqueda" className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md app-text-faint transition-colors hover:bg-[var(--app-hover-bg)]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
             )}
@@ -89,7 +136,7 @@ export default function CampaignList() {
       {loading && (
         <div className="flex flex-col items-center justify-center py-20 gap-4">
           <div className="relative">
-            <div className="w-12 h-12 rounded-full border-2 border-[#514D35] border-t-[#8f3d38] animate-spin" />
+            <div className="w-12 h-12 rounded-full border-2 border-[var(--app-text-faint)] border-t-[#8f3d38] animate-spin" />
           </div>
           <p className="text-sm app-text-faint">Cargando campañas...</p>
         </div>
@@ -106,7 +153,7 @@ export default function CampaignList() {
               background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.03))',
               border: '1px solid rgba(59,130,246,0.15)',
             }}>
-              <span className="text-3xl">🗺️</span>
+              <span className="text-3xl"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,0.5)" strokeWidth="1.5" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg></span>
             </div>
             <h3 className="text-xl font-display font-semibold app-text mb-2">Sin campañas todavía</h3>
             <p className="text-sm app-text-muted mb-8 max-w-sm mx-auto leading-relaxed">
@@ -144,7 +191,7 @@ export default function CampaignList() {
       {!loading && campaigns.length > 0 && filtered.length === 0 && (
         <div className="text-center py-16">
           <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'var(--app-input-bg)', border: '1px solid var(--app-input-border)' }}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#807953" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="app-text-faint"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </div>
           <p className="text-sm app-text-faint">No se encontraron campañas para "{search}"</p>
         </div>
@@ -154,16 +201,18 @@ export default function CampaignList() {
       {showCreate && (
         <div className="dymes-modal-overlay" onClick={() => setShowCreate(false)}>
           <div className="dymes-modal-backdrop" />
-          <div className="dymes-modal-card max-w-md animate-fade-in" onClick={e => e.stopPropagation()}>
+          <div ref={createModalRef} role="dialog" aria-modal="true" aria-labelledby="create-modal-title" className="dymes-modal-card max-w-md animate-fade-in" onClick={e => e.stopPropagation()}>
             <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(143,61,56,0.4), rgba(178,172,136,0.2), transparent)' }} />
 
             <div className="flex items-center gap-3 mb-6">
               <div className="w-10 h-10 rounded-xl flex items-center justify-center text-lg" style={{
                 background: 'linear-gradient(135deg, rgba(143,61,56,0.12), rgba(143,61,56,0.04))',
                 border: '1px solid rgba(143,61,56,0.2)',
-              }}>📖</div>
+              }}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="app-text-muted" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+              </div>
               <div>
-                <h2 className="text-lg font-display font-semibold app-text">Nueva Campaña</h2>
+                <h2 id="create-modal-title" className="text-lg font-display font-semibold app-text">Nueva Campaña</h2>
                 <p className="text-[11px] app-text-faint">Crea una nueva aventura</p>
               </div>
             </div>
@@ -212,7 +261,7 @@ export default function CampaignList() {
       {deleteId && (
         <div className="dymes-modal-overlay" onClick={() => setDeleteId(null)}>
           <div className="dymes-modal-backdrop" />
-          <div className="dymes-modal-card max-w-sm animate-fade-in" onClick={e => e.stopPropagation()}>
+          <div ref={deleteModalRef} role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" className="dymes-modal-card max-w-sm animate-fade-in" onClick={e => e.stopPropagation()}>
             <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(239,68,68,0.3), transparent)' }} />
 
             <div className="w-14 h-14 rounded-2xl mx-auto mb-5 flex items-center justify-center" style={{
@@ -221,7 +270,7 @@ export default function CampaignList() {
             }}>
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="1.5"><path d="M3 6h18M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
             </div>
-            <h3 className="text-lg font-display font-semibold app-text mb-2 text-center">¿Eliminar campaña?</h3>
+            <h3 id="delete-modal-title" className="text-lg font-display font-semibold app-text mb-2 text-center">¿Eliminar campaña?</h3>
             <p className="text-sm app-text-muted mb-6 text-center leading-relaxed">Esta acción no se puede deshacer. Se eliminará la campaña y sus datos asociados.</p>
             <div className="flex items-center justify-center gap-3">
               <button onClick={() => setDeleteId(null)} className="btn-ghost text-sm !px-5 !py-2.5 rounded-xl">Cancelar</button>
@@ -256,23 +305,8 @@ function CampaignCard({ campaign, index, onDelete }: { campaign: Campaign; index
 
   return (
     <div
-      className="group relative rounded-2xl border transition-all duration-300 overflow-hidden"
-      style={{
-        background: 'var(--app-card-gradient)',
-        borderColor: 'var(--app-border)',
-        boxShadow: 'var(--app-card-shadow)',
-        animationDelay: `${index * 0.05}s`,
-      }}
-      onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(59,130,246,0.25)';
-        e.currentTarget.style.boxShadow = 'var(--app-card-shadow-hover)';
-        e.currentTarget.style.transform = 'translateY(-2px)';
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'var(--app-border)';
-        e.currentTarget.style.boxShadow = 'var(--app-card-shadow)';
-        e.currentTarget.style.transform = 'translateY(0)';
-      }}
+      className="group relative rounded-2xl border transition-all duration-300 overflow-hidden campaign-card-hover"
+      style={{ animationDelay: `${index * 0.05}s` }}
     >
       {/* Top accent */}
       <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(59,130,246,0.15), rgba(178,172,136,0.1), transparent)' }} />
@@ -284,10 +318,10 @@ function CampaignCard({ campaign, index, onDelete }: { campaign: Campaign; index
               background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(59,130,246,0.03))',
               border: '1px solid rgba(59,130,246,0.15)',
             }}>
-              🗺️
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="opacity-60" aria-hidden="true"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-[15px] font-display font-semibold app-text truncate group-hover:text-[#CDC9B2] transition-colors duration-300">{campaign.nombre}</h3>
+              <h3 className="text-[15px] font-display font-semibold app-text truncate group-hover:app-text-secondary transition-colors duration-300">{campaign.nombre}</h3>
               {campaign.descripcion && (
                 <p className="text-[12px] app-text-muted mt-1 line-clamp-2 leading-relaxed">{campaign.descripcion}</p>
               )}
@@ -295,7 +329,7 @@ function CampaignCard({ campaign, index, onDelete }: { campaign: Campaign; index
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(); }}
-            className="text-[#807953]/50 hover:text-red-400 transition-all duration-300 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-400/5"
+            className="app-text-faint opacity-50 hover:text-red-400 transition-all duration-300 opacity-0 group-hover:opacity-100 p-1.5 rounded-lg hover:bg-red-400/5"
             title="Eliminar"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

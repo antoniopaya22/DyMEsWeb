@@ -26,7 +26,7 @@ export interface Race {
 }
 
 export const RACES: Race[] = [
-  { id: 'humano', nombre: 'Humano', icon: '👤',
+  { id: 'humano', nombre: 'Humano', icon: 'fa-solid fa-user',
     descripcion: 'Los humanos son la raza más adaptable y ambiciosa. Son tremendamente diversos en cuanto a gustos, moral y costumbres.',
     details: [
       { label: 'Bonificación', value: '+1 a todas las características' },
@@ -43,7 +43,7 @@ export const RACES: Race[] = [
     ],
     subraza: null,
   },
-  { id: 'elfo', nombre: 'Elfo', icon: '🧝',
+  { id: 'elfo', nombre: 'Elfo', icon: 'fa-solid fa-hat-wizard',
     descripcion: 'Los elfos son un pueblo mágico de gracia sobrenatural que viven en el mundo sin pertenecer del todo a él.',
     details: [
       { label: 'Bonificación', value: 'DES +2' },
@@ -62,7 +62,7 @@ export const RACES: Race[] = [
     ],
     subraza: { nombre: 'Alto Elfo', desc: 'Los altos elfos poseen una mente afilada y un dominio de la magia al menos en sus formas elementales.', rasgos: 'INT +1, competencia con espada larga/corta/arco largo/corto, un truco de mago a elección (INT), idioma extra.' },
   },
-  { id: 'enano', nombre: 'Enano', icon: '⛏️',
+  { id: 'enano', nombre: 'Enano', icon: 'fa-solid fa-hammer',
     descripcion: 'Los enanos son gente resistente y tradicional, famosos por su habilidad en la guerra y la artesanía.',
     details: [
       { label: 'Bonificación', value: 'CON +2' },
@@ -82,7 +82,7 @@ export const RACES: Race[] = [
     ],
     subraza: { nombre: 'Enano de las Colinas', desc: 'Los enanos de las colinas poseen sentidos agudos, una intuición profunda y una resistencia notable.', rasgos: 'SAB +1, Resistencia Enana (PG máx. +1 por nivel).' },
   },
-  { id: 'mediano', nombre: 'Mediano', icon: '🍀',
+  { id: 'mediano', nombre: 'Mediano', icon: 'fa-solid fa-clover',
     descripcion: 'Los medianos son un pueblo amable, curioso y con una suerte asombrosa. Su pequeño tamaño les ayuda a pasar desapercibidos.',
     details: [
       { label: 'Bonificación', value: 'DES +2' },
@@ -100,7 +100,7 @@ export const RACES: Race[] = [
     ],
     subraza: { nombre: 'Piesligeros', desc: 'Los medianos Piesligeros son muy hábiles a la hora de ocultarse, incluso usan a otras criaturas como cobertura.', rasgos: 'CAR +1, Sigiloso por Naturaleza (puedes intentar esconderte incluso cuando sólo te tapa una criatura de tamaño mayor que el tuyo).' },
   },
-  { id: 'draconido', nombre: 'Dracónido', icon: '🐉',
+  { id: 'draconido', nombre: 'Dracónido', icon: 'fa-solid fa-dragon',
     descripcion: 'Los dracónidos se parecen a los dragones, caminando erguidos en una forma humanoide, sin cola ni alas.',
     details: [
       { label: 'Bonificación', value: 'FUE +2, CAR +1' },
@@ -118,7 +118,7 @@ export const RACES: Race[] = [
     ],
     subraza: null,
   },
-  { id: 'gnomo', nombre: 'Gnomo', icon: '🔧',
+  { id: 'gnomo', nombre: 'Gnomo', icon: 'fa-solid fa-screwdriver-wrench',
     descripcion: 'Los gnomos son seres llenos de energía y entusiasmo, siempre curiosos y deseosos de aprender.',
     details: [
       { label: 'Bonificación', value: 'INT +2' },
@@ -135,7 +135,7 @@ export const RACES: Race[] = [
     ],
     subraza: { nombre: 'Gnomo de las Rocas', desc: 'Posees un ingenio natural y eres más resistente que otros gnomos.', rasgos: 'CON +1, Saber del Artífice (doble competencia en INT (Historia) sobre objetos mágicos/alquímicos/tecnológicos), Manitas (puedes construir dispositivos mecánicos Diminutos: caja de música, encendedor o juguete mecánico).' },
   },
-  { id: 'semielfo', nombre: 'Semielfo', icon: '🌿',
+  { id: 'semielfo', nombre: 'Semielfo', icon: 'fa-solid fa-leaf',
     descripcion: 'Los semielfos combinan las mejores cualidades de sus progenitores élficos y humanos.',
     details: [
       { label: 'Bonificación', value: 'CAR +2, dos +1 a elección' },
@@ -153,7 +153,7 @@ export const RACES: Race[] = [
     ],
     subraza: null,
   },
-  { id: 'semiorco', nombre: 'Semiorco', icon: '💪',
+  { id: 'semiorco', nombre: 'Semiorco', icon: 'fa-solid fa-hand-fist',
     descripcion: 'Los semiorcos combinan la fuerza de sus ancestros orcos con la tenacidad humana.',
     details: [
       { label: 'Bonificación', value: 'FUE +2, CON +1' },
@@ -172,7 +172,7 @@ export const RACES: Race[] = [
     ],
     subraza: null,
   },
-  { id: 'tiefling', nombre: 'Tiefling', icon: '😈',
+  { id: 'tiefling', nombre: 'Tiefling', icon: 'fa-solid fa-fire',
     descripcion: 'Los tieflings descienden de linajes humanos que han sido tocados por la esencia de los Nueve Infiernos.',
     details: [
       { label: 'Bonificación', value: 'CAR +2, INT +1' },

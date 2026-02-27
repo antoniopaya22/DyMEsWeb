@@ -88,7 +88,7 @@ for (let lvl = 1; lvl <= 20; lvl++) {
   <article class="docs-detail-page">
     <!-- Header -->
     <div class="docs-detail-header">
-      <span class="docs-detail-icon">{cls.icon}</span>
+      <span class="docs-detail-icon"><i class={cls.icon}></i></span>
       <div>
         <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{cls.nombre}</h1>
         <span class="docs-tag">Clase</span>
@@ -257,13 +257,13 @@ for (let lvl = 1; lvl <= 20; lvl++) {
       {prevCls ? (
         <a href={`/compendio/clases/${prevCls.id}`} class="docs-prev-next-link">
           <span class="docs-prev-next-dir">← Anterior</span>
-          <span class="docs-prev-next-name">{prevCls.icon} {prevCls.nombre}</span>
+          <span class="docs-prev-next-name"><i class={prevCls.icon}></i> {prevCls.nombre}</span>
         </a>
       ) : <div />}
       {nextCls ? (
         <a href={`/compendio/clases/${nextCls.id}`} class="docs-prev-next-link docs-prev-next-right">
           <span class="docs-prev-next-dir">Siguiente →</span>
-          <span class="docs-prev-next-name">{nextCls.nombre} {nextCls.icon}</span>
+          <span class="docs-prev-next-name">{nextCls.nombre} <i class={nextCls.icon}></i></span>
         </a>
       ) : <div />}
     </nav>

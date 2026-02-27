@@ -20,7 +20,7 @@ export interface CharacterClass {
 }
 
 export const CLASSES: CharacterClass[] = [
-  { id: 'barbaro', nombre: 'Bárbaro', icon: '🪓',
+  { id: 'barbaro', nombre: 'Bárbaro', icon: 'fa-solid fa-hand-back-fist',
     descripcion: 'Un fiero guerrero de origen primitivo que puede entrar en frenesí de batalla.',
     details: [
       { label: 'Dado de golpe', value: 'd12' },
@@ -44,7 +44,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Senda del Berserker: Frenesí (un ataque cuerpo a cuerpo adicional como acc. adicional durante la furia, con 1 nivel de cansancio al finalizar), Furia Irracional (nv. 6, inmune a asustar/hechizar durante furia), Presencia Intimidante (nv. 10), Represalia (nv. 14, reacción para atacar al recibir daño).',
   },
-  { id: 'bardo', nombre: 'Bardo', icon: '🎵',
+  { id: 'bardo', nombre: 'Bardo', icon: 'fa-solid fa-music',
     descripcion: 'Un maestro inspirador de la música, la magia y el combate cuyas palabras infunden poder.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },
@@ -66,7 +66,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Colegio del Conocimiento: Competencias Adicionales (3 habilidades), Palabras Cortantes (nv. 3, usa Inspiración para restar a tirada enemiga), Secretos Mágicos adicionales (nv. 6, 2 conjuros de cualquier clase sin contar al total), Habilidad sin Parangón (nv. 14, gasta Inspiración para repetir prueba de característica fallida).',
   },
-  { id: 'brujo', nombre: 'Brujo', icon: '🌑',
+  { id: 'brujo', nombre: 'Brujo', icon: 'fa-solid fa-moon',
     descripcion: 'Un portador de magia derivada de un pacto con una entidad extraplanar.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },
@@ -84,7 +84,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'El Archihada: Presencia Feérica (nv. 1, hechizar o asustar criaturas cercanas), Escapada Brumosa (nv. 6, teletransportarte al recibir daño), Defensa Seductora (nv. 10, el atacante debe salvarse en SAB o ir contra otro objetivo), Cautivación Sombría (nv. 14, capturar criatura hechizada en tu propia dimensión ilusoria).',
   },
-  { id: 'clerigo', nombre: 'Clérigo', icon: '✝️',
+  { id: 'clerigo', nombre: 'Clérigo', icon: 'fa-solid fa-cross',
     descripcion: 'Un campeón sacerdotal que empuña la magia divina al servicio de un poder superior.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },
@@ -102,7 +102,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Dominio de la Vida: Competencia con armaduras pesadas, Discípulo de la Vida (nv. 1, curación extra = 2 + nivel conjuro), Canalizar Divinidad: Preservar la Vida (nv. 2, repartir 5× nivel clérigo en PG entre aliados a 9 m), Sanador Bendito (nv. 6, te curas a ti mismo al curar a otros), Golpe Divino (nv. 8, +1d8 daño radiante 1/turno), Curación Suprema (nv. 17, maximiza dados de curación).',
   },
-  { id: 'druida', nombre: 'Druida', icon: '🌿',
+  { id: 'druida', nombre: 'Druida', icon: 'fa-solid fa-tree',
     descripcion: 'Un sacerdote de la Vieja Fe, con poder sobre la naturaleza y capaz de tomar forma animal.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },
@@ -122,7 +122,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Círculo de la Tierra: Truco adicional de druida, Recuperación Natural (nv. 2, recuperar espacios de conjuro en descanso corto, como mago), conjuros de círculo según terreno elegido (ártico, costa, desierto, bosque, pradera, montaña, pantano), Paso por la Tierra (nv. 6, terreno difícil no mágico no te cuesta movimiento extra), Protección de la Naturaleza (nv. 10, inmune a hechizar/asustar por elementales/feéricos, inmune a veneno/enfermedad), Santuario de la Naturaleza (nv. 14, bestias y plantas deben salvar en SAB para atacarte).',
   },
-  { id: 'explorador', nombre: 'Explorador', icon: '🏹',
+  { id: 'explorador', nombre: 'Explorador', icon: 'fa-solid fa-bullseye',
     descripcion: 'Un guerrero que utiliza la destreza marcial y la magia de la naturaleza para combatir amenazas.',
     details: [
       { label: 'Dado de golpe', value: 'd10' },
@@ -145,7 +145,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Cazador: Presa del Cazador (nv. 3; elige: Asesino de Colosos +1d8 a heridos, Asesino de Gigantes +1d8 defensivo, Destructor de Hordas ataque en área), Tácticas Defensivas (nv. 7), Ataque Múltiple (nv. 11), Defensa de Cazador Superior (nv. 15).',
   },
-  { id: 'guerrero', nombre: 'Guerrero', icon: '⚔️',
+  { id: 'guerrero', nombre: 'Guerrero', icon: 'fa-solid fa-shield-halved',
     descripcion: 'Un maestro del combate marcial con una variedad de armas y armaduras.',
     details: [
       { label: 'Dado de golpe', value: 'd10' },
@@ -164,7 +164,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Campeón: Crítico Mejorado (nv. 3, críticos con 19-20), Atleta Remarcable (nv. 7, suma la mitad de competencia a pruebas de FUE/DES/CON sin competencia), Estilo de Combate Adicional (nv. 10), Crítico Superior (nv. 15, críticos con 18-20), Superviviente (nv. 18, al inicio de turno recuperas 5 + CON mod PG si tienes menos de la mitad y más de 0).',
   },
-  { id: 'hechicero', nombre: 'Hechicero', icon: '✨',
+  { id: 'hechicero', nombre: 'Hechicero', icon: 'fa-solid fa-wand-sparkles',
     descripcion: 'Un lanzador de conjuros que obtiene su magia inherente de un linaje o don sobrenatural.',
     details: [
       { label: 'Dado de golpe', value: 'd6' },
@@ -181,7 +181,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Linaje Dracónico: Ancestro Dracónico (nv. 1, idioma dracónico, doble competencia en CAR con dragones), Resistencia Dracónica (nv. 1, PG +1/nivel, CA 13+DES sin armadura), Afinidad Elemental (nv. 6, suma CAR mod a daño de tu tipo de dragón, gastar 1 punto para resistencia), Alas de Dragón (nv. 14, alas con velocidad de vuelo), Presencia Dracónica (nv. 18, aura de 18 m que asusta o cautiva, 5 puntos de hechicería).',
   },
-  { id: 'mago', nombre: 'Mago', icon: '🔮',
+  { id: 'mago', nombre: 'Mago', icon: 'fa-solid fa-book-open',
     descripcion: 'Un usuario erudito de la magia arcana capaz de manipular las estructuras de la realidad.',
     details: [
       { label: 'Dado de golpe', value: 'd6' },
@@ -199,7 +199,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Escuela de Evocación: Moldear Conjuros (nv. 2, tus conjuros de evocación de área no dañan a aliados que elijas), Truco de Evocación Potente (nv. 6, trucos de evocación de daño siempre hacen al menos el mínimo), Evocación Potenciada (nv. 10, suma INT mod al daño de conjuros de evocación), Desbordamiento (nv. 14, máximo daño en conjuros de evocación de nivel 5 o inferior, 1/descanso largo).',
   },
-  { id: 'monje', nombre: 'Monje', icon: '👊',
+  { id: 'monje', nombre: 'Monje', icon: 'fa-solid fa-yin-yang',
     descripcion: 'Un maestro de las artes marciales que aprovecha el poder del cuerpo en busca de la perfección.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },
@@ -229,7 +229,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Camino de la Mano Abierta: Técnica de Mano Abierta (nv. 3, tras Ráfaga de Golpes puedes: derribar (salvación DES), empujar 4,5 m, o impedir reacciones), Integridad del Cuerpo (nv. 6, acción para curarte = 3× nv. monje PG, 1/descanso largo), Tranquilidad (nv. 11, efecto de Santuario al final de descanso largo), Palma Temblorosa (nv. 17, 3 ki + toque = vibraciones letales activables por acción: la criatura cae a 0 PG o sufre 10d10 de daño necrótico, salvación CON).',
   },
-  { id: 'paladin', nombre: 'Paladín', icon: '🛡️',
+  { id: 'paladin', nombre: 'Paladín', icon: 'fa-solid fa-sun',
     descripcion: 'Un santo guerrero vinculado a un juramento sagrado.',
     details: [
       { label: 'Dado de golpe', value: 'd10' },
@@ -254,7 +254,7 @@ export const CLASSES: CharacterClass[] = [
     ],
     subclase: 'Juramento de Devoción: Armas Sagradas (nv. 3, +CAR mod a ataques con un arma durante 1 min), Expulsar el Sacrilegio (nv. 3, expulsar infernales/muertos vivientes), Aura de Devoción (nv. 7, aliados a 3 m inmunes a hechizar), Pureza Espiritual (nv. 15, siempre bajo protección contra el bien y el mal), Avatar Sagrado (nv. 20, emanar luz brillante 9 m, forma solar durante 1 hora).',
   },
-  { id: 'picaro', nombre: 'Pícaro', icon: '🗡️',
+  { id: 'picaro', nombre: 'Pícaro', icon: 'fa-solid fa-user-ninja',
     descripcion: 'Un bribón que utiliza el sigilo y los engaños para superar los obstáculos y enemigos.',
     details: [
       { label: 'Dado de golpe', value: 'd8' },

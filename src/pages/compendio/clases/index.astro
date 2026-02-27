@@ -6,7 +6,7 @@ import { CLASSES } from '../../../data/classes';
 <CompendioLayout title="Clases — Compendio SRD 5.1" section="clases" breadcrumb="Clases">
   <section class="docs-section scroll-mt-20">
     <div class="docs-section-header">
-      <span class="docs-section-badge">⚔️ Clases</span>
+      <span class="docs-section-badge"><i class="fa-solid fa-shield-halved"></i> Clases</span>
       <h2 class="docs-h2">Clases de personaje</h2>
       <p class="docs-p text-[#555137]">Las clases definen las habilidades principales de tu personaje — su estilo de combate, magia y rol en el grupo.</p>
     </div>
@@ -14,7 +14,7 @@ import { CLASSES } from '../../../data/classes';
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
       {CLASSES.map((cls) => (
         <a href={`/compendio/clases/${cls.id}`} class="docs-item-card group">
-          <span class="docs-item-card-icon">{cls.icon}</span>
+          <span class="docs-item-card-icon"><i class={cls.icon}></i></span>
           <div class="docs-item-card-body">
             <h3 class="docs-item-card-title">{cls.nombre}</h3>
             <p class="docs-item-card-desc">{cls.descripcion}</p>

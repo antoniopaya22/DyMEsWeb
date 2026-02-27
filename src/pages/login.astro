@@ -114,5 +114,15 @@ import LoginForm from '../components/react/LoginForm';
       from { opacity: 0; transform: translateY(12px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+
+    /* Respect motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      .login-left,
+      .login-right,
+      .login-card,
+      .login-mobile-logo {
+        animation: none !important;
+      }
+    }
   </style>
 </Layout>

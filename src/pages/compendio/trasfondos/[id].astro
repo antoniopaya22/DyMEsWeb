@@ -19,7 +19,7 @@ const nextBg = bgIndex < BACKGROUNDS.length - 1 ? BACKGROUNDS[bgIndex + 1] : nul
   <article class="docs-detail-page">
     <!-- Header -->
     <div class="docs-detail-header">
-      <span class="docs-detail-icon">{bg.icon}</span>
+      <span class="docs-detail-icon"><i class={bg.icon}></i></span>
       <div>
         <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{bg.nombre}</h1>
         <span class="docs-tag">Trasfondo</span>
@@ -51,13 +51,13 @@ const nextBg = bgIndex < BACKGROUNDS.length - 1 ? BACKGROUNDS[bgIndex + 1] : nul
       {prevBg ? (
         <a href={`/compendio/trasfondos/${prevBg.id}`} class="docs-prev-next-link">
           <span class="docs-prev-next-dir">← Anterior</span>
-          <span class="docs-prev-next-name">{prevBg.icon} {prevBg.nombre}</span>
+          <span class="docs-prev-next-name"><i class={prevBg.icon}></i> {prevBg.nombre}</span>
         </a>
       ) : <div />}
       {nextBg ? (
         <a href={`/compendio/trasfondos/${nextBg.id}`} class="docs-prev-next-link docs-prev-next-right">
           <span class="docs-prev-next-dir">Siguiente →</span>
-          <span class="docs-prev-next-name">{nextBg.nombre} {nextBg.icon}</span>
+          <span class="docs-prev-next-name">{nextBg.nombre} <i class={nextBg.icon}></i></span>
         </a>
       ) : <div />}
     </nav>
