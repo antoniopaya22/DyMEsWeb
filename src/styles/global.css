@@ -5,6 +5,94 @@
 @tailwind utilities;
 
 @layer base {
+  /* ── App Theme Variables ─────────────── */
+  :root {
+    --app-bg: #F5F4EF;
+    --app-bg-alt: #EDEDEA;
+    --app-main-gradient: linear-gradient(180deg, #F5F4EF 0%, #EDEDEA 100%);
+    --app-sidebar-bg: linear-gradient(180deg, #E8E6DC 0%, #F0EFE8 50%, #E8E6DC 100%);
+    --app-header-bg: rgba(240, 239, 232, 0.95);
+    --app-surface: #FFFFFF;
+    --app-surface-gradient: linear-gradient(145deg, #FAFAF7, #F3F2EB);
+    --app-card-gradient: linear-gradient(145deg, #FFFFFF, #F5F4EF);
+    --app-banner-bg: linear-gradient(135deg, rgba(143,61,56,0.04) 0%, rgba(240,239,232,0.7) 50%, rgba(212,209,189,0.06) 100%);
+    --app-text: #272519;
+    --app-text-secondary: #555137;
+    --app-text-muted: #978F62;
+    --app-text-faint: #B2AE96;
+    --app-border: rgba(212, 209, 189, 0.4);
+    --app-border-subtle: rgba(212, 209, 189, 0.2);
+    --app-hover-bg: rgba(0, 0, 0, 0.04);
+    --app-hover-bg-strong: rgba(0, 0, 0, 0.08);
+    --app-divider: rgba(212, 209, 189, 0.35);
+    --app-card-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    --app-card-shadow-hover: 0 8px 32px rgba(0,0,0,0.1), 0 0 20px rgba(143,61,56,0.04);
+    --app-card-inset: inset 0 1px 0 rgba(255,255,255,0.7);
+    --app-input-bg: rgba(0, 0, 0, 0.03);
+    --app-input-border: rgba(0, 0, 0, 0.1);
+    --app-cmd-bg: linear-gradient(145deg, rgba(255,255,255,0.98), rgba(245,244,239,0.96));
+    --app-cmd-border: rgba(212, 209, 189, 0.5);
+    --app-cmd-shadow: 0 25px 60px rgba(0,0,0,0.15);
+    --app-overlay-bg: rgba(39, 37, 25, 0.4);
+    --app-kbd-bg: rgba(0, 0, 0, 0.04);
+    --app-kbd-border: rgba(0, 0, 0, 0.08);
+    --app-accent-soft: rgba(143, 61, 56, 0.06);
+    --app-accent-glow: rgba(143, 61, 56, 0.04);
+    --app-sidebar-link-color: #555137;
+    --app-sidebar-link-hover-bg: rgba(39, 37, 25, 0.04);
+    --app-sidebar-link-hover-color: #272519;
+    --app-sidebar-border: rgba(212, 209, 189, 0.25);
+    --app-sidebar-search-bg: rgba(0, 0, 0, 0.03);
+    --app-sidebar-search-border: rgba(0, 0, 0, 0.08);
+    --app-sidebar-section-label: rgba(85, 81, 55, 0.7);
+    --app-loading-bg: linear-gradient(180deg, #E5E3D5 0%, #F0EFE8 100%);
+    --app-loading-text: #978F62;
+    --app-loading-bar-track: rgba(0,0,0,0.06);
+  }
+  .dark {
+    --app-bg: #1a1814;
+    --app-bg-alt: #1d1b13;
+    --app-main-gradient: linear-gradient(180deg, #1a1814 0%, #1d1b13 100%);
+    --app-sidebar-bg: linear-gradient(180deg, #111010 0%, #181712 50%, #111010 100%);
+    --app-header-bg: rgba(14, 13, 9, 0.95);
+    --app-surface: rgba(40, 38, 27, 0.95);
+    --app-surface-gradient: linear-gradient(145deg, rgba(35,33,22,0.7), rgba(26,24,18,0.5));
+    --app-card-gradient: linear-gradient(145deg, rgba(40,38,27,0.95), rgba(28,26,18,0.9));
+    --app-banner-bg: linear-gradient(135deg, rgba(143,61,56,0.08) 0%, rgba(26,24,20,0.6) 50%, rgba(81,77,53,0.06) 100%);
+    --app-text: #ffffff;
+    --app-text-secondary: #CDC9B2;
+    --app-text-muted: #AAA37B;
+    --app-text-faint: #807953;
+    --app-border: rgba(81, 77, 53, 0.35);
+    --app-border-subtle: rgba(81, 77, 53, 0.15);
+    --app-hover-bg: rgba(255, 255, 255, 0.04);
+    --app-hover-bg-strong: rgba(255, 255, 255, 0.08);
+    --app-divider: rgba(81, 77, 53, 0.4);
+    --app-card-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03);
+    --app-card-shadow-hover: 0 12px 40px rgba(0,0,0,0.4), 0 0 30px rgba(143,61,56,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+    --app-card-inset: inset 0 1px 0 rgba(255,255,255,0.03);
+    --app-input-bg: rgba(255, 255, 255, 0.04);
+    --app-input-border: rgba(255, 255, 255, 0.08);
+    --app-cmd-bg: linear-gradient(145deg, rgba(35,33,22,0.98), rgba(22,20,13,0.96));
+    --app-cmd-border: rgba(81, 77, 53, 0.4);
+    --app-cmd-shadow: 0 25px 60px rgba(0,0,0,0.6), 0 0 40px rgba(143,61,56,0.06);
+    --app-overlay-bg: rgba(0, 0, 0, 0.6);
+    --app-kbd-bg: rgba(255, 255, 255, 0.04);
+    --app-kbd-border: rgba(255, 255, 255, 0.05);
+    --app-accent-soft: rgba(143, 61, 56, 0.14);
+    --app-accent-glow: rgba(143, 61, 56, 0.05);
+    --app-sidebar-link-color: #807953;
+    --app-sidebar-link-hover-bg: rgba(255, 255, 255, 0.04);
+    --app-sidebar-link-hover-color: #CDC9B2;
+    --app-sidebar-border: rgba(81, 77, 53, 0.25);
+    --app-sidebar-search-bg: rgba(255, 255, 255, 0.03);
+    --app-sidebar-search-border: rgba(255, 255, 255, 0.06);
+    --app-sidebar-section-label: rgba(128, 121, 83, 0.7);
+    --app-loading-bg: linear-gradient(180deg, #0e0d09 0%, #1a1814 100%);
+    --app-loading-text: #807953;
+    --app-loading-bar-track: rgba(255,255,255,0.06);
+  }
+
   html {
     scroll-behavior: smooth;
   }
@@ -230,11 +318,20 @@
   /* ── Section Card (shared by sheets) ── */
   .dymes-section-card {
     @apply rounded-2xl border p-5 transition-all duration-300;
+    background: linear-gradient(145deg, #FFFFFF, #F5F4EF);
+    border-color: rgba(212,209,189,0.35);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05), inset 0 1px 0 rgba(255,255,255,0.7);
+  }
+  .dymes-section-card:hover {
+    border-color: rgba(212,209,189,0.5);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  .dark .dymes-section-card {
     background: linear-gradient(145deg, rgba(40,38,27,0.95), rgba(30,28,19,0.9));
     border-color: rgba(81,77,53,0.3);
     box-shadow: 0 2px 12px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.03);
   }
-  .dymes-section-card:hover {
+  .dark .dymes-section-card:hover {
     border-color: rgba(81,77,53,0.5);
     box-shadow: 0 4px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04);
   }
@@ -242,17 +339,29 @@
   /* ── Ornamental Divider ─────────────── */
   .dymes-divider {
     @apply w-full h-px my-6;
+    background: linear-gradient(90deg, transparent, rgba(212,209,189,0.5), rgba(143,61,56,0.15), rgba(212,209,189,0.5), transparent);
+  }
+  .dark .dymes-divider {
     background: linear-gradient(90deg, transparent, rgba(81,77,53,0.4), rgba(143,61,56,0.2), rgba(81,77,53,0.4), transparent);
   }
 
   /* ── Stat Pill ──────────────────────── */
   .dymes-stat-pill {
     @apply text-center px-4 py-3 rounded-2xl transition-all duration-300;
+    background: linear-gradient(145deg, rgba(0,0,0,0.02), rgba(0,0,0,0.04));
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+  }
+  .dymes-stat-pill:hover {
+    background: linear-gradient(145deg, rgba(0,0,0,0.04), rgba(0,0,0,0.06));
+    border-color: rgba(0,0,0,0.1);
+  }
+  .dark .dymes-stat-pill {
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
     border: 1px solid rgba(255,255,255,0.06);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
   }
-  .dymes-stat-pill:hover {
+  .dark .dymes-stat-pill:hover {
     background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
     border-color: rgba(255,255,255,0.1);
   }
@@ -263,11 +372,19 @@
   }
   .dymes-modal-backdrop {
     @apply absolute inset-0;
-    background: rgba(0,0,0,0.7);
+    background: rgba(39,37,25,0.4);
     backdrop-filter: blur(8px);
+  }
+  .dark .dymes-modal-backdrop {
+    background: rgba(0,0,0,0.7);
   }
   .dymes-modal-card {
     @apply relative w-full rounded-2xl border p-6;
+    background: linear-gradient(145deg, #FFFFFF, #F5F4EF);
+    border-color: rgba(212,209,189,0.5);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.12), inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  .dark .dymes-modal-card {
     background: linear-gradient(145deg, rgba(40,38,27,0.98), rgba(25,23,15,0.95));
     border-color: rgba(81,77,53,0.4);
     box-shadow: 0 25px 60px rgba(0,0,0,0.5), 0 0 40px rgba(143,61,56,0.08), inset 0 1px 0 rgba(255,255,255,0.05);
@@ -294,4 +411,10 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+
+  /* ── Themed text utilities ──────────── */
+  .app-text { color: var(--app-text); }
+  .app-text-secondary { color: var(--app-text-secondary); }
+  .app-text-muted { color: var(--app-text-muted); }
+  .app-text-faint { color: var(--app-text-faint); }
 }

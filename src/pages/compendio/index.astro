@@ -5,6 +5,7 @@ import { CLASSES } from '../../data/classes';
 import { BACKGROUNDS } from '../../data/backgrounds';
 import { CANTRIPS } from '../../data/cantrips';
 import { ALL_SPELLS } from '../../data/spells';
+import { CONDITIONS } from '../../data/rules';
 
 const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
 ---
@@ -20,12 +21,12 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
       <div class="docs-callout-icon">📜</div>
       <div>
         <p class="text-[13px] font-semibold text-[#272519] mb-1">Sobre este compendio</p>
-        <p class="text-[13px] text-[#555137] leading-relaxed">Este compendio contiene la información completa del SRD 5.1 — las reglas y opciones disponibles bajo la Open Gaming License. Incluye <strong>{RACES.length} razas</strong>, <strong>{CLASSES.length} clases</strong>, <strong>{BACKGROUNDS.length} trasfondos</strong> y <strong>{TOTAL_SPELLS} conjuros</strong> (trucos y niveles 1-9) para crear y gestionar tu personaje.</p>
+        <p class="text-[13px] text-[#555137] leading-relaxed">Este compendio contiene la información completa del SRD 5.1 — las reglas y opciones disponibles bajo la Open Gaming License. Incluye <strong>{RACES.length} razas</strong>, <strong>{CLASSES.length} clases</strong>, <strong>{BACKGROUNDS.length} trasfondos</strong>, <strong>{TOTAL_SPELLS} conjuros</strong> (trucos y niveles 1-9) y una sección de <strong>reglas básicas</strong> para crear y gestionar tu personaje.</p>
       </div>
     </div>
 
     <!-- Quick summary cards -->
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-8">
       <a href="/compendio/razas" class="docs-summary-card group">
         <span class="text-2xl mb-2">🧝</span>
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Razas</span>
@@ -46,7 +47,108 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
         <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Conjuros</span>
         <span class="text-[12px] text-[#978F62]">{TOTAL_SPELLS} conjuros</span>
       </a>
+      <a href="/compendio/reglas" class="docs-summary-card group">
+        <span class="text-2xl mb-2">📐</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Reglas Básicas</span>
+        <span class="text-[12px] text-[#978F62]">Mecánicas fundamentales</span>
+      </a>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ─── Quick Reference ─── -->
+    <div id="referencia-rapida">
+      <h2 class="docs-h2">⚡ Referencia Rápida</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">Las mecánicas más consultadas durante una partida, a un vistazo.</p>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <!-- Dice check -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">🎲 Pruebas</h3>
+          <p class="intro-ref-text"><strong>1d20 + modificador + competencia</strong> ≥ CD = éxito</p>
+          <p class="intro-ref-sub">Ventaja = 2d20 (mayor) · Desventaja = 2d20 (menor)</p>
+        </div>
+        <!-- Combat turn -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">⚔️ Turno de combate</h3>
+          <p class="intro-ref-text"><strong>Movimiento</strong> + <strong>Acción</strong> + <strong>Acción adicional</strong> (si la hay)</p>
+          <p class="intro-ref-sub">1 reacción por ronda · 1 interacción libre con objetos</p>
+        </div>
+        <!-- Attack roll -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">🎯 Ataque</h3>
+          <p class="intro-ref-text"><strong>1d20 + mod. característica + competencia</strong> ≥ CA</p>
+          <p class="intro-ref-sub">20 natural = golpe crítico · 1 natural = fallo automático</p>
+        </div>
+        <!-- Death saves -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">💀 Salvaciones de muerte</h3>
+          <p class="intro-ref-text">Con 0 PG: <strong>1d20</strong>, ≥ 10 = éxito. 3 éxitos = estabilizado.</p>
+          <p class="intro-ref-sub">3 fallos = muerte · 20 natural = 1 PG · 1 natural = 2 fallos</p>
+        </div>
+        <!-- Resting -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">🛏️ Descansos</h3>
+          <p class="intro-ref-text"><strong>Corto</strong> (1h): dados de golpe · <strong>Largo</strong> (8h): recuperación total</p>
+          <p class="intro-ref-sub">Largo: recupera todos los PG + mitad dados de golpe</p>
+        </div>
+        <!-- Cover -->
+        <div class="intro-ref-card">
+          <h3 class="intro-ref-title">🛡️ Cobertura</h3>
+          <p class="intro-ref-text"><strong>Media</strong>: +2 CA/DEX · <strong>3/4</strong>: +5 CA/DEX · <strong>Total</strong>: no se puede tomar como objetivo</p>
+          <p class="intro-ref-sub">Aplica a ataques y salvaciones de Destreza</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ─── Conditions Quick Ref ─── -->
+    <div id="condiciones-rapidas">
+      <h2 class="docs-h2">⚠️ Condiciones de un vistazo</h2>
+      <p class="docs-p" style="margin-bottom: 1rem;">Las {CONDITIONS.length} condiciones del juego. <a href="/compendio/reglas#condiciones" class="text-[#8f3d38] font-semibold hover:underline">Ver detalle completo →</a></p>
+
+      <div class="intro-conditions-grid">
+        {CONDITIONS.map(c => (
+          <a href={`/compendio/reglas#cond-${c.id}`} class="intro-condition-pill">
+            <span>{c.icon}</span>
+            <span>{c.nombre}</span>
+          </a>
+        ))}
+      </div>
     </div>
   </section>
+
+  <style>
+    .intro-ref-card {
+      padding: 0.85rem 1rem; border-radius: 10px;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      border-left: 3px solid rgba(143,61,56,0.15);
+    }
+    .intro-ref-title {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 13px;
+      color: #272519; margin-bottom: 0.3rem;
+    }
+    .intro-ref-text {
+      font-size: 12.5px; color: #555137; line-height: 1.6;
+    }
+    .intro-ref-sub {
+      font-size: 11px; color: #978F62; line-height: 1.5; margin-top: 0.2rem;
+    }
+    .intro-conditions-grid {
+      display: flex; flex-wrap: wrap; gap: 0.35rem;
+    }
+    .intro-condition-pill {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 12px; font-weight: 500; color: #555137;
+      padding: 0.3rem 0.65rem; border-radius: 6px;
+      background: white; border: 1px solid rgba(212,209,189,0.35);
+      text-decoration: none; transition: all 0.15s;
+    }
+    .intro-condition-pill:hover {
+      border-color: rgba(143,61,56,0.3);
+      color: #8f3d38; background: rgba(143,61,56,0.03);
+    }
+  </style>
 
 </CompendioLayout>

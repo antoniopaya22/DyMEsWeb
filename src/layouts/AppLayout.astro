@@ -8,50 +8,62 @@ export interface Props {
 const { title = 'DyMEs' } = Astro.props;
 ---
 
-<Layout title={title} forceDark>
+<Layout title={title}>
   <!-- Auth loading screen -->
-  <div id="auth-loading" class="fixed inset-0 z-[100] flex items-center justify-center" style="background:linear-gradient(180deg,#0e0d09 0%,#1a1814 100%)">
+  <div id="auth-loading" class="fixed inset-0 z-[100] flex items-center justify-center" style="background:var(--app-loading-bg)">
     <div class="text-center animate-fade-in">
       <div class="relative inline-block mb-6">
         <div class="absolute -inset-4 rounded-full opacity-40 animate-pulse" style="background:radial-gradient(circle,rgba(143,61,56,.35),transparent 70%)"></div>
         <img src="/favicon.svg" alt="DyMEs" class="relative w-14 h-14" />
       </div>
-      <p class="text-[13px] text-[#807953] tracking-wider uppercase">Verificando sesión</p>
-      <div class="mt-4 w-32 h-0.5 mx-auto rounded-full overflow-hidden bg-white/[.06]">
+      <p class="text-[13px] app-text-faint tracking-wider uppercase">Verificando sesión</p>
+      <div class="mt-4 w-32 h-0.5 mx-auto rounded-full overflow-hidden" style="background:var(--app-loading-bar-track)">
         <div class="h-full w-1/2 rounded-full bg-gradient-to-r from-[#8f3d38] to-[#8f3d38]/40 animate-loading-bar"></div>
       </div>
     </div>
   </div>
 
   <div id="app-shell" class="flex h-screen overflow-hidden" style="display:none;">
-    <!-- ═══ Desktop Sidebar ═══ -->
-    <aside id="sidebar" class="hidden lg:flex lg:w-[260px] flex-col flex-shrink-0 relative"
-           style="background:linear-gradient(180deg,#141310 0%,#1a1814 50%,#141310 100%)">
-      <!-- Subtle side glow -->
-      <div class="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-transparent via-[#514D35]/30 to-transparent"></div>
-      <!-- Atmospheric glow -->
-      <div class="absolute top-0 left-0 right-0 h-40 pointer-events-none" style="background:radial-gradient(ellipse 80% 100% at 50% 0%,rgba(143,61,56,.06),transparent)"></div>
+    <!-- ═══ Sidebar (desktop: always visible, mobile: drawer) ═══ -->
+    <div id="sidebar-backdrop" class="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm hidden lg:hidden" style="transition:opacity .3s"></div>
+    <aside id="sidebar" class="sidebar-drawer lg:flex lg:w-[260px] flex-col flex-shrink-0 relative z-40"
+           style="background:var(--app-sidebar-bg)">
+      <!-- Right border glow -->
+      <div class="absolute top-0 right-0 bottom-0 w-px" style="background:linear-gradient(to bottom, transparent, var(--app-sidebar-border), transparent)"></div>
+      <!-- Top atmospheric glow -->
+      <div class="absolute top-0 left-0 right-0 h-48 pointer-events-none" style="background:radial-gradient(ellipse 80% 100% at 50% 0%,rgba(143,61,56,.05),transparent)"></div>
 
-      <!-- Logo -->
-      <div class="px-5 py-5 relative">
+      <!-- Logo + Search -->
+      <div class="px-5 pt-5 pb-4 relative">
         <a href="/app" class="flex items-center gap-3 group">
           <div class="relative">
-            <div class="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background:radial-gradient(circle,rgba(143,61,56,.2),transparent)"></div>
+            <div class="absolute -inset-1.5 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style="background:radial-gradient(circle,rgba(143,61,56,.15),transparent)"></div>
             <img src="/favicon.svg" alt="DyMEs" class="relative w-9 h-9 transition-transform duration-300 group-hover:scale-105" />
           </div>
           <div>
-            <span class="text-[15px] font-display font-bold text-white tracking-wide">DyMEs</span>
-            <span class="block text-[9px] text-[#807953] tracking-[0.2em] uppercase mt-0.5">D&D 5e · SRD 5.1</span>
+            <span class="text-[15px] font-display font-bold app-text tracking-wide">DyMEs</span>
+            <span class="block text-[9px] app-text-faint tracking-[0.2em] uppercase mt-0.5">D&D 5e · SRD 5.1</span>
           </div>
         </a>
       </div>
 
+      <!-- Sidebar search trigger -->
+      <div class="px-4 mb-4">
+        <button id="sidebar-search-btn" class="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left transition-all duration-200 group" type="button"
+          style="background:var(--app-sidebar-search-bg);border:1px solid var(--app-sidebar-search-border)">
+          <svg class="w-3.5 h-3.5 app-text-faint transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <span class="text-[12px] app-text-faint transition-colors flex-1">Buscar...</span>
+          <kbd class="text-[9px] font-mono px-1.5 py-0.5 rounded-md" style="color:var(--app-text-faint);opacity:0.6;background:var(--app-kbd-bg);border:1px solid var(--app-kbd-border)">⌘K</kbd>
+        </button>
+      </div>
+
       <!-- Divider -->
-      <div class="mx-5 h-px bg-gradient-to-r from-transparent via-[#514D35]/40 to-transparent"></div>
+      <div class="mx-5 h-px" style="background:linear-gradient(to right, transparent, var(--app-sidebar-border), transparent)"></div>
 
       <!-- Navigation -->
-      <nav class="flex-1 px-3 pt-5 pb-3 space-y-0.5 overflow-y-auto scrollbar-thin">
-        <span class="block px-3 pb-2 text-[9px] font-semibold text-[#807953]/80 uppercase tracking-[0.2em]">Juego</span>
+      <nav class="flex-1 px-3 pt-4 pb-3 space-y-0.5 overflow-y-auto scrollbar-thin">
+        <span class="block px-3 pb-2 text-[9px] font-semibold uppercase tracking-[0.2em]" style="color:var(--app-sidebar-section-label)">Principal</span>
+
         <a href="/app" class="sidebar-link" data-path="/app">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           <span>Personajes</span>
@@ -65,10 +77,11 @@ const { title = 'DyMEs' } = Astro.props;
           <span>Compendio</span>
         </a>
 
-        <div class="pt-5 pb-2">
-          <div class="mx-3 h-px bg-gradient-to-r from-transparent via-[#514D35]/25 to-transparent"></div>
+        <div class="pt-4 pb-2">
+          <div class="mx-3 h-px" style="background:linear-gradient(to right, transparent, var(--app-sidebar-border), transparent)"></div>
         </div>
-        <span class="block px-3 pb-2 text-[9px] font-semibold text-[#807953]/80 uppercase tracking-[0.2em]">Cuenta</span>
+        <span class="block px-3 pb-2 text-[9px] font-semibold uppercase tracking-[0.2em]" style="color:var(--app-sidebar-section-label)">Cuenta</span>
+
         <a href="/app/settings" class="sidebar-link" data-path="/app/settings">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
           <span>Ajustes</span>
@@ -79,109 +92,84 @@ const { title = 'DyMEs' } = Astro.props;
         </a>
       </nav>
 
+      <!-- Quick links -->
+      <div class="px-4 mb-3">
+        <a href="/compendio" target="_blank" class="flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all duration-200 group"
+           style="background:var(--app-hover-bg);border:1px solid var(--app-border-subtle)">
+          <svg class="w-3.5 h-3.5 app-text-faint transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          <span class="text-[11px] app-text-faint transition-colors">Compendio público</span>
+        </a>
+      </div>
+
       <!-- User section at bottom -->
-      <div class="relative px-3 pb-4 pt-2">
-        <div class="mx-2 mb-3 h-px bg-gradient-to-r from-transparent via-[#514D35]/30 to-transparent"></div>
-        <div id="sidebar-user-info" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 hover:bg-white/[.04] cursor-pointer group">
-          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white relative" id="sidebar-user-avatar-wrap"
-               style="background:linear-gradient(135deg,#8f3d38,#6b2e2a)">
+      <div class="relative px-3 pb-4 pt-1">
+        <div class="mx-2 mb-3 h-px" style="background:linear-gradient(to right, transparent, var(--app-sidebar-border), transparent)"></div>
+        <a href="/app/account" id="sidebar-user-info" class="flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 group no-underline" style="background:transparent" onmouseover="this.style.background='var(--app-sidebar-link-hover-bg)'" onmouseout="this.style.background='transparent'">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold text-white relative overflow-hidden" id="sidebar-user-avatar-wrap"
+               style="background:linear-gradient(135deg,#8f3d38,#6b2e2a);box-shadow:0 2px 8px rgba(143,61,56,0.25)">
             <span id="sidebar-user-avatar">?</span>
           </div>
           <div class="flex-1 min-w-0">
-            <span class="text-[13px] text-white font-medium truncate block" id="sidebar-user-name">Cargando...</span>
-            <span class="text-[10px] text-[#807953] truncate block" id="sidebar-user-email"></span>
+            <span class="text-[13px] app-text font-medium truncate block" id="sidebar-user-name">Cargando...</span>
+            <span class="text-[10px] app-text-faint truncate block" id="sidebar-user-email"></span>
           </div>
-          <svg class="w-4 h-4 text-[#514D35] group-hover:text-[#807953] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-        </div>
+          <div class="w-6 h-6 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all" style="background:var(--app-hover-bg)">
+            <svg class="w-3.5 h-3.5 app-text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+          </div>
+        </a>
       </div>
     </aside>
 
     <!-- ═══ Main area ═══ -->
-    <div class="flex-1 flex flex-col overflow-hidden min-w-0" style="background:#1a1814">
-      <!-- Mobile header -->
+    <div class="flex-1 flex flex-col overflow-hidden min-w-0" style="background:var(--app-bg)">
+      <!-- Mobile top header -->
       <header class="lg:hidden flex items-center justify-between px-4 h-14 flex-shrink-0 relative"
-              style="background:rgba(14,13,9,.92);backdrop-filter:blur(16px)">
-        <div class="absolute bottom-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#514D35]/30 to-transparent"></div>
-        <button id="mobile-menu-btn" class="p-2 -ml-2 rounded-lg hover:bg-white/[.06] transition-colors" aria-label="Menu">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[#CDC9B2]"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="16" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
-        </button>
-        <a href="/app" class="flex items-center gap-2">
-          <img src="/favicon.svg" alt="" class="w-7 h-7" />
-          <span class="font-display font-bold text-white text-[15px] tracking-wide">DyMEs</span>
-        </a>
-        <a href="/app/account" class="p-2 -mr-2 rounded-lg hover:bg-white/[.06] transition-colors">
-          <div class="w-7 h-7 rounded-full flex items-center justify-center text-[11px] font-bold text-white" id="mobile-header-avatar"
-               style="background:linear-gradient(135deg,#8f3d38,#6b2e2a)">?</div>
-        </a>
+              style="background:var(--app-header-bg);backdrop-filter:blur(16px)">
+        <div class="absolute bottom-0 inset-x-0 h-px" style="background:linear-gradient(to right, transparent, var(--app-sidebar-border), transparent)"></div>
+        <div class="flex items-center gap-2">
+          <button id="mobile-menu-btn" class="p-2 -ml-2 rounded-lg hover:bg-white/[.06] transition-colors" aria-label="Abrir menú" type="button">
+            <svg class="w-5 h-5 app-text-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          <a href="/app" class="flex items-center gap-2">
+            <img src="/favicon.svg" alt="" class="w-7 h-7" />
+            <span class="font-display font-bold app-text text-[15px] tracking-wide">DyMEs</span>
+          </a>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="mobile-search-btn" class="p-2 rounded-lg transition-colors" aria-label="Buscar" type="button" style="background:transparent" onmouseover="this.style.background='var(--app-hover-bg)'" onmouseout="this.style.background='transparent'">
+            <svg class="w-5 h-5 app-text-faint" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          </button>
+          <a href="/app/account" class="p-1 rounded-lg transition-colors" style="background:transparent" onmouseover="this.style.background='var(--app-hover-bg)'" onmouseout="this.style.background='transparent'">
+            <div class="w-7 h-7 rounded-lg flex items-center justify-center text-[11px] font-bold text-white" id="mobile-header-avatar"
+                 style="background:linear-gradient(135deg,#8f3d38,#6b2e2a)">?</div>
+          </a>
+        </div>
       </header>
 
-      <!-- Main content -->
-      <main class="flex-1 overflow-y-auto" style="background:linear-gradient(180deg,#1a1814 0%,#1f1d14 100%)">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10">
+      <!-- Main scrollable content -->
+      <main class="flex-1 overflow-y-auto" id="main-content" style="background:var(--app-main-gradient)">
+        <!-- Subtle top ambient glow -->
+        <div class="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] opacity-[0.025]" style="background:radial-gradient(ellipse, #8f3d38, transparent 70%)"></div>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 lg:py-10 relative">
           <slot />
         </div>
       </main>
     </div>
   </div>
 
-  <!-- ═══ Mobile sidebar overlay ═══ -->
-  <div id="mobile-overlay" class="fixed inset-0 z-40 hidden lg:hidden transition-opacity duration-300" style="background:rgba(0,0,0,.65);backdrop-filter:blur(4px)" aria-hidden="true"></div>
-  <div id="mobile-sidebar" class="fixed left-0 top-0 bottom-0 w-[280px] max-w-[85vw] z-50 transform -translate-x-full transition-transform duration-300 ease-out lg:hidden flex flex-col"
-       style="background:linear-gradient(180deg,#141310 0%,#1a1814 50%,#141310 100%)">
-    <!-- Mobile sidebar header -->
-    <div class="px-5 py-5 flex items-center justify-between">
-      <a href="/app" class="flex items-center gap-3">
-        <img src="/favicon.svg" alt="DyMEs" class="w-9 h-9" />
-        <div>
-          <span class="text-[15px] font-display font-bold text-white tracking-wide">DyMEs</span>
-          <span class="block text-[9px] text-[#807953] tracking-[0.2em] uppercase mt-0.5">D&D 5e · SRD 5.1</span>
-        </div>
-      </a>
-      <button id="mobile-close-btn" class="p-2 rounded-lg hover:bg-white/[.06] transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-[#807953]"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-      </button>
-    </div>
-    <div class="mx-5 h-px bg-gradient-to-r from-transparent via-[#514D35]/40 to-transparent"></div>
-
-    <nav class="flex-1 px-3 pt-5 pb-3 space-y-0.5 overflow-y-auto">
-      <span class="block px-3 pb-2 text-[9px] font-semibold text-[#807953]/80 uppercase tracking-[0.2em]">Juego</span>
-      <a href="/app" class="sidebar-link" data-path="/app">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        <span>Personajes</span>
-      </a>
-      <a href="/app/campaigns" class="sidebar-link" data-path="/app/campaigns">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
-        <span>Campañas</span>
-      </a>
-      <a href="/app/compendium" class="sidebar-link" data-path="/app/compendium">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
-        <span>Compendio</span>
-      </a>
-
-      <div class="pt-5 pb-2">
-        <div class="mx-3 h-px bg-gradient-to-r from-transparent via-[#514D35]/25 to-transparent"></div>
+  <!-- ═══ Command Palette (Ctrl+K / ⌘K) ═══ -->
+  <div id="cmd-palette" class="fixed inset-0 z-[60] hidden">
+    <div class="absolute inset-0" style="background:var(--app-overlay-bg);backdrop-filter:blur(6px)" id="cmd-palette-backdrop"></div>
+    <div class="relative max-w-lg w-full mx-auto mt-[15vh] rounded-2xl overflow-hidden animate-slide-up-sm"
+         style="background:var(--app-cmd-bg);border:1px solid var(--app-cmd-border);box-shadow:var(--app-cmd-shadow)">
+      <div class="flex items-center gap-3 px-5 py-4" style="border-bottom:1px solid var(--app-border-subtle)">
+        <svg class="w-5 h-5 app-text-faint shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="cmd-input" type="text" placeholder="Buscar páginas, acciones..." class="flex-1 bg-transparent outline-none text-[15px] app-text" autocomplete="off" />
+        <kbd class="text-[10px] font-mono px-2 py-0.5 rounded-md flex-shrink-0" style="color:var(--app-text-faint);opacity:0.6;background:var(--app-kbd-bg);border:1px solid var(--app-kbd-border)">Esc</kbd>
       </div>
-      <span class="block px-3 pb-2 text-[9px] font-semibold text-[#807953]/80 uppercase tracking-[0.2em]">Cuenta</span>
-      <a href="/app/settings" class="sidebar-link" data-path="/app/settings">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span>Ajustes</span>
-      </a>
-      <a href="/app/account" class="sidebar-link" data-path="/app/account">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-        <span>Mi cuenta</span>
-      </a>
-    </nav>
-
-    <!-- Mobile user section -->
-    <div class="px-3 pb-4 pt-2">
-      <div class="mx-2 mb-3 h-px bg-gradient-to-r from-transparent via-[#514D35]/30 to-transparent"></div>
-      <div class="flex items-center gap-3 px-3 py-2.5">
-        <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white"
-             style="background:linear-gradient(135deg,#8f3d38,#6b2e2a)">
-          <span id="mobile-user-avatar">?</span>
-        </div>
-        <div class="flex-1 min-w-0">
-          <span class="text-[13px] text-white font-medium truncate block" id="mobile-user-name">Cargando...</span>
+      <div id="cmd-results" class="max-h-[350px] overflow-y-auto py-2 px-2">
+        <div class="text-center py-8">
+          <span class="text-[13px] app-text-faint">Escribe para buscar...</span>
         </div>
       </div>
     </div>
@@ -189,64 +177,93 @@ const { title = 'DyMEs' } = Astro.props;
 </Layout>
 
 <style>
+  /* ─── Sidebar Links ─── */
   .sidebar-link {
     @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200;
-    color: #807953;
+    color: var(--app-sidebar-link-color);
   }
   .sidebar-link:hover {
-    background: rgba(255,255,255,0.04);
-    color: #CDC9B2;
+    background: var(--app-sidebar-link-hover-bg);
+    color: var(--app-sidebar-link-hover-color);
   }
   .sidebar-link.active {
-    background: rgba(143,61,56,0.12);
-    color: #ffffff;
-    box-shadow: 0 0 12px rgba(143,61,56,0.08);
+    background: linear-gradient(135deg, rgba(143,61,56,0.14), rgba(143,61,56,0.06));
+    color: var(--app-text);
+    box-shadow: 0 0 16px rgba(143,61,56,0.08), inset 0 1px 0 rgba(255,255,255,0.03);
+    border: 1px solid rgba(143,61,56,0.15);
   }
   .sidebar-link svg {
-    flex-shrink: 0;
-    opacity: 0.7;
-    transition: opacity 0.2s;
+    flex-shrink: 0; opacity: 0.6; transition: opacity 0.2s;
   }
-  .sidebar-link:hover svg,
-  .sidebar-link.active svg {
-    opacity: 1;
+  .sidebar-link:hover svg, .sidebar-link.active svg { opacity: 1; }
+
+  /* ─── Sidebar Drawer (mobile) ─── */
+  @media (max-width: 1023px) {
+    .sidebar-drawer {
+      position: fixed; top: 0; left: 0; bottom: 0;
+      width: 280px; z-index: 40;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex; flex-direction: column;
+    }
+    .sidebar-drawer.open {
+      transform: translateX(0);
+    }
   }
+
+  /* ─── Command Palette Items ─── */
+  .cmd-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all duration-150;
+    color: var(--app-text-muted);
+  }
+  .cmd-item:hover, .cmd-item.focused {
+    background: var(--app-hover-bg);
+    color: var(--app-text);
+  }
+  .cmd-item-icon {
+    @apply w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0;
+    background: var(--app-hover-bg);
+    border: 1px solid var(--app-border-subtle);
+  }
+  .cmd-item-label { font-size: 13px; font-weight: 500; }
+  .cmd-item-desc { font-size: 11px; color: var(--app-text-faint); }
+  .cmd-group-label {
+    font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--app-text-faint); padding: 8px 12px 4px;
+  }
+  #cmd-input::placeholder { color: var(--app-text-faint); }
+
+  /* ─── Scrollbar ─── */
   .scrollbar-thin::-webkit-scrollbar { width: 4px; }
   .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
-  .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(81,77,53,0.3); border-radius: 2px; }
-  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(81,77,53,0.5); }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--app-border); border-radius: 2px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: var(--app-divider); }
 
   @keyframes loading-bar {
     0% { transform: translateX(-100%); }
     50% { transform: translateX(100%); }
     100% { transform: translateX(100%); }
   }
-  .animate-loading-bar {
-    animation: loading-bar 1.5s ease-in-out infinite;
-  }
+  .animate-loading-bar { animation: loading-bar 1.5s ease-in-out infinite; }
 </style>
 
 <script>
   import { supabase } from '../lib/supabase';
 
-  // Auth guard: redirect to /login if not authenticated
+  // ─── Auth Guard ───
   async function checkAuth() {
     const authLoading = document.getElementById('auth-loading');
     const appShell = document.getElementById('app-shell');
 
     try {
-      // If the URL contains OAuth tokens (e.g. after Google sign-in redirect),
-      // wait for Supabase to process them before checking the session.
       const hash = window.location.hash;
       if (hash && (hash.includes('access_token') || hash.includes('refresh_token'))) {
-        // Wait for the SIGNED_IN event from token exchange
         await new Promise<void>((resolve, reject) => {
           const timeout = setTimeout(() => reject(new Error('OAuth callback timeout')), 10000);
           const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
             if (event === 'SIGNED_IN') {
               clearTimeout(timeout);
               subscription.unsubscribe();
-              // Clean up the URL hash
               history.replaceState(null, '', window.location.pathname);
               resolve();
             }
@@ -255,36 +272,18 @@ const { title = 'DyMEs' } = Astro.props;
       }
 
       const { data: { session } } = await supabase.auth.getSession();
+      if (!session) { window.location.href = '/login'; return; }
 
-      if (!session) {
-        window.location.href = '/login';
-        return;
-      }
-
-      // Update user info in sidebar
       const userName = session.user.user_metadata?.nombre || session.user.email?.split('@')[0] || 'Aventurero';
       const userEmail = session.user.email || '';
       const initial = userName[0]?.toUpperCase() || '?';
 
-      // Desktop sidebar
-      const avatarEl = document.getElementById('sidebar-user-avatar');
-      const nameEl = document.getElementById('sidebar-user-name');
-      const emailEl = document.getElementById('sidebar-user-email');
-      if (avatarEl) avatarEl.textContent = initial;
-      if (nameEl) nameEl.textContent = userName;
-      if (emailEl) emailEl.textContent = userEmail;
+      const set = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      set('sidebar-user-avatar', initial);
+      set('sidebar-user-name', userName);
+      set('sidebar-user-email', userEmail);
+      set('mobile-header-avatar', initial);
 
-      // Mobile sidebar
-      const mobileAvatarEl = document.getElementById('mobile-user-avatar');
-      const mobileNameEl = document.getElementById('mobile-user-name');
-      if (mobileAvatarEl) mobileAvatarEl.textContent = initial;
-      if (mobileNameEl) mobileNameEl.textContent = userName;
-
-      // Mobile header avatar
-      const mobileHeaderAvatar = document.getElementById('mobile-header-avatar');
-      if (mobileHeaderAvatar) mobileHeaderAvatar.textContent = initial;
-
-      // Show app, hide loading
       if (authLoading) authLoading.style.display = 'none';
       if (appShell) appShell.style.display = 'flex';
     } catch (err) {
@@ -292,36 +291,9 @@ const { title = 'DyMEs' } = Astro.props;
       window.location.href = '/login';
     }
   }
-
   checkAuth();
 
-  // Mobile menu toggle
-  const menuBtn = document.getElementById('mobile-menu-btn');
-  const closeBtn = document.getElementById('mobile-close-btn');
-  const overlay = document.getElementById('mobile-overlay');
-  const mobileSidebar = document.getElementById('mobile-sidebar');
-
-  function openMenu() {
-    mobileSidebar?.classList.remove('-translate-x-full');
-    overlay?.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeMenu() {
-    mobileSidebar?.classList.add('-translate-x-full');
-    overlay?.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  menuBtn?.addEventListener('click', openMenu);
-  closeBtn?.addEventListener('click', closeMenu);
-  overlay?.addEventListener('click', closeMenu);
-
-  // Close on escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu();
-  });
-
-  // Active link highlighting
+  // ─── Active Link Highlighting ───
   const currentPath = window.location.pathname;
   document.querySelectorAll('.sidebar-link').forEach(link => {
     const linkPath = link.getAttribute('data-path');
@@ -329,6 +301,101 @@ const { title = 'DyMEs' } = Astro.props;
       link.classList.add('active');
     } else if (linkPath === '/app' && currentPath === '/app') {
       link.classList.add('active');
+    }
+  });
+
+  // ─── Mobile Sidebar Drawer ───
+  const sidebarEl = document.getElementById('sidebar');
+  const sidebarBackdrop = document.getElementById('sidebar-backdrop');
+  const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+
+  function toggleMobileDrawer(open?: boolean) {
+    if (!sidebarEl) return;
+    const isOpen = open ?? !sidebarEl.classList.contains('open');
+    sidebarEl.classList.toggle('open', isOpen);
+    sidebarBackdrop?.classList.toggle('hidden', !isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+
+  mobileMenuBtn?.addEventListener('click', () => toggleMobileDrawer());
+  sidebarBackdrop?.addEventListener('click', () => toggleMobileDrawer(false));
+
+  // Close drawer when clicking a nav link (mobile)
+  sidebarEl?.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      if (window.innerWidth < 1024) toggleMobileDrawer(false);
+    });
+  });
+
+  // ─── Command Palette ───
+  const CMD_ITEMS = [
+    { icon: '⚔️', label: 'Personajes', desc: 'Ver tus personajes', url: '/app', group: 'Navegar' },
+    { icon: '📖', label: 'Campañas', desc: 'Gestionar partidas', url: '/app/campaigns', group: 'Navegar' },
+    { icon: '📚', label: 'Compendio', desc: 'Referencia SRD', url: '/app/compendium', group: 'Navegar' },
+    { icon: '⚙️', label: 'Ajustes', desc: 'Configuración', url: '/app/settings', group: 'Navegar' },
+    { icon: '👤', label: 'Mi cuenta', desc: 'Perfil y sesión', url: '/app/account', group: 'Navegar' },
+    { icon: '➕', label: 'Nuevo personaje', desc: 'Crear un personaje', url: '/app/characters/create', group: 'Acciones' },
+    { icon: '🌐', label: 'Compendio público', desc: 'Abrir en nueva pestaña', url: '/compendio', group: 'Acciones' },
+  ];
+
+  const palette = document.getElementById('cmd-palette');
+  const cmdInput = document.getElementById('cmd-input') as HTMLInputElement;
+  const cmdResults = document.getElementById('cmd-results');
+  const cmdBackdrop = document.getElementById('cmd-palette-backdrop');
+  let focusIdx = -1;
+
+  function openPalette() {
+    palette?.classList.remove('hidden');
+    cmdInput?.focus();
+    cmdInput.value = '';
+    renderResults('');
+    document.body.style.overflow = 'hidden';
+  }
+  function closePalette() {
+    palette?.classList.add('hidden');
+    document.body.style.overflow = '';
+    focusIdx = -1;
+  }
+  function renderResults(query: string) {
+    if (!cmdResults) return;
+    const q = query.toLowerCase().trim();
+    const filtered = q ? CMD_ITEMS.filter(i => i.label.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q)) : CMD_ITEMS;
+
+    if (filtered.length === 0) {
+      cmdResults.innerHTML = '<div class="text-center py-8"><span class="text-[13px] app-text-faint">Sin resultados</span></div>';
+      return;
+    }
+    let html = '';
+    let lastGroup = '';
+    filtered.forEach((item, i) => {
+      if (item.group !== lastGroup) {
+        html += `<div class="cmd-group-label">${item.group}</div>`;
+        lastGroup = item.group;
+      }
+      html += `<a href="${item.url}" class="cmd-item" data-idx="${i}"${item.url === '/compendio' ? ' target="_blank"' : ''}>
+        <span class="cmd-item-icon">${item.icon}</span>
+        <div><div class="cmd-item-label">${item.label}</div><div class="cmd-item-desc">${item.desc}</div></div>
+      </a>`;
+    });
+    cmdResults.innerHTML = html;
+    focusIdx = -1;
+  }
+
+  // Event listeners
+  document.getElementById('sidebar-search-btn')?.addEventListener('click', openPalette);
+  document.getElementById('mobile-search-btn')?.addEventListener('click', openPalette);
+  cmdBackdrop?.addEventListener('click', closePalette);
+  cmdInput?.addEventListener('input', () => renderResults(cmdInput.value));
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openPalette(); }
+    if (e.key === 'Escape') closePalette();
+    // Arrow navigation in palette
+    if (!palette?.classList.contains('hidden')) {
+      const items = cmdResults?.querySelectorAll('.cmd-item') ?? [];
+      if (e.key === 'ArrowDown') { e.preventDefault(); focusIdx = Math.min(focusIdx + 1, items.length - 1); items.forEach((el, i) => el.classList.toggle('focused', i === focusIdx)); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); focusIdx = Math.max(focusIdx - 1, 0); items.forEach((el, i) => el.classList.toggle('focused', i === focusIdx)); }
+      if (e.key === 'Enter' && focusIdx >= 0) { (items[focusIdx] as HTMLAnchorElement)?.click(); }
     }
   });
 </script>

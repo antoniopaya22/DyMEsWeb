@@ -1,8 +1,4 @@
 ---
-import AppLayout from '../../layouts/AppLayout.astro';
-import Compendium from '../../components/react/Compendium';
+// Redirect to the public compendio — same content, richer UI
+return Astro.redirect('/compendio');
 ---
-
-<AppLayout title="Compendio - DyMEs">
-  <Compendium client:load />
-</AppLayout>

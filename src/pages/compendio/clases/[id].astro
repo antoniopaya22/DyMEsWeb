@@ -1,0 +1,326 @@
+---
+import CompendioLayout from '../../../layouts/CompendioLayout.astro';
+import { CLASSES } from '../../../data/classes';
+import { SUBCLASS_OPTIONS } from '../../../data/subclasses';
+import { XP_THRESHOLDS, PROFICIENCY_BONUS, ASI_LEVELS, CLASS_PROGRESSION_EXTRAS } from '../../../data/leveling';
+import { FULL_CASTER_SLOTS, HALF_CASTER_SLOTS, WARLOCK_PACT_SLOTS, CLASS_CASTER_TYPE, CANTRIPS_KNOWN, SPELLS_KNOWN } from '../../../data/spellSlots';
+import { SUBCLASS_FEATURES } from '../../../data/subclassFeatures/index';
+
+export function getStaticPaths() {
+  return CLASSES.map((cls) => ({
+    params: { id: cls.id },
+    props: { cls },
+  }));
+}
+
+const { cls } = Astro.props;
+const clsIndex = CLASSES.findIndex(c => c.id === cls.id);
+const prevCls = clsIndex > 0 ? CLASSES[clsIndex - 1] : null;
+const nextCls = clsIndex < CLASSES.length - 1 ? CLASSES[clsIndex + 1] : null;
+const subclasses = SUBCLASS_OPTIONS[cls.id] || [];
+const asiLevels = ASI_LEVELS[cls.id] || [];
+const progressionExtra = CLASS_PROGRESSION_EXTRAS[cls.id];
+const casterType = CLASS_CASTER_TYPE[cls.id];
+const isCaster = casterType !== 'none';
+const cantripsKnown = CANTRIPS_KNOWN[cls.id];
+const spellsKnown = SPELLS_KNOWN[cls.id];
+
+// Get spell slot table
+function getSlotTable(): Record<number, number[]> | null {
+  if (casterType === 'full') return FULL_CASTER_SLOTS;
+  if (casterType === 'half') return HALF_CASTER_SLOTS;
+  return null;
+}
+const slotTable = getSlotTable();
+const maxSpellLevel = casterType === 'full' ? 9 : casterType === 'half' ? 5 : casterType === 'pact' ? 5 : 0;
+
+// Check which subclasses have detailed features
+const subclassesWithFeatures = new Set(
+  SUBCLASS_FEATURES
+    .filter(sf => sf.claseId === cls.id)
+    .map(sf => sf.subclaseId)
+);
+
+// Parse level from trait names like "Ataque Temerario (nv. 2)"
+function parseLevel(nombre: string): number {
+  const match = nombre.match(/\(nv\.\s*(\d+)/);
+  return match ? parseInt(match[1]) : 1;
+}
+
+// Build level progression data from rasgos
+interface LevelRow {
+  nivel: number;
+  profBonus: number;
+  features: string[];
+  extra?: string;
+  isASI: boolean;
+}
+
+const levelRows: LevelRow[] = [];
+for (let lvl = 1; lvl <= 20; lvl++) {
+  const features = cls.rasgos
+    .filter(r => parseLevel(r.nombre) === lvl)
+    .map(r => r.nombre.replace(/\s*\(nv\.\s*\d+\)/, ''));
+
+  // Level 1 features: include those without "(nv. X)" designation
+  if (lvl === 1) {
+    const lvl1Features = cls.rasgos
+      .filter(r => !r.nombre.match(/\(nv\.\s*\d+\)/))
+      .map(r => r.nombre);
+    features.unshift(...lvl1Features.filter(f => !features.includes(f)));
+  }
+
+  if (asiLevels.includes(lvl)) {
+    features.push('Mejora de Característica');
+  }
+
+  levelRows.push({
+    nivel: lvl,
+    profBonus: PROFICIENCY_BONUS[lvl],
+    features,
+    extra: progressionExtra?.data[lvl],
+    isASI: asiLevels.includes(lvl),
+  });
+}
+---
+
+<CompendioLayout title={`${cls.nombre} — Compendio SRD 5.1`} section="clases" breadcrumb={cls.nombre} parentBreadcrumb="Clases" parentHref="/compendio/clases">
+  <article class="docs-detail-page">
+    <!-- Header -->
+    <div class="docs-detail-header">
+      <span class="docs-detail-icon">{cls.icon}</span>
+      <div>
+        <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{cls.nombre}</h1>
+        <span class="docs-tag">Clase</span>
+      </div>
+    </div>
+
+    <p class="docs-lead">{cls.descripcion}</p>
+
+    <!-- Stats Grid -->
+    <div class="docs-stats-grid mt-6">
+      {cls.details.map(d => (
+        <div class="docs-stat">
+          <dt class="docs-stat-label">{d.label}</dt>
+          <dd class="docs-stat-value">{d.value}</dd>
+        </div>
+      ))}
+    </div>
+
+    <!-- Class Features -->
+    {cls.rasgos && cls.rasgos.length > 0 && (
+      <div class="docs-traits mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Rasgos de clase</h2>
+        {cls.rasgos.map(r => (
+          <div class="docs-trait">
+            <span class="docs-trait-name">{r.nombre}.</span>
+            <span class="docs-trait-desc">{r.desc}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <!-- Level Progression Table -->
+    <div class="docs-progression mt-8">
+      <h2 class="docs-h4" style="font-size: 1.1rem;">Tabla de progresión</h2>
+      <div class="docs-table-wrapper">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Nv.</th>
+              <th>BC</th>
+              {progressionExtra && <th>{progressionExtra.label}</th>}
+              <th>Rasgos</th>
+            </tr>
+          </thead>
+          <tbody>
+            {levelRows.map(row => (
+              <tr class={row.features.length > 0 ? '' : 'docs-table-empty-row'}>
+                <td class="docs-table-level">{row.nivel}</td>
+                <td class="docs-table-prof">+{row.profBonus}</td>
+                {progressionExtra && <td class="docs-table-extra">{row.extra || '—'}</td>}
+                <td class="docs-table-features">
+                  {row.features.length > 0 ? row.features.join(', ') : '—'}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Spell Slot Progression (for caster classes) -->
+    {isCaster && casterType !== 'pact' && slotTable && (
+      <div class="cls-spell-slots mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">
+          Espacios de conjuro por nivel
+          {casterType === 'half' && <span class="cls-caster-badge">Medio lanzador</span>}
+          {casterType === 'full' && <span class="cls-caster-badge">Lanzador completo</span>}
+        </h2>
+        <div class="docs-table-wrapper">
+          <table class="docs-table cls-spell-table">
+            <thead>
+              <tr>
+                <th>Nv.</th>
+                {cantripsKnown && <th class="cls-spell-col">Trucos</th>}
+                {spellsKnown && <th class="cls-spell-col">Conj. Con.</th>}
+                {Array.from({length: maxSpellLevel}, (_, i) => (
+                  <th class="cls-spell-col">{i + 1}º</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({length: 20}, (_, i) => i + 1).map(lvl => {
+                const slots = slotTable[lvl] || [];
+                return (
+                  <tr>
+                    <td class="docs-table-level">{lvl}</td>
+                    {cantripsKnown && <td class="cls-spell-cell">{cantripsKnown[lvl] || '—'}</td>}
+                    {spellsKnown && <td class="cls-spell-cell">{spellsKnown[lvl] || '—'}</td>}
+                    {Array.from({length: maxSpellLevel}, (_, i) => (
+                      <td class="cls-spell-cell">
+                        {slots[i] !== undefined ? slots[i] : '—'}
+                      </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
+    <!-- Warlock Pact Magic Table -->
+    {casterType === 'pact' && (
+      <div class="cls-spell-slots mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">
+          Magia del Pacto
+          <span class="cls-caster-badge">Magia de pacto</span>
+        </h2>
+        <div class="docs-table-wrapper">
+          <table class="docs-table cls-spell-table">
+            <thead>
+              <tr>
+                <th>Nv.</th>
+                {cantripsKnown && <th class="cls-spell-col">Trucos</th>}
+                {spellsKnown && <th class="cls-spell-col">Conj. Con.</th>}
+                <th class="cls-spell-col">Espacios</th>
+                <th class="cls-spell-col">Nv. Espacio</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.from({length: 20}, (_, i) => i + 1).map(lvl => {
+                const pact = WARLOCK_PACT_SLOTS[lvl];
+                return (
+                  <tr>
+                    <td class="docs-table-level">{lvl}</td>
+                    {cantripsKnown && <td class="cls-spell-cell">{cantripsKnown[lvl] || '—'}</td>}
+                    {spellsKnown && <td class="cls-spell-cell">{spellsKnown[lvl] || '—'}</td>}
+                    <td class="cls-spell-cell">{pact ? pact[0] : '—'}</td>
+                    <td class="cls-spell-cell">{pact ? `${pact[1]}º` : '—'}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    )}
+
+    <!-- Subclass Options -->
+    {subclasses.length > 0 && (
+      <div class="docs-subclasses mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Subclases disponibles</h2>
+        <p class="cls-subclass-intro">
+          Haz clic en cada subclase para ver sus rasgos detallados por nivel.
+        </p>
+        <div class="docs-subclass-grid">
+          {subclasses.map(sc => (
+            <a href={`/compendio/clases/subclase/${cls.id}--${sc.id}`} class="docs-subclass-card cls-subclass-link">
+              <div class="docs-subclass-header">
+                <h3 class="docs-subclass-name">{sc.nombre}</h3>
+                <span class="docs-subclass-source">{sc.fuente}</span>
+              </div>
+              <p class="docs-subclass-desc">{sc.descripcion}</p>
+              {subclassesWithFeatures.has(sc.id) && (
+                <span class="cls-detail-badge">Ver rasgos detallados →</span>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Prev/Next Navigation -->
+    <nav class="docs-prev-next">
+      {prevCls ? (
+        <a href={`/compendio/clases/${prevCls.id}`} class="docs-prev-next-link">
+          <span class="docs-prev-next-dir">← Anterior</span>
+          <span class="docs-prev-next-name">{prevCls.icon} {prevCls.nombre}</span>
+        </a>
+      ) : <div />}
+      {nextCls ? (
+        <a href={`/compendio/clases/${nextCls.id}`} class="docs-prev-next-link docs-prev-next-right">
+          <span class="docs-prev-next-dir">Siguiente →</span>
+          <span class="docs-prev-next-name">{nextCls.nombre} {nextCls.icon}</span>
+        </a>
+      ) : <div />}
+    </nav>
+  </article>
+</CompendioLayout>
+
+<style>
+  /* ─── Spell slot table ─── */
+  .cls-spell-table {
+    font-size: 12.5px;
+  }
+  .cls-spell-col {
+    text-align: center;
+    min-width: 40px;
+    font-size: 11px;
+  }
+  .cls-spell-cell {
+    text-align: center;
+    color: #555137;
+    font-size: 12.5px;
+  }
+  .cls-caster-badge {
+    display: inline-block;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 10px;
+    color: #8F3D38;
+    background: rgba(143,61,56,0.08);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  /* ─── Subclass link cards ─── */
+  .cls-subclass-link {
+    text-decoration: none;
+    display: block;
+    cursor: pointer;
+  }
+  .cls-subclass-link:hover {
+    border-color: rgba(143,61,56,0.3) !important;
+    box-shadow: 0 2px 12px rgba(143,61,56,0.1) !important;
+    transform: translateY(-1px);
+  }
+  .cls-subclass-intro {
+    font-size: 13px;
+    color: #978F62;
+    margin-bottom: 0.25rem;
+  }
+  .cls-detail-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    font-size: 11px;
+    font-weight: 600;
+    color: #8F3D38;
+  }
+</style>

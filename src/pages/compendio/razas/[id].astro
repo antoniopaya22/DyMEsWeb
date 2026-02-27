@@ -1,0 +1,79 @@
+---
+import CompendioLayout from '../../../layouts/CompendioLayout.astro';
+import { RACES } from '../../../data/races';
+
+export function getStaticPaths() {
+  return RACES.map((race) => ({
+    params: { id: race.id },
+    props: { race },
+  }));
+}
+
+const { race } = Astro.props;
+const raceIndex = RACES.findIndex(r => r.id === race.id);
+const prevRace = raceIndex > 0 ? RACES[raceIndex - 1] : null;
+const nextRace = raceIndex < RACES.length - 1 ? RACES[raceIndex + 1] : null;
+---
+
+<CompendioLayout title={`${race.nombre} — Compendio SRD 5.1`} section="razas" breadcrumb={race.nombre} parentBreadcrumb="Razas" parentHref="/compendio/razas">
+  <article class="docs-detail-page">
+    <!-- Header -->
+    <div class="docs-detail-header">
+      <span class="docs-detail-icon">{race.icon}</span>
+      <div>
+        <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{race.nombre}</h1>
+        <span class="docs-tag">Raza</span>
+      </div>
+    </div>
+
+    <p class="docs-lead">{race.descripcion}</p>
+
+    <!-- Stats Grid -->
+    <div class="docs-stats-grid mt-6">
+      {race.details.map(d => (
+        <div class="docs-stat">
+          <dt class="docs-stat-label">{d.label}</dt>
+          <dd class="docs-stat-value">{d.value}</dd>
+        </div>
+      ))}
+    </div>
+
+    <!-- Racial Traits -->
+    {race.rasgos && race.rasgos.length > 0 && (
+      <div class="docs-traits mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Rasgos raciales</h2>
+        {race.rasgos.map(r => (
+          <div class="docs-trait">
+            <span class="docs-trait-name">{r.nombre}.</span>
+            <span class="docs-trait-desc">{r.desc}</span>
+          </div>
+        ))}
+      </div>
+    )}
+
+    <!-- Subrace -->
+    {race.subraza && (
+      <div class="docs-subrace mt-6">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Subraza: {race.subraza.nombre}</h2>
+        <p class="docs-p">{race.subraza.desc}</p>
+        <p class="docs-p" style="margin-top: 0.25rem;"><strong>Rasgos:</strong> {race.subraza.rasgos}</p>
+      </div>
+    )}
+
+    <!-- Prev/Next Navigation -->
+    <nav class="docs-prev-next">
+      {prevRace ? (
+        <a href={`/compendio/razas/${prevRace.id}`} class="docs-prev-next-link">
+          <span class="docs-prev-next-dir">← Anterior</span>
+          <span class="docs-prev-next-name">{prevRace.icon} {prevRace.nombre}</span>
+        </a>
+      ) : <div />}
+      {nextRace ? (
+        <a href={`/compendio/razas/${nextRace.id}`} class="docs-prev-next-link docs-prev-next-right">
+          <span class="docs-prev-next-dir">Siguiente →</span>
+          <span class="docs-prev-next-name">{nextRace.nombre} {nextRace.icon}</span>
+        </a>
+      ) : <div />}
+    </nav>
+  </article>
+</CompendioLayout>

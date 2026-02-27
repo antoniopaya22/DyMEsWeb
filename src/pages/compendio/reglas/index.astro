@@ -1,0 +1,414 @@
+---
+import CompendioLayout from '../../../layouts/CompendioLayout.astro';
+import { ABILITY_SCORES, MODIFIER_TABLE, CONDITIONS, COMBAT_RULES, REST_RULES, DAMAGE_TYPES } from '../../../data/rules';
+
+// Pre-compute modifier table rows (pairs for 2-column layout)
+const modifierRows: Array<{left: typeof MODIFIER_TABLE[0], right?: typeof MODIFIER_TABLE[0]}> = [];
+for (let i = 0; i < MODIFIER_TABLE.length; i += 2) {
+  modifierRows.push({ left: MODIFIER_TABLE[i], right: MODIFIER_TABLE[i + 1] });
+}
+---
+
+<CompendioLayout title="Reglas Básicas — Compendio SRD 5.1" section="reglas" breadcrumb="Reglas Básicas">
+
+  <section class="docs-section scroll-mt-20">
+    <div class="docs-section-header">
+      <span class="docs-section-badge">📐 Reglas</span>
+      <h1 class="docs-h1">Reglas Básicas</h1>
+      <p class="docs-lead">Referencia rápida de las mecánicas fundamentales de D&D 5ª edición según el SRD 5.1.</p>
+    </div>
+
+    <!-- Quick nav cards -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-6">
+      <a href="#caracteristicas" class="docs-summary-card group">
+        <span class="text-2xl mb-2">🎲</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Características</span>
+        <span class="text-[12px] text-[#978F62]">6 puntuaciones y modificadores</span>
+      </a>
+      <a href="#combate" class="docs-summary-card group">
+        <span class="text-2xl mb-2">⚔️</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Combate</span>
+        <span class="text-[12px] text-[#978F62]">Iniciativa, ataques, daño</span>
+      </a>
+      <a href="#condiciones" class="docs-summary-card group">
+        <span class="text-2xl mb-2">⚠️</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Condiciones</span>
+        <span class="text-[12px] text-[#978F62]">{CONDITIONS.length} estados</span>
+      </a>
+      <a href="#descansos" class="docs-summary-card group">
+        <span class="text-2xl mb-2">🛏️</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Descansos</span>
+        <span class="text-[12px] text-[#978F62]">Corto y largo</span>
+      </a>
+      <a href="#tipos-dano" class="docs-summary-card group">
+        <span class="text-2xl mb-2">💥</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Tipos de daño</span>
+        <span class="text-[12px] text-[#978F62]">{DAMAGE_TYPES.length} tipos</span>
+      </a>
+      <a href="#pruebas" class="docs-summary-card group">
+        <span class="text-2xl mb-2">🎯</span>
+        <span class="text-[14px] font-display font-bold text-[#272519] group-hover:text-[#8f3d38] transition-colors">Pruebas</span>
+        <span class="text-[12px] text-[#978F62]">1d20 + modificadores</span>
+      </a>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ ABILITY SCORES ═══ -->
+    <div id="caracteristicas" class="scroll-mt-20">
+      <h2 class="docs-h2">🎲 Puntuaciones de Característica</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">Cada personaje tiene seis puntuaciones que definen sus capacidades físicas y mentales. El modificador se calcula como: <strong>(puntuación − 10) ÷ 2</strong>, redondeando hacia abajo.</p>
+
+      <!-- Modifier table -->
+      <div class="docs-table-wrapper" style="margin-bottom: 1.5rem;">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Puntuación</th>
+              <th>Modificador</th>
+              <th>Puntuación</th>
+              <th>Modificador</th>
+            </tr>
+          </thead>
+          <tbody>
+            {modifierRows.map(row => (
+              <tr>
+                <td class="docs-table-level">{row.left.score}</td>
+                <td class="docs-table-prof">{row.left.modifier}</td>
+                <td class="docs-table-level">{row.right?.score || ''}</td>
+                <td class="docs-table-prof">{row.right?.modifier || ''}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Ability score cards -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {ABILITY_SCORES.map(ab => (
+          <div class="reglas-ability-card">
+            <div class="reglas-ability-header">
+              <span class="reglas-ability-abbr">{ab.abreviatura}</span>
+              <span class="reglas-ability-name">{ab.nombre}</span>
+            </div>
+            <p class="reglas-ability-desc">{ab.descripcion}</p>
+            {ab.habilidades.length > 0 && (
+              <div class="reglas-ability-skills">
+                <span class="reglas-ability-skills-label">Habilidades:</span>
+                {ab.habilidades.join(', ')}
+              </div>
+            )}
+            <div class="reglas-ability-examples">
+              <span class="reglas-ability-skills-label">Ejemplos:</span>
+              {ab.ejemplos}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ CHECKS ═══ -->
+    <div id="pruebas" class="scroll-mt-20">
+      <h2 class="docs-h2">🎯 Pruebas de Característica</h2>
+
+      <div class="docs-callout" style="margin-top: 1rem;">
+        <div class="docs-callout-icon">🎲</div>
+        <div>
+          <p class="text-[13px] font-semibold text-[#272519] mb-1">La regla fundamental</p>
+          <p class="text-[13px] text-[#555137] leading-relaxed">
+            <strong>1d20 + modificador de característica + bonificador de competencia</strong> (si eres competente) ≥ <strong>CD</strong> (Clase de Dificultad) → éxito.<br/>
+            <strong>Ventaja:</strong> tira 2d20, quédate con el mayor. <strong>Desventaja:</strong> tira 2d20, quédate con el menor.<br/>
+            Ventaja y desventaja simultáneas se cancelan mutuamente, sin importar cuántas fuentes de cada una haya.
+          </p>
+        </div>
+      </div>
+
+      <div class="docs-table-wrapper" style="margin-top: 1.25rem;">
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Dificultad</th>
+              <th>CD</th>
+              <th>Ejemplo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Muy fácil</td><td class="docs-table-level">5</td><td>Trepar un muro con muchos asideros</td></tr>
+            <tr><td>Fácil</td><td class="docs-table-level">10</td><td>Escuchar una conversación cercana</td></tr>
+            <tr><td>Moderada</td><td class="docs-table-level">15</td><td>Abrir una cerradura típica</td></tr>
+            <tr><td>Difícil</td><td class="docs-table-level">20</td><td>Convencer a un guardia hostil</td></tr>
+            <tr><td>Muy difícil</td><td class="docs-table-level">25</td><td>Forzar una cerradura excepcional</td></tr>
+            <tr><td>Casi imposible</td><td class="docs-table-level">30</td><td>Saltar un abismo de 9 metros</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ COMBAT ═══ -->
+    <div id="combate" class="scroll-mt-20">
+      <h2 class="docs-h2">⚔️ Combate</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">El combate se estructura en rondas. Cada ronda representa unos 6 segundos de tiempo en el mundo del juego.</p>
+
+      <div class="reglas-combat-grid">
+        {COMBAT_RULES.map(rule => (
+          <div class="reglas-combat-card" id={`combat-${rule.id}`}>
+            <div class="reglas-combat-header">
+              <span class="reglas-combat-icon">{rule.icon}</span>
+              <h3 class="reglas-combat-title">{rule.titulo}</h3>
+            </div>
+            <p class="reglas-combat-content">{rule.contenido}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ CONDITIONS ═══ -->
+    <div id="condiciones" class="scroll-mt-20">
+      <h2 class="docs-h2">⚠️ Condiciones</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">Las condiciones alteran las capacidades de un personaje de diversas maneras. La mayoría son perjudiciales, pero algunas pueden ser beneficiosas.</p>
+
+      <div class="reglas-conditions-grid">
+        {CONDITIONS.map(cond => (
+          <details class="reglas-condition-card" id={`cond-${cond.id}`}>
+            <summary class="reglas-condition-summary">
+              <span class="reglas-condition-icon">{cond.icon}</span>
+              <span class="reglas-condition-name">{cond.nombre}</span>
+            </summary>
+            <div class="reglas-condition-body">
+              <p class="reglas-condition-desc">{cond.descripcion}</p>
+              <ul class="reglas-condition-effects">
+                {cond.efectos.map(e => (
+                  <li>{e}</li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ RESTING ═══ -->
+    <div id="descansos" class="scroll-mt-20">
+      <h2 class="docs-h2">🛏️ Descansos</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">Los descansos permiten a los personajes recuperar recursos gastados durante la aventura.</p>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        {REST_RULES.map(rest => (
+          <div class="reglas-rest-card">
+            <div class="reglas-rest-header">
+              <span class="text-2xl">{rest.icon}</span>
+              <div>
+                <h3 class="reglas-rest-title">{rest.titulo}</h3>
+                <span class="reglas-rest-duration">{rest.duracion}</span>
+              </div>
+            </div>
+            <div class="reglas-rest-section">
+              <h4 class="reglas-rest-label">Beneficios</h4>
+              <ul class="reglas-rest-list">
+                {rest.beneficios.map(b => <li>{b}</li>)}
+              </ul>
+            </div>
+            <div class="reglas-rest-section">
+              <h4 class="reglas-rest-label">Restricciones</h4>
+              <ul class="reglas-rest-list reglas-rest-list-warn">
+                {rest.restricciones.map(r => <li>{r}</li>)}
+              </ul>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="docs-entry-divider" style="margin: 2.5rem 0;"></div>
+
+    <!-- ═══ DAMAGE TYPES ═══ -->
+    <div id="tipos-dano" class="scroll-mt-20">
+      <h2 class="docs-h2">💥 Tipos de Daño</h2>
+      <p class="docs-p" style="margin-bottom: 1.25rem;">En D&D 5e hay 13 tipos de daño. Las resistencias y vulnerabilidades a tipos de daño pueden modificar el total recibido.</p>
+
+      <div class="docs-callout" style="margin-bottom: 1.25rem;">
+        <div class="docs-callout-icon">🛡️</div>
+        <div>
+          <p class="text-[13px] text-[#555137] leading-relaxed">
+            <strong>Resistencia:</strong> el daño de ese tipo se reduce a la mitad. <strong>Vulnerabilidad:</strong> el daño de ese tipo se duplica. <strong>Inmunidad:</strong> no recibes daño de ese tipo. Si tienes resistencia y vulnerabilidad al mismo tipo, se cancelan.
+          </p>
+        </div>
+      </div>
+
+      <div class="reglas-damage-grid">
+        {DAMAGE_TYPES.map(dt => (
+          <div class="reglas-damage-card">
+            <span class="reglas-damage-icon">{dt.icon}</span>
+            <div>
+              <span class="reglas-damage-name">{dt.nombre}</span>
+              <p class="reglas-damage-desc">{dt.descripcion}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* ─── Ability Score Cards ─── */
+    .reglas-ability-card {
+      padding: 1rem; border-radius: 10px;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      transition: all 0.15s;
+    }
+    .reglas-ability-card:hover {
+      border-color: rgba(143,61,56,0.2);
+      box-shadow: 0 2px 8px rgba(143,61,56,0.06);
+    }
+    .reglas-ability-header {
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;
+    }
+    .reglas-ability-abbr {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px;
+      color: #8f3d38; background: rgba(143,61,56,0.08);
+      padding: 2px 8px; border-radius: 6px;
+    }
+    .reglas-ability-name {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px;
+      color: #272519;
+    }
+    .reglas-ability-desc {
+      font-size: 12.5px; color: #555137; line-height: 1.6; margin-bottom: 0.5rem;
+    }
+    .reglas-ability-skills, .reglas-ability-examples {
+      font-size: 11.5px; color: #555137; line-height: 1.5; margin-top: 0.3rem;
+    }
+    .reglas-ability-skills-label {
+      font-weight: 600; color: #978F62; font-size: 10px;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      margin-right: 0.25rem;
+    }
+
+    /* ─── Combat Grid ─── */
+    .reglas-combat-grid {
+      display: grid; grid-template-columns: 1fr; gap: 0.75rem;
+    }
+    .reglas-combat-card {
+      padding: 1rem 1.15rem; border-radius: 10px;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      border-left: 3px solid rgba(143,61,56,0.2);
+    }
+    .reglas-combat-header {
+      display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;
+    }
+    .reglas-combat-icon { font-size: 1.1rem; }
+    .reglas-combat-title {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 14px;
+      color: #272519;
+    }
+    .reglas-combat-content {
+      font-size: 13px; color: #555137; line-height: 1.7;
+    }
+
+    /* ─── Conditions Grid ─── */
+    .reglas-conditions-grid {
+      display: grid; grid-template-columns: 1fr; gap: 0.4rem;
+    }
+    .reglas-condition-card {
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      border-radius: 8px; overflow: hidden; transition: border-color 0.15s;
+    }
+    .reglas-condition-card[open] {
+      border-color: rgba(143,61,56,0.25);
+    }
+    .reglas-condition-summary {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 0.55rem 0.85rem; cursor: pointer;
+      list-style: none; user-select: none; transition: background 0.12s;
+    }
+    .reglas-condition-summary::-webkit-details-marker { display: none; }
+    .reglas-condition-summary::marker { display: none; content: ''; }
+    .reglas-condition-summary:hover { background: rgba(143,61,56,0.03); }
+    .reglas-condition-icon { font-size: 1.1rem; }
+    .reglas-condition-name {
+      font-size: 13px; font-weight: 600; color: #272519;
+    }
+    .reglas-condition-body {
+      padding: 0.5rem 0.85rem 0.75rem;
+      border-top: 1px solid rgba(212,209,189,0.25);
+    }
+    .reglas-condition-desc {
+      font-size: 12.5px; color: #555137; line-height: 1.6; margin-bottom: 0.5rem;
+    }
+    .reglas-condition-effects {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .reglas-condition-effects li {
+      font-size: 12px; color: #555137; line-height: 1.6;
+      padding-left: 1rem; position: relative; margin-bottom: 0.15rem;
+    }
+    .reglas-condition-effects li::before {
+      content: '•'; position: absolute; left: 0; color: #8f3d38; font-weight: 700;
+    }
+
+    /* ─── Rest Cards ─── */
+    .reglas-rest-card {
+      padding: 1.15rem; border-radius: 10px;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+    }
+    .reglas-rest-header {
+      display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.85rem;
+    }
+    .reglas-rest-title {
+      font-family: 'Cinzel', serif; font-weight: 700; font-size: 15px;
+      color: #272519; margin-bottom: 0.1rem;
+    }
+    .reglas-rest-duration {
+      font-size: 11px; color: #978F62; font-weight: 500;
+    }
+    .reglas-rest-section { margin-bottom: 0.75rem; }
+    .reglas-rest-section:last-child { margin-bottom: 0; }
+    .reglas-rest-label {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; color: #978F62; margin-bottom: 0.3rem;
+    }
+    .reglas-rest-list {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .reglas-rest-list li {
+      font-size: 12.5px; color: #555137; line-height: 1.6;
+      padding-left: 1rem; position: relative; margin-bottom: 0.15rem;
+    }
+    .reglas-rest-list li::before {
+      content: '✓'; position: absolute; left: 0; color: #10B981; font-weight: 700; font-size: 11px;
+    }
+    .reglas-rest-list-warn li::before {
+      content: '!'; color: #F59E0B;
+    }
+
+    /* ─── Damage Type Cards ─── */
+    .reglas-damage-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 0.5rem;
+    }
+    .reglas-damage-card {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      padding: 0.65rem 0.85rem; border-radius: 8px;
+      background: white; border: 1px solid rgba(212,209,189,0.2);
+    }
+    .reglas-damage-icon { font-size: 1.15rem; flex-shrink: 0; margin-top: 1px; }
+    .reglas-damage-name {
+      font-size: 13px; font-weight: 600; color: #272519; display: block;
+    }
+    .reglas-damage-desc {
+      font-size: 11.5px; color: #555137; line-height: 1.5; margin-top: 0.1rem;
+    }
+
+    @media (min-width: 640px) {
+      .reglas-conditions-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</CompendioLayout>

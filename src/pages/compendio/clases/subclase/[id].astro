@@ -1,0 +1,350 @@
+---
+import CompendioLayout from '../../../../layouts/CompendioLayout.astro';
+import { CLASSES } from '../../../../data/classes';
+import { SUBCLASS_OPTIONS } from '../../../../data/subclasses';
+import { SUBCLASS_FEATURES } from '../../../../data/subclassFeatures/index';
+
+export function getStaticPaths() {
+  const paths: any[] = [];
+
+  for (const cls of CLASSES) {
+    const subclasses = SUBCLASS_OPTIONS[cls.id] || [];
+    for (const sc of subclasses) {
+      // Find detailed features for this subclass
+      const features = SUBCLASS_FEATURES.find(
+        (sf) => sf.claseId === cls.id && sf.subclaseId === sc.id
+      );
+      paths.push({
+        params: { id: `${cls.id}--${sc.id}` },
+        props: { cls, sc, features: features || null },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { cls, sc, features } = Astro.props;
+
+// Find prev/next subclass within the same class
+const subclasses = SUBCLASS_OPTIONS[cls.id] || [];
+const scIndex = subclasses.findIndex(s => s.id === sc.id);
+const prevSc = scIndex > 0 ? subclasses[scIndex - 1] : null;
+const nextSc = scIndex < subclasses.length - 1 ? subclasses[scIndex + 1] : null;
+---
+
+<CompendioLayout
+  title={`${sc.nombre} — ${cls.nombre} — Compendio SRD 5.1`}
+  section="clases"
+  breadcrumb={sc.nombre}
+  parentBreadcrumb={cls.nombre}
+  parentHref={`/compendio/clases/${cls.id}`}
+>
+  <article class="docs-detail-page">
+    <!-- Header -->
+    <div class="docs-detail-header">
+      <span class="docs-detail-icon">{cls.icon}</span>
+      <div>
+        <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{sc.nombre}</h1>
+        <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+          <span class="docs-tag">Subclase de {cls.nombre}</span>
+          <span class="docs-subclass-source" style="font-size: 10px;">{sc.fuente}</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="docs-lead">{sc.descripcion}</p>
+
+    <!-- Back to class link -->
+    <div style="margin-top: 1rem;">
+      <a href={`/compendio/clases/${cls.id}`} class="sc-back-link">
+        ← Volver a {cls.nombre}
+      </a>
+    </div>
+
+    {features ? (
+      <!-- Detailed subclass features by level -->
+      <div class="sc-features mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Rasgos por nivel</h2>
+
+        {features.niveles.map((levelBlock: any) => (
+          <div class="sc-level-block">
+            <div class="sc-level-header">
+              <span class="sc-level-badge">Nivel {levelBlock.nivel}</span>
+            </div>
+
+            {/* Proficiencies gained */}
+            {levelBlock.competenciasGanadas && (
+              <div class="sc-proficiencies">
+                {levelBlock.competenciasGanadas.armaduras && (
+                  <p class="sc-prof-item">
+                    <strong>Competencia en armaduras:</strong>{' '}
+                    {levelBlock.competenciasGanadas.armaduras.join(', ')}
+                  </p>
+                )}
+                {levelBlock.competenciasGanadas.armas && (
+                  <p class="sc-prof-item">
+                    <strong>Competencia en armas:</strong>{' '}
+                    {levelBlock.competenciasGanadas.armas.join(', ')}
+                  </p>
+                )}
+                {levelBlock.competenciasGanadas.herramientas && (
+                  <p class="sc-prof-item">
+                    <strong>Competencia en herramientas:</strong>{' '}
+                    {levelBlock.competenciasGanadas.herramientas.join(', ')}
+                  </p>
+                )}
+              </div>
+            )}
+
+            {/* Extra skill proficiencies */}
+            {levelBlock.habilidadesExtra && (
+              <div class="sc-proficiencies">
+                <p class="sc-prof-item">
+                  <strong>Habilidades adicionales:</strong>{' '}
+                  {levelBlock.habilidadesExtra.cualquiera
+                    ? `Elige ${levelBlock.habilidadesExtra.cantidad} habilidad(es) cualesquiera`
+                    : levelBlock.habilidadesExtra.entre
+                      ? `Elige ${levelBlock.habilidadesExtra.cantidad} de: ${levelBlock.habilidadesExtra.entre.join(', ')}`
+                      : `${levelBlock.habilidadesExtra.cantidad} habilidad(es) adicionales`}
+                </p>
+              </div>
+            )}
+
+            {/* Feature details */}
+            {levelBlock.rasgos.map((rasgo: any) => (
+              <div class="sc-feature">
+                <h3 class="sc-feature-name">{rasgo.nombre}</h3>
+                <p class="sc-feature-desc">{rasgo.descripcion}</p>
+
+                {/* Choices (e.g., totem animal, combat style) */}
+                {rasgo.elecciones && rasgo.elecciones.length > 0 && (
+                  <div class="sc-choices">
+                    {rasgo.elecciones.map((choice: any) => (
+                      <div class="sc-choice-group">
+                        <p class="sc-choice-instruction">
+                          <em>{choice.instruccion}</em>
+                          {choice.tipo === 'multi' && choice.cantidad && (
+                            <span class="sc-choice-count"> (elige {choice.cantidad})</span>
+                          )}
+                        </p>
+                        <div class="sc-options-grid">
+                          {choice.opciones.map((opt: any) => (
+                            <div class="sc-option-card">
+                              <span class="sc-option-name">{opt.nombre}</span>
+                              <p class="sc-option-desc">{opt.descripcion}</p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+
+      <!-- Summary table -->
+      <div class="sc-summary-table mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Resumen de progresión</h2>
+        <div class="docs-table-wrapper">
+          <table class="docs-table">
+            <thead>
+              <tr>
+                <th>Nivel</th>
+                <th>Rasgos obtenidos</th>
+              </tr>
+            </thead>
+            <tbody>
+              {features.niveles.map((levelBlock: any) => (
+                <tr>
+                  <td class="docs-table-level">{levelBlock.nivel}</td>
+                  <td class="docs-table-features">
+                    {levelBlock.rasgos.map((r: any) => r.nombre).join(', ')}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    ) : (
+      <!-- No detailed features available -->
+      <div class="sc-no-features mt-8">
+        <div class="sc-notice">
+          <p>Los rasgos detallados de esta subclase aún no están disponibles en el compendio.</p>
+          <p style="margin-top: 0.5rem; font-size: 12px; color: #978F62;">
+            Consulta el <em>{sc.fuente}</em> para más información sobre {sc.nombre}.
+          </p>
+        </div>
+      </div>
+    )}
+
+    <!-- Prev/Next Navigation within same class -->
+    <nav class="docs-prev-next">
+      {prevSc ? (
+        <a href={`/compendio/clases/subclase/${cls.id}--${prevSc.id}`} class="docs-prev-next-link">
+          <span class="docs-prev-next-dir">← Anterior</span>
+          <span class="docs-prev-next-name">{prevSc.nombre}</span>
+        </a>
+      ) : <div />}
+      {nextSc ? (
+        <a href={`/compendio/clases/subclase/${cls.id}--${nextSc.id}`} class="docs-prev-next-link docs-prev-next-right">
+          <span class="docs-prev-next-dir">Siguiente →</span>
+          <span class="docs-prev-next-name">{nextSc.nombre}</span>
+        </a>
+      ) : <div />}
+    </nav>
+  </article>
+</CompendioLayout>
+
+<style>
+  /* ─── Back link ─── */
+  .sc-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #8F3D38;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .sc-back-link:hover {
+    color: #6b2e2a;
+    text-decoration: underline;
+  }
+
+  /* ─── Level blocks ─── */
+  .sc-level-block {
+    margin-bottom: 2rem;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(212,209,189,0.35);
+  }
+  .sc-level-header {
+    margin-bottom: 0.75rem;
+  }
+  .sc-level-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: #8F3D38;
+    background: rgba(143,61,56,0.08);
+    border-radius: 6px;
+    padding: 3px 12px;
+  }
+
+  /* ─── Proficiencies ─── */
+  .sc-proficiencies {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background: rgba(212,209,189,0.12);
+    border-radius: 8px;
+    border-left: 3px solid rgba(143,61,56,0.2);
+  }
+  .sc-prof-item {
+    font-size: 13px;
+    color: #555137;
+    line-height: 1.5;
+    margin: 0;
+  }
+  .sc-prof-item + .sc-prof-item {
+    margin-top: 0.25rem;
+  }
+
+  /* ─── Feature cards ─── */
+  .sc-feature {
+    margin-bottom: 1rem;
+  }
+  .sc-feature:last-child {
+    margin-bottom: 0;
+  }
+  .sc-feature-name {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: #272519;
+    margin-bottom: 0.35rem;
+  }
+  .sc-feature-desc {
+    font-size: 13.5px;
+    color: #3c3a2e;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ─── Choices ─── */
+  .sc-choices {
+    margin-top: 0.75rem;
+  }
+  .sc-choice-group {
+    margin-bottom: 0.75rem;
+  }
+  .sc-choice-instruction {
+    font-size: 13px;
+    color: #8F3D38;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .sc-choice-count {
+    color: #978F62;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .sc-options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+  }
+  .sc-option-card {
+    padding: 0.75rem;
+    border-radius: 8px;
+    background: rgba(212,209,189,0.12);
+    border: 1px solid rgba(212,209,189,0.25);
+    transition: all 0.15s;
+  }
+  .sc-option-card:hover {
+    border-color: rgba(143,61,56,0.15);
+    background: rgba(212,209,189,0.18);
+  }
+  .sc-option-name {
+    display: block;
+    font-weight: 700;
+    font-size: 13px;
+    color: #272519;
+    margin-bottom: 0.25rem;
+  }
+  .sc-option-desc {
+    font-size: 12px;
+    color: #555137;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ─── No features notice ─── */
+  .sc-notice {
+    padding: 1.25rem;
+    border-radius: 10px;
+    background: rgba(212,209,189,0.15);
+    border: 1px solid rgba(212,209,189,0.3);
+    text-align: center;
+    color: #555137;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .sc-options-grid {
+      grid-template-columns: 1fr;
+    }
+    .sc-level-block {
+      padding: 1rem;
+    }
+  }
+</style>

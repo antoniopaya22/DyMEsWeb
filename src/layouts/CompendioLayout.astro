@@ -5,14 +5,17 @@ import { CLASSES } from '../data/classes';
 import { BACKGROUNDS } from '../data/backgrounds';
 import { CANTRIPS, type Spell } from '../data/cantrips';
 import { ALL_SPELLS, SPELLS_LEVEL_1, SPELLS_LEVEL_2, SPELLS_LEVEL_3, SPELLS_LEVEL_4, SPELLS_LEVEL_5, SPELLS_LEVEL_6, SPELLS_LEVEL_7, SPELLS_LEVEL_8, SPELLS_LEVEL_9 } from '../data/spells';
+import { CONDITIONS, DAMAGE_TYPES } from '../data/rules';
 
 interface Props {
   title: string;
-  section: 'intro' | 'razas' | 'clases' | 'trasfondos' | 'conjuros';
+  section: 'intro' | 'razas' | 'clases' | 'trasfondos' | 'conjuros' | 'reglas';
   breadcrumb?: string;
+  parentBreadcrumb?: string;
+  parentHref?: string;
 }
 
-const { title, section, breadcrumb } = Astro.props;
+const { title, section, breadcrumb, parentBreadcrumb, parentHref } = Astro.props;
 
 const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
 
@@ -29,14 +32,23 @@ const SPELL_LEVELS = [
   { nivel: 9, nombre: 'Nivel 9', count: SPELLS_LEVEL_9.length },
 ];
 
-// Build search data for client-side search
+// Build search data — now linking to individual pages
 const searchData = [
-  ...RACES.map(r => ({ nombre: r.nombre, icon: r.icon, category: 'Raza', url: `/compendio/razas#${r.id}` })),
-  ...CLASSES.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Clase', url: `/compendio/clases#${c.id}` })),
-  ...BACKGROUNDS.map(b => ({ nombre: b.nombre, icon: b.icon, category: 'Trasfondo', url: `/compendio/trasfondos#${b.id}` })),
+  ...RACES.map(r => ({ nombre: r.nombre, icon: r.icon, category: 'Raza', url: `/compendio/razas/${r.id}` })),
+  ...CLASSES.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Clase', url: `/compendio/clases/${c.id}` })),
+  ...BACKGROUNDS.map(b => ({ nombre: b.nombre, icon: b.icon, category: 'Trasfondo', url: `/compendio/trasfondos/${b.id}` })),
   ...CANTRIPS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Truco', url: `/compendio/conjuros#spell-${s.id}` })),
   ...ALL_SPELLS.map(s => ({ nombre: s.nombre, icon: '✨', category: 'Conjuro', url: `/compendio/conjuros#spell-${s.id}` })),
+  ...CONDITIONS.map(c => ({ nombre: c.nombre, icon: c.icon, category: 'Condición', url: `/compendio/reglas#cond-${c.id}` })),
+  ...DAMAGE_TYPES.map(d => ({ nombre: d.nombre, icon: d.icon, category: 'Tipo de daño', url: `/compendio/reglas#tipos-dano` })),
+  { nombre: 'Combate', icon: '⚔️', category: 'Reglas', url: '/compendio/reglas#combate' },
+  { nombre: 'Descansos', icon: '🛏️', category: 'Reglas', url: '/compendio/reglas#descansos' },
+  { nombre: 'Pruebas de Característica', icon: '🎯', category: 'Reglas', url: '/compendio/reglas#pruebas' },
+  { nombre: 'Puntuaciones de Característica', icon: '🎲', category: 'Reglas', url: '/compendio/reglas#caracteristicas' },
 ];
+
+// Determine current page path for active nav highlighting
+const currentPath = Astro.url.pathname.replace(/\/$/, '');
 ---
 
 <Layout title={title} description="Consulta el compendio del System Reference Document 5.1 de D&D 5e en español.">
@@ -111,7 +123,7 @@ const searchData = [
             </button>
             <div class="docs-nav-group-items" data-group="razas">
               {RACES.map(r => (
-                <a href={`/compendio/razas#${r.id}`} class={`docs-nav-item ${section === 'razas' ? '' : ''}`} data-nav={r.id}>
+                <a href={`/compendio/razas/${r.id}`} class={`docs-nav-item ${currentPath === `/compendio/razas/${r.id}` ? 'active' : ''}`} data-nav={r.id}>
                   <span class="docs-nav-dot"></span>
                   {r.nombre}
                 </a>
@@ -133,7 +145,7 @@ const searchData = [
             </button>
             <div class="docs-nav-group-items" data-group="clases">
               {CLASSES.map(c => (
-                <a href={`/compendio/clases#${c.id}`} class="docs-nav-item" data-nav={c.id}>
+                <a href={`/compendio/clases/${c.id}`} class={`docs-nav-item ${currentPath === `/compendio/clases/${c.id}` ? 'active' : ''}`} data-nav={c.id}>
                   <span class="docs-nav-dot"></span>
                   {c.nombre}
                 </a>
@@ -155,7 +167,7 @@ const searchData = [
             </button>
             <div class="docs-nav-group-items" data-group="trasfondos">
               {BACKGROUNDS.map(b => (
-                <a href={`/compendio/trasfondos#${b.id}`} class="docs-nav-item" data-nav={b.id}>
+                <a href={`/compendio/trasfondos/${b.id}`} class={`docs-nav-item ${currentPath === `/compendio/trasfondos/${b.id}` ? 'active' : ''}`} data-nav={b.id}>
                   <span class="docs-nav-dot"></span>
                   {b.nombre}
                 </a>
@@ -185,6 +197,45 @@ const searchData = [
             </div>
           </div>
 
+          <!-- Reglas -->
+          <div class="docs-nav-group">
+            <button class="docs-nav-group-btn" data-section="reglas" data-active={section === 'reglas' ? 'true' : 'false'} type="button">
+              <span class="flex items-center gap-2">
+                <span class="text-sm">📐</span>
+                <span>Reglas</span>
+              </span>
+              <span class="flex items-center gap-1.5">
+                <svg class="docs-nav-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </span>
+            </button>
+            <div class="docs-nav-group-items" data-group="reglas">
+              <a href="/compendio/reglas#caracteristicas" class="docs-nav-item" data-nav="caracteristicas">
+                <span class="docs-nav-dot"></span>
+                Características
+              </a>
+              <a href="/compendio/reglas#pruebas" class="docs-nav-item" data-nav="pruebas">
+                <span class="docs-nav-dot"></span>
+                Pruebas
+              </a>
+              <a href="/compendio/reglas#combate" class="docs-nav-item" data-nav="combate">
+                <span class="docs-nav-dot"></span>
+                Combate
+              </a>
+              <a href="/compendio/reglas#condiciones" class="docs-nav-item" data-nav="condiciones">
+                <span class="docs-nav-dot"></span>
+                Condiciones
+              </a>
+              <a href="/compendio/reglas#descansos" class="docs-nav-item" data-nav="descansos">
+                <span class="docs-nav-dot"></span>
+                Descansos
+              </a>
+              <a href="/compendio/reglas#tipos-dano" class="docs-nav-item" data-nav="tipos-dano">
+                <span class="docs-nav-dot"></span>
+                Tipos de daño
+              </a>
+            </div>
+          </div>
+
         </nav>
 
         <!-- Sidebar footer -->
@@ -202,7 +253,15 @@ const searchData = [
         <div class="docs-breadcrumbs">
           <a href="/">DyMEs</a>
           <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
-          {breadcrumb ? (
+          {parentBreadcrumb ? (
+            <>
+              <a href="/compendio">Compendio</a>
+              <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              <a href={parentHref}>{parentBreadcrumb}</a>
+              <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+              <span class="text-[#272519]">{breadcrumb}</span>
+            </>
+          ) : breadcrumb ? (
             <>
               <a href="/compendio">Compendio</a>
               <svg class="w-3 h-3 text-[#978F62]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
@@ -247,7 +306,7 @@ const searchData = [
   <script id="search-data" type="application/json" set:html={JSON.stringify(searchData)} />
 
   <!-- ═══ STYLES ═══ -->
-  <style>
+  <style is:global>
     /* ─── Header ─── */
     .docs-header {
       position: sticky; top: 0; z-index: 40;
@@ -386,11 +445,12 @@ const searchData = [
       flex: 1; min-width: 0;
       padding: 2rem 2.5rem 4rem;
     }
-    .docs-content { max-width: 780px; }
+    .docs-content { max-width: 840px; }
 
     .docs-breadcrumbs {
       display: flex; align-items: center; gap: 0.4rem;
       font-size: 12px; color: #978F62; margin-bottom: 2rem;
+      flex-wrap: wrap;
     }
     .docs-breadcrumbs a { color: #978F62; text-decoration: none; }
     .docs-breadcrumbs a:hover { color: #8f3d38; }
@@ -401,7 +461,7 @@ const searchData = [
       font-size: clamp(1.75rem, 4vw, 2.25rem); line-height: 1.2;
       color: #272519; margin-bottom: 0.75rem;
     }
-    .docs-lead { font-size: 16px; color: #555137; line-height: 1.7; max-width: 600px; }
+    .docs-lead { font-size: 16px; color: #555137; line-height: 1.7; max-width: 640px; }
     .docs-h2 {
       font-family: 'Cinzel', serif; font-weight: 700;
       font-size: 1.5rem; color: #272519; margin-bottom: 0.5rem;
@@ -425,7 +485,7 @@ const searchData = [
     }
     .docs-callout-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
 
-    /* ─── Summary cards ─── */
+    /* ─── Summary cards (intro page) ─── */
     .docs-summary-card {
       display: flex; flex-direction: column; align-items: center;
       padding: 1.25rem 1rem; border-radius: 12px;
@@ -438,6 +498,61 @@ const searchData = [
       box-shadow: 0 2px 12px rgba(143,61,56,0.08);
       transform: translateY(-1px);
     }
+
+    /* ─── Item cards (index listing pages) ─── */
+    .docs-item-card {
+      display: flex; flex-direction: column;
+      padding: 1.25rem; border-radius: 12px;
+      border: 1px solid rgba(212,209,189,0.3);
+      background: white; text-decoration: none;
+      transition: all 0.2s; position: relative;
+      overflow: hidden;
+    }
+    .docs-item-card:hover {
+      border-color: rgba(143,61,56,0.3);
+      box-shadow: 0 4px 20px rgba(143,61,56,0.1);
+      transform: translateY(-2px);
+    }
+    .docs-item-card-icon {
+      font-size: 2rem; margin-bottom: 0.75rem;
+    }
+    .docs-item-card-body { flex: 1; }
+    .docs-item-card-title {
+      font-family: 'Cinzel', serif; font-weight: 700;
+      font-size: 1rem; color: #272519; margin-bottom: 0.35rem;
+      transition: color 0.15s;
+    }
+    .docs-item-card:hover .docs-item-card-title { color: #8f3d38; }
+    .docs-item-card-desc {
+      font-size: 12.5px; color: #555137; line-height: 1.6;
+      display: -webkit-box; -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .docs-item-card-meta {
+      display: flex; flex-wrap: wrap; gap: 0.35rem;
+      margin-top: 0.75rem;
+    }
+    .docs-item-card-tag {
+      font-size: 10px; font-weight: 500; color: #978F62;
+      background: rgba(212,209,189,0.2); border-radius: 4px;
+      padding: 2px 8px; white-space: nowrap;
+    }
+    .docs-item-card-arrow {
+      position: absolute; top: 1rem; right: 1rem;
+      font-size: 16px; color: rgba(151,143,98,0.3);
+      font-weight: 600; transition: all 0.2s;
+    }
+    .docs-item-card:hover .docs-item-card-arrow {
+      color: #8f3d38; transform: translateX(2px);
+    }
+
+    /* ─── Detail page header ─── */
+    .docs-detail-page { }
+    .docs-detail-header {
+      display: flex; align-items: flex-start; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .docs-detail-icon { font-size: 2.5rem; flex-shrink: 0; margin-top: 4px; }
 
     /* ─── Section ─── */
     .docs-section { margin-bottom: 0; }
@@ -500,13 +615,115 @@ const searchData = [
     .docs-trait:last-child { margin-bottom: 0; }
     .docs-trait-name { font-weight: 700; color: #272519; }
 
-    /* ─── Subrace / Subclass ─── */
+    /* ─── Subrace / Subclass detail ─── */
     .docs-subrace {
       margin-top: 0.85rem; padding: 0.85rem 1.15rem;
       background: rgba(143,61,56,0.03); border: 1px solid rgba(143,61,56,0.12);
       border-radius: 10px;
     }
     .docs-subrace .docs-h4 { color: #8f3d38; margin-bottom: 0.35rem; }
+
+    /* ─── Progression Table ─── */
+    .docs-progression { }
+    .docs-table-wrapper {
+      overflow-x: auto; margin-top: 0.75rem;
+      border: 1px solid rgba(212,209,189,0.3);
+      border-radius: 10px; background: white;
+    }
+    .docs-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 12.5px;
+    }
+    .docs-table thead {
+      background: rgba(212,209,189,0.15);
+      border-bottom: 1px solid rgba(212,209,189,0.3);
+    }
+    .docs-table th {
+      padding: 0.6rem 0.75rem; text-align: left;
+      font-weight: 600; color: #555137;
+      text-transform: uppercase; letter-spacing: 0.04em;
+      font-size: 10px; white-space: nowrap;
+    }
+    .docs-table td {
+      padding: 0.5rem 0.75rem; color: #272519;
+      border-bottom: 1px solid rgba(212,209,189,0.15);
+    }
+    .docs-table tbody tr:last-child td { border-bottom: none; }
+    .docs-table tbody tr:hover { background: rgba(143,61,56,0.02); }
+    .docs-table-level {
+      font-weight: 700; color: #8f3d38; text-align: center;
+      width: 40px;
+    }
+    .docs-table-prof {
+      font-weight: 600; color: #555137; text-align: center;
+      width: 45px;
+    }
+    .docs-table-extra {
+      color: #555137; white-space: nowrap; width: 140px;
+    }
+    .docs-table-features {
+      color: #272519; line-height: 1.5;
+    }
+    .docs-table-empty-row td { color: #978F62; }
+
+    /* ─── Subclass option cards ─── */
+    .docs-subclasses { }
+    .docs-subclass-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 0.75rem; margin-top: 0.75rem;
+    }
+    .docs-subclass-card {
+      padding: 1rem; border-radius: 10px;
+      background: white; border: 1px solid rgba(212,209,189,0.3);
+      transition: all 0.15s;
+    }
+    .docs-subclass-card:hover {
+      border-color: rgba(143,61,56,0.2);
+      box-shadow: 0 2px 8px rgba(143,61,56,0.06);
+    }
+    .docs-subclass-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.4rem; gap: 0.5rem;
+    }
+    .docs-subclass-name {
+      font-family: 'Cinzel', serif; font-weight: 700;
+      font-size: 13px; color: #272519;
+    }
+    .docs-subclass-source {
+      font-size: 9px; font-weight: 600; color: #978F62;
+      background: rgba(212,209,189,0.25); border-radius: 3px;
+      padding: 1px 6px; text-transform: uppercase;
+      letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0;
+    }
+    .docs-subclass-desc {
+      font-size: 12.5px; color: #555137; line-height: 1.6;
+    }
+
+    /* ─── Prev/Next Navigation ─── */
+    .docs-prev-next {
+      display: flex; justify-content: space-between; gap: 1rem;
+      margin-top: 3rem; padding-top: 2rem;
+      border-top: 1px solid rgba(212,209,189,0.3);
+    }
+    .docs-prev-next-link {
+      display: flex; flex-direction: column; gap: 0.2rem;
+      text-decoration: none; padding: 0.75rem 1rem;
+      border-radius: 10px; border: 1px solid rgba(212,209,189,0.3);
+      transition: all 0.2s; max-width: 45%;
+    }
+    .docs-prev-next-link:hover {
+      border-color: rgba(143,61,56,0.3);
+      box-shadow: 0 2px 8px rgba(143,61,56,0.08);
+    }
+    .docs-prev-next-right { text-align: right; margin-left: auto; }
+    .docs-prev-next-dir {
+      font-size: 11px; color: #978F62; font-weight: 500;
+    }
+    .docs-prev-next-name {
+      font-size: 14px; color: #272519; font-weight: 600;
+      font-family: 'Cinzel', serif;
+    }
+    .docs-prev-next-link:hover .docs-prev-next-name { color: #8f3d38; }
 
     /* ─── Spell level ─── */
     .docs-spell-level { margin-bottom: 1.5rem; }
@@ -643,6 +860,10 @@ const searchData = [
       .docs-search-trigger { max-width: 44px; padding: 0.45rem 0.6rem; justify-content: center; }
       .docs-search-trigger .docs-kbd { display: none; }
       .docs-stats-grid { grid-template-columns: 1fr; }
+      .docs-prev-next { flex-direction: column; }
+      .docs-prev-next-link { max-width: 100%; }
+      .docs-prev-next-right { text-align: left; margin-left: 0; }
+      .docs-subclass-grid { grid-template-columns: 1fr; }
     }
   </style>
 
@@ -695,7 +916,7 @@ const searchData = [
       });
     });
 
-    // ─── Active nav tracking (IntersectionObserver) ───
+    // ─── Active nav tracking (IntersectionObserver for conjuros page) ───
     const navItems = document.querySelectorAll('[data-nav]');
     const sectionTargets = document.querySelectorAll('[data-section-id]');
 
@@ -706,7 +927,10 @@ const searchData = [
             const id = (entry.target as HTMLElement).dataset.sectionId!;
             navItems.forEach(n => {
               const navId = (n as HTMLElement).dataset.nav!;
-              n.classList.toggle('active', navId === id);
+              // Only toggle for items not already active by URL
+              if (!n.classList.contains('active')) {
+                n.classList.toggle('active', navId === id);
+              }
             });
           }
         });
@@ -714,6 +938,14 @@ const searchData = [
 
       sectionTargets.forEach(s => observer.observe(s));
     }
+
+    // ─── Scroll active sidebar item into view ───
+    requestAnimationFrame(() => {
+      const activeItem = sidebar.querySelector('.docs-nav-item.active');
+      if (activeItem) {
+        activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
 
     // ─── Search modal (Ctrl+K) ───
     const modal = document.getElementById('search-modal')!;

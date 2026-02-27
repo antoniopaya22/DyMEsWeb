@@ -1,0 +1,32 @@
+---
+import CompendioLayout from '../../../layouts/CompendioLayout.astro';
+import { RACES } from '../../../data/races';
+---
+
+<CompendioLayout title="Razas — Compendio SRD 5.1" section="razas" breadcrumb="Razas">
+  <section class="docs-section scroll-mt-20">
+    <div class="docs-section-header">
+      <span class="docs-section-badge">🧝 Razas</span>
+      <h2 class="docs-h2">Razas jugables</h2>
+      <p class="docs-p text-[#555137]">Las razas disponibles en el SRD 5.1 para la creación de personajes. Cada raza otorga bonificaciones, rasgos y habilidades únicas.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+      {RACES.map((race) => (
+        <a href={`/compendio/razas/${race.id}`} class="docs-item-card group">
+          <span class="docs-item-card-icon">{race.icon}</span>
+          <div class="docs-item-card-body">
+            <h3 class="docs-item-card-title">{race.nombre}</h3>
+            <p class="docs-item-card-desc">{race.descripcion}</p>
+          </div>
+          <div class="docs-item-card-meta">
+            {race.details.slice(0, 2).map(d => (
+              <span class="docs-item-card-tag">{d.label}: {d.value}</span>
+            ))}
+          </div>
+          <span class="docs-item-card-arrow">→</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</CompendioLayout>

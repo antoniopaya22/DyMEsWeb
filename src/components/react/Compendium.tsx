@@ -89,6 +89,17 @@ const BACKGROUNDS: SrdEntry[] = [
 
 type TabId = 'razas' | 'clases' | 'trasfondos';
 
+const PUBLIC_LINKS: { id: TabId; label: string; href: string; icon: string }[] = [
+  { id: 'razas', label: 'Razas completas', href: '/compendio/razas', icon: '🧝' },
+  { id: 'clases', label: 'Clases completas', href: '/compendio/clases', icon: '⚔️' },
+  { id: 'trasfondos', label: 'Trasfondos completos', href: '/compendio/trasfondos', icon: '📖' },
+];
+
+const EXTRA_PUBLIC_LINKS: { label: string; href: string; icon: string }[] = [
+  { label: 'Conjuros', href: '/compendio/conjuros', icon: '✨' },
+  { label: 'Reglas', href: '/compendio/reglas', icon: '📜' },
+];
+
 export default function Compendium() {
   const [activeTab, setActiveTab] = useState<TabId>('razas');
   const [searchQuery, setSearchQuery] = useState('');
@@ -114,77 +125,141 @@ export default function Compendium() {
     { id: 'trasfondos', label: 'Trasfondos', icon: '📖', count: BACKGROUNDS.length },
   ];
 
+  const activePublicLink = PUBLIC_LINKS.find(l => l.id === activeTab);
+
   return (
     <div className="animate-fade-in relative">
-      {/* Atmospheric glow */}
-      <div className="absolute -top-20 right-10 w-72 h-72 rounded-full opacity-[0.04] pointer-events-none" style={{ background: 'radial-gradient(circle, #f59e0b, transparent 70%)' }} />
-
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl font-display font-bold text-white flex items-center gap-3 tracking-wide">
-          <span className="text-3xl">📚</span>
-          Compendio SRD
-        </h1>
-        <p className="text-sm text-[#AAA37B] mt-1.5 font-light">Referencia del System Reference Document 5.1 de D&D 5e</p>
+      {/* ── Header Banner ─────────────────────────────────── */}
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-6 sm:p-8" style={{
+        background: 'linear-gradient(135deg, rgba(143,61,56,0.12) 0%, rgba(40,38,27,0.95) 50%, rgba(128,121,83,0.10) 100%)',
+        border: '1px solid rgba(143,61,56,0.18)',
+        boxShadow: '0 4px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)',
+      }}>
+        <div className="absolute top-0 right-0 w-40 h-40 rounded-full opacity-[0.06] pointer-events-none -translate-y-1/2 translate-x-1/4" style={{ background: 'radial-gradient(circle, #f59e0b, transparent 70%)' }} />
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-display font-bold text-white flex items-center gap-3 tracking-wide">
+              <span className="text-2xl sm:text-3xl">📚</span>
+              Compendio SRD
+            </h1>
+            <p className="text-sm text-[#AAA37B] mt-1.5 font-light max-w-lg">
+              Referencia rápida del System Reference Document 5.1. Explora las entradas o visita el compendio público para información detallada.
+            </p>
+          </div>
+          <a
+            href="/compendio"
+            className="hidden sm:flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-medium text-[#CDC9B2] transition-all duration-200 hover:text-white shrink-0"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Compendio público
+          </a>
+        </div>
       </div>
 
-      {/* Search */}
-      <div className="mb-8">
-        <div className="relative max-w-md">
+      {/* ── Quick Links to Public Compendio ────────────────── */}
+      <div className="flex flex-wrap gap-2 mb-6">
+        {[...PUBLIC_LINKS, ...EXTRA_PUBLIC_LINKS].map(link => (
+          <a
+            key={link.href}
+            href={link.href}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-medium text-[#AAA37B] transition-all duration-200 hover:text-white hover:border-[rgba(143,61,56,0.3)]"
+            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}
+          >
+            <span>{link.icon}</span>
+            <span>{link.label}</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-40"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        ))}
+      </div>
+
+      <div className="dymes-divider !my-5" />
+
+      {/* ── Tabs ──────────────────────────────────────────── */}
+      <div className="flex items-center gap-2 mb-6">
+        <div className="flex gap-1.5 p-1 rounded-xl flex-1" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          {TABS.map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => { setActiveTab(tab.id); setExpandedId(null); setSearchQuery(''); }}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                activeTab === tab.id
+                  ? 'text-white'
+                  : 'text-[#807953] hover:text-[#CDC9B2]'
+              }`}
+              style={activeTab === tab.id ? {
+                background: 'linear-gradient(135deg, rgba(143,61,56,0.2), rgba(143,61,56,0.08))',
+                boxShadow: '0 0 12px rgba(143,61,56,0.12), inset 0 1px 0 rgba(255,255,255,0.05)',
+              } : {}}
+            >
+              <span className="text-base">{tab.icon}</span>
+              <span className="hidden sm:inline">{tab.label}</span>
+              <span className="text-[10px] opacity-50">({tab.count})</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Search ────────────────────────────────────────── */}
+      <div className="mb-6">
+        <div className="relative">
           <svg className="absolute left-4 top-1/2 -translate-y-1/2 text-[#807953]" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
           <input
             type="text"
-            placeholder="Buscar en el compendio..."
+            placeholder={`Buscar ${activeTab}...`}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="dymes-input !pl-11"
+            className="dymes-input !pl-11 !pr-20"
           />
-          {searchQuery && (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#807953] hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
-            </button>
-          )}
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            {searchQuery && (
+              <>
+                <span className="text-[10px] text-[#807953] tabular-nums">{filtered.length}</span>
+                <button
+                  onClick={() => setSearchQuery('')}
+                  className="text-[#807953] hover:text-white transition-colors p-1 rounded-lg hover:bg-white/5"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2.5 mb-8 overflow-x-auto pb-1">
-        {TABS.map(tab => (
-          <button
-            key={tab.id}
-            onClick={() => { setActiveTab(tab.id); setExpandedId(null); }}
-            className={`dymes-tab whitespace-nowrap flex items-center gap-2 ${activeTab === tab.id ? 'active' : ''}`}
+      {/* ── Section Label ────────────────────────────────── */}
+      <div className="flex items-center justify-between mb-5">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-5 rounded-full" style={{ background: 'linear-gradient(to bottom, #8f3d38, rgba(143,61,56,0.3))' }} />
+          <p className="text-xs text-[#807953] uppercase tracking-widest font-medium">
+            {filtered.length} {activeTab === 'razas' ? 'raza' : activeTab === 'clases' ? 'clase' : 'trasfondo'}{filtered.length !== 1 ? 's' : ''}
+            {query ? ` — "${searchQuery}"` : ''}
+          </p>
+        </div>
+        {activePublicLink && (
+          <a
+            href={activePublicLink.href}
+            className="text-[10px] text-[#807953] hover:text-[#CDC9B2] transition-colors uppercase tracking-wider font-medium flex items-center gap-1"
           >
-            <span>{tab.icon}</span>
-            <span>{tab.label}</span>
-            <span className="text-[10px] opacity-50 font-medium">({tab.count})</span>
-          </button>
-        ))}
+            Ver todo
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="m9 18 6-6-6-6"/></svg>
+          </a>
+        )}
       </div>
 
-      {/* Count */}
-      <p className="text-xs text-[#807953] mb-5 uppercase tracking-widest font-medium">
-        {filtered.length} {activeTab === 'razas' ? 'raza' : activeTab === 'clases' ? 'clase' : 'trasfondo'}{filtered.length !== 1 ? 's' : ''}
-        {query ? ` para "${searchQuery}"` : ''}
-      </p>
-
-      <div className="dymes-divider !mt-0 !mb-6" />
-
-      {/* Content */}
+      {/* ── Content ──────────────────────────────────────── */}
       {filtered.length === 0 ? (
-        <div className="text-center py-20">
+        <div className="text-center py-20 rounded-2xl" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
           <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#807953" strokeWidth="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           </div>
-          <p className="text-sm text-[#807953]">No se encontraron resultados para "{searchQuery}"</p>
+          <p className="text-sm text-[#807953] mb-1">No se encontraron resultados para &ldquo;{searchQuery}&rdquo;</p>
+          <button onClick={() => setSearchQuery('')} className="text-xs text-[#8f3d38] hover:text-[#b25550] transition-colors">Limpiar búsqueda</button>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {filtered.map(entry => (
             <CompendiumCard
               key={entry.id}
@@ -196,12 +271,21 @@ export default function Compendium() {
         </div>
       )}
 
-      {/* SRD Attribution */}
+      {/* ── SRD Attribution ──────────────────────────────── */}
       <div className="mt-16">
         <div className="dymes-divider" />
-        <p className="text-xs text-[#807953] text-center leading-relaxed">
-          Contenido basado en el System Reference Document 5.1 (SRD 5.1) de Wizards of the Coast,<br className="hidden sm:inline" /> disponible bajo la Open Gaming License (OGL 1.0a).
-        </p>
+        <div className="flex flex-col items-center gap-3">
+          <p className="text-xs text-[#807953] text-center leading-relaxed">
+            Contenido basado en el System Reference Document 5.1 (SRD 5.1) de Wizards of the Coast,<br className="hidden sm:inline" /> disponible bajo la Open Gaming License (OGL 1.0a).
+          </p>
+          <a
+            href="/compendio"
+            className="inline-flex items-center gap-1.5 text-xs text-[#8f3d38] hover:text-[#b25550] transition-colors font-medium"
+          >
+            Explorar compendio público completo
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -210,17 +294,15 @@ export default function Compendium() {
 function CompendiumCard({ entry, isExpanded, onToggle }: { entry: SrdEntry; isExpanded: boolean; onToggle: () => void }) {
   return (
     <div
-      className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-        isExpanded ? 'shadow-lg' : ''
-      }`}
+      className={`rounded-2xl border transition-all duration-300 overflow-hidden ${isExpanded ? 'shadow-lg' : ''}`}
       style={{
         background: isExpanded
           ? 'linear-gradient(145deg, rgba(40,38,27,0.98), rgba(28,26,18,0.95))'
           : 'linear-gradient(145deg, rgba(40,38,27,0.8), rgba(28,26,18,0.7))',
-        borderColor: isExpanded ? 'rgba(143,61,56,0.3)' : 'rgba(81,77,53,0.25)',
+        borderColor: isExpanded ? 'rgba(143,61,56,0.3)' : 'rgba(81,77,53,0.2)',
         boxShadow: isExpanded
           ? '0 8px 32px rgba(0,0,0,0.35), 0 0 20px rgba(143,61,56,0.06), inset 0 1px 0 rgba(255,255,255,0.05)'
-          : '0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02)',
+          : '0 2px 8px rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.02)',
       }}
     >
       {/* Top accent when expanded */}
@@ -232,7 +314,7 @@ function CompendiumCard({ entry, isExpanded, onToggle }: { entry: SrdEntry; isEx
         onClick={onToggle}
         className="w-full flex items-center gap-4 p-4 sm:p-5 text-left group"
       >
-        <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 transition-all duration-300" style={{
+        <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-xl sm:text-2xl shrink-0 transition-all duration-300" style={{
           background: isExpanded
             ? 'linear-gradient(135deg, rgba(143,61,56,0.15), rgba(143,61,56,0.05))'
             : 'rgba(255,255,255,0.04)',
@@ -241,14 +323,14 @@ function CompendiumCard({ entry, isExpanded, onToggle }: { entry: SrdEntry; isEx
           {entry.icon}
         </div>
         <div className="flex-1 min-w-0">
-          <h3 className="text-base font-display font-semibold text-white group-hover:text-[#CDC9B2] transition-colors">{entry.nombre}</h3>
+          <h3 className="text-sm sm:text-base font-display font-semibold text-white group-hover:text-[#CDC9B2] transition-colors">{entry.nombre}</h3>
           {!isExpanded && (
             <p className="text-xs text-[#807953] mt-0.5 truncate">{entry.descripcion}</p>
           )}
         </div>
-        <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isExpanded ? 'bg-white/5' : ''}`}>
+        <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-300 ${isExpanded ? 'bg-white/5 rotate-180' : ''}`}>
           <svg
-            className={`w-4 h-4 text-[#807953] transition-transform duration-300 ${isExpanded ? 'rotate-180 text-[#CDC9B2]' : ''}`}
+            className={`w-4 h-4 transition-colors duration-300 ${isExpanded ? 'text-[#CDC9B2]' : 'text-[#807953]'}`}
             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
           >
             <path d="m6 9 6 6 6-6"/>
@@ -257,16 +339,16 @@ function CompendiumCard({ entry, isExpanded, onToggle }: { entry: SrdEntry; isEx
       </button>
 
       {isExpanded && (
-        <div className="px-5 pb-5 pt-0 animate-fade-in">
-          <div className="ml-16">
-            <p className="text-sm text-[#AAA37B] mb-5 leading-relaxed">{entry.descripcion}</p>
-            <div className="grid sm:grid-cols-2 gap-2.5">
+        <div className="px-4 sm:px-5 pb-5 pt-0 animate-fade-in">
+          <div className="sm:ml-16">
+            <p className="text-sm text-[#AAA37B] mb-4 leading-relaxed">{entry.descripcion}</p>
+            <div className="grid sm:grid-cols-2 gap-2">
               {entry.details.map((d, i) => (
-                <div key={i} className="flex gap-3 px-3.5 py-2.5 rounded-xl" style={{
+                <div key={i} className="flex items-start gap-2.5 px-3 py-2.5 rounded-lg" style={{
                   background: 'linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02))',
                   border: '1px solid rgba(255,255,255,0.05)',
                 }}>
-                  <span className="text-[10px] text-[#807953] whitespace-nowrap uppercase tracking-wider font-medium pt-0.5">{d.label}</span>
+                  <span className="text-[10px] text-[#807953] whitespace-nowrap uppercase tracking-wider font-semibold pt-px">{d.label}</span>
                   <span className="text-xs text-[#CDC9B2] leading-relaxed">{d.value}</span>
                 </div>
               ))}

@@ -1,0 +1,65 @@
+---
+import CompendioLayout from '../../../layouts/CompendioLayout.astro';
+import { BACKGROUNDS } from '../../../data/backgrounds';
+
+export function getStaticPaths() {
+  return BACKGROUNDS.map((bg) => ({
+    params: { id: bg.id },
+    props: { bg },
+  }));
+}
+
+const { bg } = Astro.props;
+const bgIndex = BACKGROUNDS.findIndex(b => b.id === bg.id);
+const prevBg = bgIndex > 0 ? BACKGROUNDS[bgIndex - 1] : null;
+const nextBg = bgIndex < BACKGROUNDS.length - 1 ? BACKGROUNDS[bgIndex + 1] : null;
+---
+
+<CompendioLayout title={`${bg.nombre} — Compendio SRD 5.1`} section="trasfondos" breadcrumb={bg.nombre} parentBreadcrumb="Trasfondos" parentHref="/compendio/trasfondos">
+  <article class="docs-detail-page">
+    <!-- Header -->
+    <div class="docs-detail-header">
+      <span class="docs-detail-icon">{bg.icon}</span>
+      <div>
+        <h1 class="docs-h1" style="margin-bottom: 0.25rem;">{bg.nombre}</h1>
+        <span class="docs-tag">Trasfondo</span>
+      </div>
+    </div>
+
+    <p class="docs-lead">{bg.descripcion}</p>
+
+    <!-- Stats Grid -->
+    <div class="docs-stats-grid mt-6">
+      {bg.details.map(d => (
+        <div class="docs-stat">
+          <dt class="docs-stat-label">{d.label}</dt>
+          <dd class="docs-stat-value">{d.value}</dd>
+        </div>
+      ))}
+    </div>
+
+    <!-- Feature Description -->
+    {bg.rasgoDesc && (
+      <div class="docs-traits mt-8">
+        <h2 class="docs-h4" style="font-size: 1.1rem;">Rasgo: {bg.details.find(d => d.label === 'Rasgo')?.value}</h2>
+        <p class="docs-p">{bg.rasgoDesc}</p>
+      </div>
+    )}
+
+    <!-- Prev/Next Navigation -->
+    <nav class="docs-prev-next">
+      {prevBg ? (
+        <a href={`/compendio/trasfondos/${prevBg.id}`} class="docs-prev-next-link">
+          <span class="docs-prev-next-dir">← Anterior</span>
+          <span class="docs-prev-next-name">{prevBg.icon} {prevBg.nombre}</span>
+        </a>
+      ) : <div />}
+      {nextBg ? (
+        <a href={`/compendio/trasfondos/${nextBg.id}`} class="docs-prev-next-link docs-prev-next-right">
+          <span class="docs-prev-next-dir">Siguiente →</span>
+          <span class="docs-prev-next-name">{nextBg.nombre} {nextBg.icon}</span>
+        </a>
+      ) : <div />}
+    </nav>
+  </article>
+</CompendioLayout>

@@ -2,6 +2,7 @@
 import CompendioLayout from '../../layouts/CompendioLayout.astro';
 import { CANTRIPS, type Spell } from '../../data/cantrips';
 import { ALL_SPELLS, SPELLS_LEVEL_1, SPELLS_LEVEL_2, SPELLS_LEVEL_3, SPELLS_LEVEL_4, SPELLS_LEVEL_5, SPELLS_LEVEL_6, SPELLS_LEVEL_7, SPELLS_LEVEL_8, SPELLS_LEVEL_9 } from '../../data/spells';
+import { getSpellClasses, CASTER_CLASS_NAMES, CASTER_CLASS_COLORS, type CasterClassId } from '../../data/spellClasses';
 
 const SPELL_LEVELS = [
   { nivel: 0, nombre: 'Trucos', datos: CANTRIPS, icon: '✋' },
@@ -17,6 +18,9 @@ const SPELL_LEVELS = [
 ];
 
 const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
+
+// All caster class IDs for filter buttons
+const ALL_CASTER_CLASSES: CasterClassId[] = ['bardo', 'brujo', 'clerigo', 'druida', 'explorador', 'hechicero', 'mago', 'paladin'];
 ---
 
 <CompendioLayout title="Conjuros — Compendio SRD 5.1" section="conjuros" breadcrumb="Conjuros">
@@ -28,46 +32,85 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
       <p class="docs-p text-[#555137]">Todos los conjuros disponibles en el SRD 5.1, organizados por nivel. {TOTAL_SPELLS} conjuros en total, incluyendo {CANTRIPS.length} trucos y conjuros de nivel 1 a 9.</p>
     </div>
 
+    <!-- ─── Class Filter Bar ─── -->
+    <div class="spell-filter-bar" id="spell-filter-bar">
+      <span class="spell-filter-label">Filtrar por clase:</span>
+      <div class="spell-filter-buttons">
+        <button class="spell-filter-btn spell-filter-btn-active" data-class="all" type="button">Todas</button>
+        {ALL_CASTER_CLASSES.map(cls => (
+          <button
+            class="spell-filter-btn"
+            data-class={cls}
+            type="button"
+            style={`--btn-color: ${CASTER_CLASS_COLORS[cls]}`}
+          >
+            {CASTER_CLASS_NAMES[cls]}
+          </button>
+        ))}
+      </div>
+      <div class="spell-filter-count" id="spell-filter-count"></div>
+    </div>
+
     {SPELL_LEVELS.map((level) => (
       <div id={`conjuros-nivel-${level.nivel}`} class="docs-spell-level scroll-mt-20" data-section-id={`conjuros-nivel-${level.nivel}`}>
         <h3 class="docs-h3 docs-spell-level-title">
           <span class="docs-spell-level-icon">{level.icon}</span>
           {level.nivel === 0 ? 'Trucos (nivel 0)' : `Conjuros de Nivel ${level.nivel}`}
-          <span class="docs-nav-badge ml-2">{level.datos.length}</span>
+          <span class="docs-nav-badge ml-2 spell-level-count" data-level={level.nivel}>{level.datos.length}</span>
         </h3>
 
         <div class="docs-spell-grid">
-          {level.datos.map((spell: Spell) => (
-            <details id={`spell-${spell.id}`} class="docs-spell-card">
-              <summary class="docs-spell-summary">
-                <div class="docs-spell-name">{spell.nombre}</div>
-                <div class="docs-spell-school">{spell.escuela}</div>
-              </summary>
-              <div class="docs-spell-body">
-                <div class="docs-spell-meta-grid">
-                  <div class="docs-spell-meta">
-                    <span class="docs-spell-meta-label">Tiempo</span>
-                    <span class="docs-spell-meta-value">{spell.tiempo}</span>
+          {level.datos.map((spell: Spell) => {
+            const classes = getSpellClasses(spell.id);
+            return (
+              <details id={`spell-${spell.id}`} class="docs-spell-card" data-spell-classes={classes.join(',')}>
+                <summary class="docs-spell-summary">
+                  <div class="docs-spell-name-row">
+                    <div class="docs-spell-name">{spell.nombre}</div>
+                    {classes.length > 0 && (
+                      <div class="spell-class-tags">
+                        {classes.map(cls => (
+                          <span class="spell-class-tag" style={`--tag-color: ${CASTER_CLASS_COLORS[cls]}`}>
+                            {CASTER_CLASS_NAMES[cls]}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <div class="docs-spell-meta">
-                    <span class="docs-spell-meta-label">Alcance</span>
-                    <span class="docs-spell-meta-value">{spell.alcance}</span>
+                  <div class="docs-spell-school">{spell.escuela}</div>
+                </summary>
+                <div class="docs-spell-body">
+                  <div class="docs-spell-meta-grid">
+                    <div class="docs-spell-meta">
+                      <span class="docs-spell-meta-label">Tiempo</span>
+                      <span class="docs-spell-meta-value">{spell.tiempo}</span>
+                    </div>
+                    <div class="docs-spell-meta">
+                      <span class="docs-spell-meta-label">Alcance</span>
+                      <span class="docs-spell-meta-value">{spell.alcance}</span>
+                    </div>
+                    <div class="docs-spell-meta">
+                      <span class="docs-spell-meta-label">Componentes</span>
+                      <span class="docs-spell-meta-value">{spell.componentes}</span>
+                    </div>
+                    <div class="docs-spell-meta">
+                      <span class="docs-spell-meta-label">Duración</span>
+                      <span class="docs-spell-meta-value">{spell.duracion}</span>
+                    </div>
                   </div>
-                  <div class="docs-spell-meta">
-                    <span class="docs-spell-meta-label">Componentes</span>
-                    <span class="docs-spell-meta-value">{spell.componentes}</span>
-                  </div>
-                  <div class="docs-spell-meta">
-                    <span class="docs-spell-meta-label">Duración</span>
-                    <span class="docs-spell-meta-value">{spell.duracion}</span>
-                  </div>
+                  {classes.length > 0 && (
+                    <div class="docs-spell-meta" style="margin-top: 0.5rem;">
+                      <span class="docs-spell-meta-label">Clases</span>
+                      <span class="docs-spell-meta-value">{classes.map(c => CASTER_CLASS_NAMES[c]).join(', ')}</span>
+                    </div>
+                  )}
+                  {spell.descripcion && (
+                    <p class="docs-spell-desc">{spell.descripcion}</p>
+                  )}
                 </div>
-                {spell.descripcion && (
-                  <p class="docs-spell-desc">{spell.descripcion}</p>
-                )}
-              </div>
-            </details>
-          ))}
+              </details>
+            );
+          })}
         </div>
 
         <div class="docs-entry-divider"></div>
@@ -75,7 +118,75 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
     ))}
   </section>
 
-  <!-- Auto-open spell from hash -->
+  <style>
+    /* ─── Filter Bar ─── */
+    .spell-filter-bar {
+      margin: 1.25rem 0 0.5rem;
+      padding: 0.85rem 1rem;
+      background: white;
+      border: 1px solid rgba(212, 209, 189, 0.3);
+      border-radius: 10px;
+    }
+    .spell-filter-label {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.04em; color: #978F62; display: block;
+      margin-bottom: 0.5rem;
+    }
+    .spell-filter-buttons {
+      display: flex; flex-wrap: wrap; gap: 0.35rem;
+    }
+    .spell-filter-btn {
+      font-size: 11.5px; font-weight: 500; padding: 0.3rem 0.65rem;
+      border-radius: 6px; border: 1px solid rgba(212, 209, 189, 0.4);
+      background: rgba(245, 244, 239, 0.6);
+      color: #555137; cursor: pointer; transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .spell-filter-btn:hover {
+      border-color: var(--btn-color, #8f3d38);
+      color: var(--btn-color, #8f3d38);
+      background: white;
+    }
+    .spell-filter-btn-active {
+      background: var(--btn-color, #8f3d38) !important;
+      color: white !important;
+      border-color: var(--btn-color, #8f3d38) !important;
+      font-weight: 600;
+    }
+    .spell-filter-count {
+      font-size: 11px; color: #978F62; margin-top: 0.5rem;
+      min-height: 16px;
+    }
+
+    /* ─── Class Tags on spells ─── */
+    .docs-spell-name-row {
+      display: flex; align-items: center; gap: 0.5rem;
+      flex-wrap: wrap; flex: 1;
+    }
+    .spell-class-tags {
+      display: flex; flex-wrap: wrap; gap: 0.2rem;
+    }
+    .spell-class-tag {
+      font-size: 9px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 1px 5px; border-radius: 4px;
+      background: color-mix(in srgb, var(--tag-color) 12%, transparent);
+      color: var(--tag-color);
+      line-height: 1.4;
+    }
+
+    /* ─── Hidden spell card (from filter) ─── */
+    .docs-spell-card.spell-hidden {
+      display: none;
+    }
+    .docs-spell-level.spell-level-empty .docs-spell-level-title,
+    .docs-spell-level.spell-level-empty .docs-spell-grid,
+    .docs-spell-level.spell-level-empty .docs-entry-divider {
+      display: none;
+    }
+  </style>
+
+  <!-- Auto-open spell from hash + class filter logic -->
   <script>
     function openSpellFromHash() {
       const hash = window.location.hash;
@@ -91,6 +202,98 @@ const TOTAL_SPELLS = CANTRIPS.length + ALL_SPELLS.length;
     }
     openSpellFromHash();
     window.addEventListener('hashchange', openSpellFromHash);
+
+    // ─── Class filter logic ───
+    const filterBar = document.getElementById('spell-filter-bar');
+    const filterCount = document.getElementById('spell-filter-count');
+    const filterBtns = filterBar?.querySelectorAll('.spell-filter-btn') ?? [];
+    const allSpellCards = document.querySelectorAll('.docs-spell-card');
+    const allSpellLevels = document.querySelectorAll('.docs-spell-level');
+    const levelCounts = document.querySelectorAll('.spell-level-count');
+
+    let activeClass = 'all';
+
+    function applyFilter(cls: string) {
+      activeClass = cls;
+      let visibleTotal = 0;
+
+      // Map<level, visibleCount>
+      const levelVisible: Record<string, number> = {};
+
+      allSpellCards.forEach(card => {
+        const cardClasses = (card as HTMLElement).dataset.spellClasses || '';
+        const match = cls === 'all' || cardClasses.split(',').includes(cls);
+        if (match) {
+          card.classList.remove('spell-hidden');
+          visibleTotal++;
+        } else {
+          card.classList.add('spell-hidden');
+          (card as HTMLDetailsElement).open = false;
+        }
+
+        // Find parent level
+        const levelDiv = card.closest('.docs-spell-level');
+        if (levelDiv) {
+          const levelId = (levelDiv as HTMLElement).dataset.sectionId || '';
+          levelVisible[levelId] = (levelVisible[levelId] || 0) + (match ? 1 : 0);
+        }
+      });
+
+      // Update level headings / hide empty levels
+      allSpellLevels.forEach(levelDiv => {
+        const levelId = (levelDiv as HTMLElement).dataset.sectionId || '';
+        const count = levelVisible[levelId] || 0;
+        if (count === 0) {
+          levelDiv.classList.add('spell-level-empty');
+        } else {
+          levelDiv.classList.remove('spell-level-empty');
+        }
+      });
+
+      // Update per-level badge counts
+      levelCounts.forEach(badge => {
+        const level = (badge as HTMLElement).dataset.level;
+        const levelId = `conjuros-nivel-${level}`;
+        const count = levelVisible[levelId];
+        if (count !== undefined && cls !== 'all') {
+          badge.textContent = String(count);
+        } else {
+          // Restore original
+          const levelDiv = document.getElementById(levelId);
+          if (levelDiv) {
+            const total = levelDiv.querySelectorAll('.docs-spell-card').length;
+            badge.textContent = String(total);
+          }
+        }
+      });
+
+      // Update filter buttons
+      filterBtns.forEach(btn => {
+        const btnCls = (btn as HTMLElement).dataset.class;
+        if (btnCls === cls) {
+          btn.classList.add('spell-filter-btn-active');
+        } else {
+          btn.classList.remove('spell-filter-btn-active');
+        }
+      });
+
+      // Update count message
+      if (filterCount) {
+        if (cls === 'all') {
+          filterCount.textContent = '';
+        } else {
+          const name = (document.querySelector(`.spell-filter-btn[data-class="${cls}"]`) as HTMLElement)?.textContent?.trim() || cls;
+          filterCount.textContent = `Mostrando ${visibleTotal} conjuros de ${name}`;
+        }
+      }
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const cls = (btn as HTMLElement).dataset.class || 'all';
+        applyFilter(cls);
+      });
+    });
   </script>
 
 </CompendioLayout>

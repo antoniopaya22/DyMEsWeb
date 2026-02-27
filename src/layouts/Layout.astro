@@ -2,20 +2,45 @@
 export interface Props {
   title?: string;
   description?: string;
-  forceDark?: boolean;
 }
 
-const { title = 'DyMEs — D&D 5e', description = 'Gestiona tus partidas y personajes de D&D 5e en español', forceDark = false } = Astro.props;
+const { title = 'DyMEs — D&D 5e', description = 'Gestiona tus partidas y personajes de D&D 5e en español' } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <script is:inline define:vars={{ forceDark }}>
+    <script is:inline>
       (function(){
-        if(forceDark){document.documentElement.classList.add('dark');return}
-        if(localStorage.getItem('dymes-theme')==='dark'){document.documentElement.classList.add('dark')}
+        // Check app settings store first (dyd:settings)
+        try {
+          var saved = localStorage.getItem('dyd:settings');
+          if(saved){
+            var settings = JSON.parse(saved);
+            var tema = settings.tema;
+            if(tema === 'claro'){
+              document.documentElement.classList.remove('dark');
+              return;
+            }
+            if(tema === 'oscuro'){
+              document.documentElement.classList.add('dark');
+              return;
+            }
+            if(tema === 'auto'){
+              if(window.matchMedia('(prefers-color-scheme: dark)').matches){
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.remove('dark');
+              }
+              return;
+            }
+          }
+        } catch(e){}
+        // Fallback: check simple theme key (public pages)
+        if(localStorage.getItem('dymes-theme')==='dark'){
+          document.documentElement.classList.add('dark');
+        }
       })();
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
