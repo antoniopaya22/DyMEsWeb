@@ -191,12 +191,13 @@ import Layout from '../layouts/Layout.astro';
     </div>
 
     <!-- Scroll indicator -->
-    <div class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 reveal" data-delay="600">
-      <span class="text-[10px] text-white uppercase tracking-[0.2em] drop-shadow-[0_1px_4px_rgba(0,0,0,.8)]">Scroll</span>
-      <div class="w-5 h-8 rounded-full border-2 border-white/60 flex items-start justify-center pt-1.5 drop-shadow-[0_1px_4px_rgba(0,0,0,.8)]">
-        <div class="w-1 h-2 rounded-full bg-white animate-bounce"></div>
-      </div>
-    </div>
+    <a href="#features" id="scroll-indicator" class="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 reveal cursor-pointer group" data-delay="600">
+      <span class="text-[10px] text-white/60 uppercase tracking-[0.2em] group-hover:text-white transition-colors" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))">Descubre más</span>
+      <svg id="scroll-arrow" class="w-6 h-6 text-white/70 group-hover:text-white transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 1px 4px rgba(0,0,0,.8))">
+        <polyline points="7 10 12 15 17 10"/>
+        <polyline points="7 4 12 9 17 4" opacity="0.4"/>
+      </svg>
+    </a>
   </section>
 
   <!-- Transition bridge: dark → light -->
@@ -460,6 +461,8 @@ import Layout from '../layouts/Layout.astro';
 
   <!-- ══════ STYLES ══════ -->
   <style>
+
+
     /* Hero gradient text */
     .text-gradient-hero {
       background: linear-gradient(135deg, #CDC9B2 0%, #b25550 50%, #ef5350 100%);
@@ -577,12 +580,30 @@ import Layout from '../layouts/Layout.astro';
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
 
-    // Smooth scroll
+    // Smooth scroll with eased animation
+    function easeInOutCubic(t: number) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3) / 2; }
+    function smoothScrollTo(target: Element, duration = 1000) {
+      const start = window.scrollY;
+      const end = target.getBoundingClientRect().top + window.scrollY - 64;
+      const distance = end - start;
+      let startTime: number | null = null;
+      function step(ts: number) {
+        if (!startTime) startTime = ts;
+        const elapsed = ts - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        window.scrollTo(0, start + distance * easeInOutCubic(progress));
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    }
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', e => {
         e.preventDefault();
         const h = a.getAttribute('href');
-        if (h) document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' });
+        if (h) {
+          const el = document.querySelector(h);
+          if (el) smoothScrollTo(el, 1200);
+        }
       });
     });
 
@@ -597,5 +618,18 @@ import Layout from '../layouts/Layout.astro';
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
     document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // Scroll arrow — gentle float via JS to avoid any CSS conflicts
+    const scrollArrow = document.getElementById('scroll-arrow');
+    if (scrollArrow) {
+      let frame = 0;
+      function floatArrow() {
+        frame++;
+        const y = Math.sin(frame / 40) * 5; // slow sine wave, ~4s cycle, ±5px
+        scrollArrow!.style.transform = `translateY(${y}px)`;
+        requestAnimationFrame(floatArrow);
+      }
+      requestAnimationFrame(floatArrow);
+    }
   </script>
 </Layout>
